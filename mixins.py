@@ -3,7 +3,7 @@ Generate the attributes, name, and appearance.
 """
 import random
 
-import characterclass
+import character_class
 from dice import d
 
 
@@ -17,21 +17,21 @@ class BasicAttributesMixin:
 
     @property
     def STR(self):
-        return self.attributes[characterclass.STR][1]
+        return self.attributes[character_class.STR][1]
 
     @property
     def DEX(self):
-        return self.attributes[characterclass.DEX][1]
+        return self.attributes[character_class.DEX][1]
 
     @property
     def WIL(self):
-        return self.attributes[characterclass.WIL][1]
+        return self.attributes[character_class.WIL][1]
 
     def roll_attribute_scores(self):
         """
         Rolls the attribute scores: d3+5 in order.
         """
-        return [(attribute, d(3) + 5) for attribute in characterclass.ATTRIBUTES]
+        return [(attribute, d(3) + 5) for attribute in character_class.ATTRIBUTES]
 
 
 class NameMixin:
@@ -48,8 +48,8 @@ class NameMixin:
             gender = random.choice(["Male", "Female"])
 
         return "%s %s" % (
-            random.choice(characterclass.NAMES[race][gender]),
-            random.choice(characterclass.NAMES[race]["Last"]),
+            random.choice(character_class.NAMES[race][gender]),
+            random.choice(character_class.NAMES[race]["Last"]),
         )
 
 
@@ -60,4 +60,4 @@ class AppearanceMixin:
     """
 
     def get_appearance(self):
-        return ", ".join(random.choice(feature) for feature in characterclass.APPEARANCE)
+        return ", ".join(random.choice(feature) for feature in character_class.APPEARANCE)
