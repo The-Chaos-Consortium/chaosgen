@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 SYSTEMS = {
-    'basic': character.BasicCharacter,
+    'basic': character.Character,
 }
 
 @app.template_filter()
