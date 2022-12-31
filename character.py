@@ -1,4 +1,3 @@
-import operator
 import random
 
 import character_class
@@ -14,12 +13,14 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         super(Character, self).__init__(*args, **kwargs)
 
         self.character_class = self.get_character_class(classname)
-        self.class_name = self.character_class['name']
+        self.class_name = classname.title()
         self.appearance = self.get_appearance()
         self.personality = self.get_personality()
         if testing:
             return
         self.equipment = self.get_equipment()
+        self.mount = self.get_mount()
+        self.retainers = self.get_retainers()
         self.hp = self.get_hp()
         if self.hp is not None and self.hp < 1:
             self.hp = 1
@@ -42,19 +43,21 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
     def system(self):
         raise NotImplementedError()
 
-    @property
-    def num_first_level_spells(self):
-        return 12
-
     def get_character_class(self, classname=None):
         """
         We determine character class based on the given class name.
         """
         if classname:
-            return character_class.CLASS_BY_NAME[classname]
+            return character_class.BACKGROUND_BY_NAME[classname]
     
     def get_equipment(self):
         return self.character_class['equipment']
+
+    def get_mount(self):
+        return self.character_class['mount']
+
+    def get_retainers(self):
+        return self.character_class['retainers']
 
     def get_hp(self):
         """
@@ -66,8 +69,8 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         """
         Magic-Users begin with a single spell.
         """
-        if self.character_class.has_key('spells'):
-            spells = self.character_class['spells'][:self.num_first_level_spells]
+        if "spells" in self.character_class:
+            spells = self.character_class['spells'][:12]
             return [random.choice(spells)]
         return None
 

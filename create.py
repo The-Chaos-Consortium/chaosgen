@@ -65,7 +65,7 @@ def get_class(classname):
     """
     Verifies the supplied class paramter is a valid class name.
     """
-    if classname not in character_class.VALID_CLASS_NAMES:
+    if classname not in character_class.VALID_BACKGROUND_NAMES:
         return None
     return classname
 

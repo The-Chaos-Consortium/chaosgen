@@ -73,7 +73,7 @@ THIEF = {
 
 APPEARANCE = [
     ['Male', 'Female'],
-    ['Child', 'Youth', 'Adult', 'Mature', 'Old', 'Decrepit'],
+    ['Youth', 'Adult', 'Mature', 'Old', 'Decrepit'],
     ['Messy Clothing', 'Scant Clothing', 'Immaculate Clothing',
     'Formal Attire', 'Threadbare Clothing', 'Elaborate Attire', 'Drab Clothing',
     'in Uniform'],
@@ -190,6 +190,11 @@ NAMES = {
     }
 }
 
-CLASSES = [PATHFINDER, FIGHTER, CLERIC, MAGICUSER, THIEF]
-VALID_CLASS_NAMES = [c['name'].lower().replace('-', '') for c in CLASSES]
-CLASS_BY_NAME = dict(zip(VALID_CLASS_NAMES, CLASSES))
+ARCHETYPES = [PATHFINDER, FIGHTER, CLERIC, MAGICUSER, THIEF]
+VALID_BACKGROUND_NAMES = [background.lower().replace("'", "") for a in ARCHETYPES for background in a]
+ALL_BACKGROUNDS = []
+for a in ARCHETYPES:
+    for background, v in a.items():
+        ALL_BACKGROUNDS.append(v)
+
+BACKGROUND_BY_NAME = dict(zip(VALID_BACKGROUND_NAMES, ALL_BACKGROUNDS))
