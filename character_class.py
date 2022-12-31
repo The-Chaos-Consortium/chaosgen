@@ -35,22 +35,22 @@ PATHFINDER = {
         "equipment" : [
 
         ],
-        "retainers" : {},
-        "mount" : {},
+        "retainers" : None,
+        "mount" : None,
     },
     "Bounty Hunter" : {
         "equipment" : [
 
         ],
-        "retainers" : {},
-        "mount" : {},
+        "retainers" : None,
+        "mount" : None,
     },
     "Outlaw" : {
         "equipment" : [
 
         ],
-        "retainers" : {},
-        "mount" : {},
+        "retainers" : None,
+        "mount" : None,
     },
 }
 
