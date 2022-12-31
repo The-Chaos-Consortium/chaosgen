@@ -15,6 +15,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         self.character_class = self.get_character_class(classname)
         self.class_name = classname.title()
         self.appearance = self.get_appearance()
+        self.name = self.get_name()
         self.personality = self.get_personality()
         if testing:
             return
@@ -26,6 +27,8 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
             self.hp = 1
         self.spell = self.get_spell()
         self.notes = self.get_notes()
+        self.sp = xdy(3, 6) * 5
+        self.slots = self.STR + 5
 
     def to_dict(self):
         """
