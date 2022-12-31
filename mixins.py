@@ -39,8 +39,7 @@ class NameMixin:
     Generate a random name for this character.
     """
 
-    @property
-    def name(self):
+    def get_name(self):
         race = "Human"
         gender = self.appearance.split(", ")[0]
 

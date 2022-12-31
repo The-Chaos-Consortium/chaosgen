@@ -6,8 +6,6 @@ from character import Character
 def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
     ANNOT_KEY = "/Annots"
     ANNOT_FIELD_KEY = "/T"
-    ANNOT_VAL_KEY = "/V"
-    ANNOT_RECT_KEY = "/Rect"
     SUBTYPE_KEY = "/Subtype"
     WIDGET_SUBTYPE_KEY = "/Widget"
     template_pdf = pdfrw.PdfReader(input_pdf_path)
@@ -22,11 +20,11 @@ def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
                             if data_dict[key] is True:
                                 annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName("Yes")))
                         else:
-                            annotation.update(
-                                pdfrw.PdfDict(V=f"{data_dict[key]}")
-                            )
+                            annotation.update(pdfrw.PdfDict(V=f"{data_dict[key]}"))
                             annotation.update(pdfrw.PdfDict(AP=""))
-    template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+    template_pdf.Root.AcroForm.update(
+        pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject("true"))
+    )
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
 
 
@@ -39,16 +37,26 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
     merger.write(output_pdf_path)
     merger.close()
 
+
 if __name__ == "__main__":
+    pdf_template = "char-sheet.pdf"
     char = Character(classname="road warden")
-    print(char.STR)
-    print(char.DEX)
-    print(char.WIL)
-    print(char.class_name)
+    pdf_output = f"{char.class_name} {char.name}.pdf"
+    data = {
+        # "Name": char.name,
+        "Background": char.class_name,
+        "STR": char.STR,
+        "DEX": char.DEX,
+        "WIL": char.WIL,
+        "Max HP": char.hp,
+        "Level": "1",
+        "SP": char.sp,
+        "Slots": char.slots,
+        "Spells": char.spell,
+    }
+    if char.mount:
+        data["Mount Slots"] = char.mount["Slots"]
+    fill_pdf(pdf_template, pdf_output, data)
     print(char.appearance)
     print(char.personality)
-    print(char.hp)
     print(char.equipment)
-    print(vars(char))
-    print(char.spell)
-    print(char.name)
