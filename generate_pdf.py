@@ -1,9 +1,10 @@
+import sys
 import pdfrw
 from pypdf import PdfMerger
 from character import Character
 
 
-def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
+def fill_pdf(input_pdf_path: str, output_pdf_path: str, data_dict: dict):
     ANNOT_KEY = "/Annots"
     ANNOT_FIELD_KEY = "/T"
     SUBTYPE_KEY = "/Subtype"
@@ -40,8 +41,9 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
 
 if __name__ == "__main__":
     pdf_template = "char-sheet.pdf"
-    char = Character(classname="road warden")
-    pdf_output = f"{char.class_name} {char.name}.pdf"
+    cli_vars = dict(arg.split("=") for arg in sys.argv[1:] if "=" in arg)
+    char = Character(classname=cli_vars["class"])
+    pdf_output = f"output/{char.class_name} {char.name}.pdf"
     data = {
         # "Name": char.name,
         "Background": char.class_name,
