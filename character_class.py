@@ -157,7 +157,10 @@ FIGHTER = {
         "archetype": "Fighter",
         "equipment" : [
             random.choice([
-                "Rapier - d8 dmg, 2 slots",
+                [
+                    "Rapier - d8 dmg, 2 slots",
+                    "------",
+                ],
                 [
                     "Pistol - d10 dmg, round to reload, loud, 2 slots",
                     "------",
