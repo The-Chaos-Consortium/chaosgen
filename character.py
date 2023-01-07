@@ -62,7 +62,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
                 equip.remove(item)
                 for i in temp:
                     equip.append(i)
-        return self.character_class["equipment"] + ["Dagger - d6 dmg", "Supply", "Supply"]
+        return equip + ["Dagger - d6 dmg", "Supply", "Supply"]
 
     def get_mount(self):
         return self.character_class["mount"]
