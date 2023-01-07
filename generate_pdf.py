@@ -2,6 +2,7 @@ import sys
 import pdfrw
 from pypdf import PdfMerger
 from character import Character
+import dice
 
 
 def fill_pdf(input_pdf_path: str, output_pdf_path: str, data_dict: dict):
@@ -40,6 +41,7 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
 
 
 def generate_char():
+    pdf_template = "templates/char-sheet.pdf"
     char = Character(classname=cli_vars["class"])
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
     data = {
@@ -57,13 +59,62 @@ def generate_char():
     }
     if char.mount:
         data["Mount Slots"] = char.mount["Slots"]
+        if char.mount["equipment"]:
+            for index, item in enumerate(char.mount["equipment"]):
+                data["Mount" + str(index + 1)] = item
+        if char.retainer:
+            generate_hirelings(char, "mount/hireling")
+        else:
+            generate_hirelings(char, "mount")
+    elif char.retainer:
+        generate_hirelings(char, "hireling")
     for index, item in enumerate(char.equipment):
         data["Item" + str(index + 1)] = item
 
     fill_pdf(pdf_template, pdf_output, data)
 
 
+def generate_hirelings(char, h_type: str):
+    pdf_template = "templates/hireling-sheet.pdf"
+    pdf_output = f"output/{char.class_name} {char.name} Hirelings.pdf"
+    data = {}
+    if h_type == "mount/hireling":
+        data["Role1"] = char.mount["name"]
+        data["Skill1"] = char.mount["Skill"]
+        data["Morale1"] = char.mount["ML"]
+        data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
+        data["Cost1"] = "N/A"
+        for i in range(10):
+            data["Item" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
+        data["Role2"] = char.retainer["name"]
+        data["Skill2"] = char.retainer["Skill"]
+        data["Morale2"] = char.retainer["ML"]
+        data["Max HP2"] = dice.xdy(char.retainer["HD"], 8)
+        data["Cost2"] = "N/A"
+        data["Level2"] = "1"
+        for index, item in enumerate(char.retainer["equipment"]):
+            data["Item" + str(index + 11)] = item
+    if h_type == "hireling":
+        data["Role1"] = char.retainer["name"]
+        data["Skill1"] = char.retainer["Skill"]
+        data["Morale1"] = char.retainer["ML"]
+        data["Max HP1"] = dice.xdy(char.retainer["HD"], 8)
+        data["Cost1"] = "N/A"
+        data["Level1"] = "1"
+        for index, item in enumerate(char.retainer["equipment"]):
+            data["Item" + str(index + 1)] = item
+    if h_type == "mount":
+        data["Role1"] = char.mount["name"]
+        data["Skill1"] = char.mount["Skill"]
+        data["Morale1"] = char.mount["ML"]
+        data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
+        data["Cost1"] = "N/A"
+        for i in range(10):
+            data["Item" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
+
+    fill_pdf(pdf_template, pdf_output, data)
+
+
 if __name__ == "__main__":
-    pdf_template = "templates/char-sheet.pdf"
     cli_vars = dict(arg.split("=") for arg in sys.argv[1:] if "=" in arg)
     generate_char()
