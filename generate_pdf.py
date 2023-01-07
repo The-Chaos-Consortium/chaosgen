@@ -1,4 +1,5 @@
 import sys
+import os
 import pdfrw
 from pypdf import PdfMerger
 from character import Character
@@ -28,6 +29,7 @@ def fill_pdf(input_pdf_path: str, output_pdf_path: str, data_dict: dict):
         pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject("true"))
     )
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
+    return output_pdf_path
 
 
 def merge_pdfs(input_pdfs: list, output_pdf_path: str):
@@ -44,6 +46,8 @@ def generate_char():
     pdf_template = "templates/char-sheet.pdf"
     char = Character(classname=cli_vars["class"])
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
+    merge_list = []
+    tmp_hirelings = ""
     data = {
         # "Name": char.name,
         "Background": f"{char.class_name} ({char.archetype})",
@@ -63,15 +67,18 @@ def generate_char():
             for index, item in enumerate(char.mount["equipment"]):
                 data["Mount" + str(index + 1)] = item
         if char.retainer:
-            generate_hirelings(char, "mount/hireling")
+            tmp_hirelings = generate_hirelings(char, "mount/hireling")
         else:
-            generate_hirelings(char, "mount")
+            tmp_hirelings = generate_hirelings(char, "mount")
     elif char.retainer:
-        generate_hirelings(char, "hireling")
+        tmp_hirelings = generate_hirelings(char, "hireling")
     for index, item in enumerate(char.equipment):
         data["Item" + str(index + 1)] = item
 
-    fill_pdf(pdf_template, pdf_output, data)
+    merge_list.append(fill_pdf(pdf_template, pdf_output, data))
+    merge_list.append(tmp_hirelings)
+    merge_pdfs(merge_list, pdf_output)
+    os.remove(tmp_hirelings)
 
 
 def generate_hirelings(char, h_type: str):
@@ -112,7 +119,7 @@ def generate_hirelings(char, h_type: str):
         for i in range(10):
             data["Item" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
 
-    fill_pdf(pdf_template, pdf_output, data)
+    return fill_pdf(pdf_template, pdf_output, data)
 
 
 if __name__ == "__main__":
