@@ -176,7 +176,7 @@ FIGHTER = {
         "archetype": "Fighter",
         "equipment" : [
             "Kickass hat - 2 Armor",
-            random.choice(["String of Garlic", "Holy Water"]),
+            random.choice(["String of Garlic", "Holy Water - undead take d8 dmg if doused in it"]),
             random.choice(["Silver Knife - d6 dmg", "Stake of Hawthorn Wood"]),
         ],
         "retainer" : None,
