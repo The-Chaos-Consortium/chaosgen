@@ -55,21 +55,141 @@ PATHFINDER = {
 }
 
 CLERIC = {
-    
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
 }
 
 FIGHTER = {
-    
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
 }
 
 MAGICUSER = {
-    
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+        "spells": True
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+        "spells": True
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+        "spells": True
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+        "spells": True
+    },
 }
 
 THIEF = {
-    
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
+    "Ranger" : {
+        "equipment" : [
+
+        ],
+        "retainers" : None,
+        "mount" : None,
+    },
 }
 
+
+SPELLS = [
+    "Animate Dead", "Arcane Eye", "Auditory Illusion", "Be Understood", "Beast Form", "Bless", "Bolt", "Charm",
+    "Clairvoyance", "Command", "Control Weather", "Create Pit", "Darkness", "Detect Magic", "Earthquake", "Fear",
+    "Fireball", "Freezing Touch", "Grease", "Greed", "Grow", "Haste", "Heal", "Invisibility", "Leap", "Light",
+    "Magic Rope", "Miniaturize", "Mirror Image", "Pacify", "Read Mind", "Shield", "Sleep", "Spiritual Weapon",
+    "Ward", "Web"
+]
 
 APPEARANCE = [
     ['Male', 'Female'],

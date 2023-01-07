@@ -73,9 +73,9 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         Magic-Users begin with a single spell.
         """
         if "spells" in self.character_class:
-            spells = self.character_class['spells'][:12]
+            spells = character_class.SPELLS
             return [random.choice(spells)]
-        return None
+        return ""
 
     def get_personality(self):
         return ', '.join(random.sample(character_class.PERSONALITY, 2))
