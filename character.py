@@ -19,7 +19,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         self.personality = self.get_personality()
         self.equipment = self.get_equipment()
         self.mount = self.get_mount()
-        self.retainers = self.get_retainers()
+        self.retainer = self.get_retainer()
         self.hp = self.get_hp()
         if self.hp is not None and self.hp < 1:
             self.hp = 1
@@ -55,13 +55,20 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         return self.character_class["archetype"]
 
     def get_equipment(self):
+        equip: list = self.character_class["equipment"]
+        for item in equip:
+            if isinstance(item, list):
+                temp = item
+                equip.remove(item)
+                for i in temp:
+                    equip.append(i)
         return self.character_class["equipment"] + ["Dagger - d6 dmg", "Supply", "Supply"]
 
     def get_mount(self):
         return self.character_class["mount"]
 
-    def get_retainers(self):
-        return self.character_class["retainers"]
+    def get_retainer(self):
+        return self.character_class["retainer"]
 
     def get_hp(self):
         """

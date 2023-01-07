@@ -23,15 +23,17 @@ PATHFINDER = {
             "------",
             "------",
             "Ammo",
-            "Small tent & cooking gear",
         ],
-        "retainers" : {},
+        "retainer" : None,
         "mount" : {
             "name" : "Riding Horse",
             "HD" : 2,
             "Skill" : 8,
             "ML" : 7,
             "Slots" : "5/15",
+            "equipment": [
+                "Small tent & cooking gear",
+            ]
         },
     },
     "Ranger" : {
@@ -40,24 +42,26 @@ PATHFINDER = {
             "Longbow - d8 dmg, two hands, 3 slots",
             "------",
             "------",
+            "Ammo",
             "Sword - d8 dmg, 2 slots",
             "------",
             "------",
             "Trap - d6 dmg, on failed STR save stuck",
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "Bounty Hunter" : {
         "archetype": "Pathfinder",
         "equipment" : [
             "Pistol - d10 dmg, round to reload, loud, 2 slots",
+            "------",
             "Ammo",
             "Sturdy Rope",
             "Manacles",
             f"{d.xdy(1, 3)} wanted posters",
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "Outlaw" : {
@@ -68,7 +72,7 @@ PATHFINDER = {
             "------",
             "Ammo",
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
 }
@@ -79,7 +83,7 @@ CLERIC = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "xx" : {
@@ -87,7 +91,7 @@ CLERIC = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "xxx" : {
@@ -95,7 +99,7 @@ CLERIC = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "ax" : {
@@ -103,42 +107,76 @@ CLERIC = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
 }
 
 FIGHTER = {
-    "z" : {
+    "Soldier" : {
         "archetype": "Fighter",
         "equipment" : [
-
+            "Suit of Mail - 5 Armor, 2 slots",
+            "------",
+            "Arming Sword - d8 dmg, 2 slots",
+            "------",
+            "Emblazoned Shield - reduce dmg by 1, no lower than 1"
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
-    "x" : {
+    "Knight" : {
         "archetype": "Fighter",
         "equipment" : [
-
+            "Heavy Plate Armor - 7 Armor, 3 slots",
+            "------",
+            "------",
+            "Greatsword - d10 dmg, two hands, 3 slots",
+            "------",
+            "------",
         ],
-        "retainers" : None,
+        "retainer" : {
+            "name" : "Squire",
+            "HD" : 1,
+            "Skill" : 7,
+            "ML" : 9,
+            "equipment": [
+                "Spear - d6 dmg",
+            ],
+        },
+        "mount" : {
+            "name" : "War Horse",
+            "HD" : 3,
+            "Skill" : 9,
+            "ML" : 9,
+            "Slots" : "5/15",
+            "equipment": None,
+        },
+    },
+    "Duelist" : {
+        "archetype": "Fighter",
+        "equipment" : [
+            random.choice([
+                "Rapier - d8 dmg, 2 slots",
+                [
+                    "Pistol - d10 dmg, round to reload, loud, 2 slots",
+                    "------",
+                    "Ammo"
+                ]
+            ]),
+            "Light armor - 3 Armor"
+        ],
+        "retainer" : None,
         "mount" : None,
     },
-    "xx" : {
+    "Slayer" : {
         "archetype": "Fighter",
         "equipment" : [
-
+            "Kickass hat - 2 Armor",
+            random.choice(["String of Garlic", "Holy Water"]),
+            random.choice(["Silver Knife - d6 dmg", "Stake of Hawthorn Wood"]),
         ],
-        "retainers" : None,
-        "mount" : None,
-    },
-    "xxx" : {
-        "archetype": "Fighter",
-        "equipment" : [
-
-        ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
 }
@@ -149,7 +187,7 @@ MAGICUSER = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "x" : {
@@ -157,7 +195,7 @@ MAGICUSER = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "xx" : {
@@ -165,7 +203,7 @@ MAGICUSER = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "xxx" : {
@@ -173,7 +211,7 @@ MAGICUSER = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
 }
@@ -184,7 +222,7 @@ THIEF = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "x" : {
@@ -192,7 +230,7 @@ THIEF = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "xx" : {
@@ -200,7 +238,7 @@ THIEF = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
     "xxx" : {
@@ -208,7 +246,7 @@ THIEF = {
         "equipment" : [
 
         ],
-        "retainers" : None,
+        "retainer" : None,
         "mount" : None,
     },
 }
@@ -228,7 +266,7 @@ APPEARANCE = [
     ['Messy Clothing', 'Scant Clothing', 'Immaculate Clothing',
     'Formal Attire', 'Threadbare Clothing', 'Elaborate Attire', 'Drab Clothing',
     'in Uniform'],
-    ['Missing Limb', 'Obese', 'Scrawny', 'Muscular', 'Bald', 'Hairy', 'Tall',
+    ['Obese', 'Scrawny', 'Muscular', 'Bald', 'Hairy', 'Tall',
     'Short', 'Ugly']
 ]
 
