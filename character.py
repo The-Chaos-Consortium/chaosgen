@@ -82,7 +82,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         """
         if "spells" in self.character_class:
             spells = character_class.SPELLS
-            return [random.choice(spells)]
+            return random.choice(spells)
         return ""
 
     def get_personality(self):

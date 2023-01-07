@@ -77,41 +77,6 @@ PATHFINDER = {
     },
 }
 
-CLERIC = {
-    "x" : {
-        "archetype": "Cleric",
-        "equipment" : [
-
-        ],
-        "retainer" : None,
-        "mount" : None,
-    },
-    "xx" : {
-        "archetype": "Cleric",
-        "equipment" : [
-
-        ],
-        "retainer" : None,
-        "mount" : None,
-    },
-    "xxx" : {
-        "archetype": "Cleric",
-        "equipment" : [
-
-        ],
-        "retainer" : None,
-        "mount" : None,
-    },
-    "ax" : {
-        "archetype": "Cleric",
-        "equipment" : [
-
-        ],
-        "retainer" : None,
-        "mount" : None,
-    },
-}
-
 FIGHTER = {
     "Soldier" : {
         "archetype": "Fighter",
@@ -184,70 +149,157 @@ FIGHTER = {
     },
 }
 
-MAGICUSER = {
-    "z" : {
-        "archetype": "Magic-User",
+CLERIC = {
+    "Exorcist" : {
+        "archetype": "Cleric",
         "equipment" : [
-
+            "Necklace of Beads",
+            "Holy Water - undead take d8 dmg if doused in it",
+            "Scroll of Bless",
         ],
         "retainer" : None,
         "mount" : None,
     },
-    "x" : {
-        "archetype": "Magic-User",
+    "Paladin" : {
+        "archetype": "Cleric",
         "equipment" : [
-
+            "Brigandine - 5 Armor, 2 slots",
+            "------",
+            "Warhammer - d10 dmg, two hands, 3 slots",
+            "------",
+            "------",
+            "Scroll of Heal",
+            "Holy Symbol",
         ],
         "retainer" : None,
         "mount" : None,
     },
-    "xx" : {
-        "archetype": "Magic-User",
+    "Initiate" : {
+        "archetype": "Cleric",
         "equipment" : [
-
+            "Raiment of your Order - 3 Armor",
+            "Book of Hymns or Prayers or Theology",
+            "Bottle of Fine Trappist Beer"
         ],
         "retainer" : None,
         "mount" : None,
     },
-    "xxx" : {
-        "archetype": "Magic-User",
+    "Charlatan" : {
+        "archetype": "Cleric",
         "equipment" : [
-
+            "Tools for Divination",
+            "Vials of Sugar Water",
+            "Pack of Cards",
+            f"{d.xdy(1, 6)} Counterfeit Silver Coins",
+            "Club - d6 dmg",
         ],
         "retainer" : None,
         "mount" : None,
     },
 }
 
+MAGICUSER = {
+    "Wizard's Apprentice" : {
+        "archetype": "Magic-User",
+        "equipment" : [
+            "A Cloak with Magical Emblems so You Look the Part",
+            "Staff - d6 dmg",
+            "Books on Magical Theory",
+            "Grimoire - 2 slots",
+            "------",
+        ],
+        "retainer" : None,
+        "mount" : None,
+        "spells": True,
+    },
+    "Warlock" : {
+        "archetype": "Magic-User",
+        "equipment" : [
+            "Eyes that Glow an Unnatural Color and Grant Night Vision",
+            "Skull of a Demon",
+            "Grimoire - 2 slots",
+            "------",
+        ],
+        "retainer" : None,
+        "mount" : None,
+        "spells": True,
+    },
+    "Alchemist" : {
+        "archetype": "Magic-User",
+        "equipment" : [
+            "Small Chest Containing Alchemy Equipment",
+            "Tonic of Health - Heals d12 dmg and any affliction",
+            "Grimoire - 2 slots",
+            "------",
+        ],
+        "retainer" : None,
+        "mount" : None,
+        "spells": True,
+    },
+    "Witch" : {
+        "archetype": "Magic-User",
+        "equipment" : [
+            "Candles, Herbs, Chalk, Needles",
+            "Grimoire - 2 slots",
+            "------",
+        ],
+        "retainer" : {
+            "name" : "Animal Familiar",
+            "HD" : 1,
+            "Skill" : 6,
+            "ML" : 7,
+            "equipment": [],
+        },
+        "mount" : None,
+        "spells": True,
+    }
+}
+
 THIEF = {
-    "z" : {
+    "Rat Catcher" : {
         "archetype": "Thief",
         "equipment" : [
-
+            "A staff adorned with dead rats, the mark of your trade - d6 dmg",
+            "Flute"
+        ],
+        "retainer" : {
+            "name" : "Dinky & Ferocious Dog",
+            "HD" : 1,
+            "Skill" : 6,
+            "ML" : 8,
+            "equipment": [
+                "Bite - d6 dmg",
+            ],
+        },
+        "mount" : None,
+    },
+    "Beggar" : {
+        "archetype": "Thief",
+        "equipment" : [
+            random.choice(["Tin Bowl", "Tin Cup"]),
+            "Ragged Clothes",
+            "Club - d6 dmg",
         ],
         "retainer" : None,
         "mount" : None,
     },
-    "x" : {
+    "Grave Robber" : {
         "archetype": "Thief",
         "equipment" : [
-
+            "Hooded Cloak",
+            "Spade",
+            "Crowbar",
+            "Oversized Sack",
         ],
         "retainer" : None,
         "mount" : None,
     },
-    "xx" : {
+    "Burglar" : {
         "archetype": "Thief",
         "equipment" : [
-
-        ],
-        "retainer" : None,
-        "mount" : None,
-    },
-    "xxx" : {
-        "archetype": "Thief",
-        "equipment" : [
-
+            "Set of Lock-Picks",
+            "Soft Shoes",
+            "Hooded Cloak",
         ],
         "retainer" : None,
         "mount" : None,
