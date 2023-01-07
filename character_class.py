@@ -1,6 +1,8 @@
 """
 Attributes and general information about the A&A Character Classes.
 """
+import random
+import dice as d
 
 # The 3 attributes, in order.
 ATTRIBUTES = ['STR', 'DEX', 'WIL']
@@ -12,6 +14,7 @@ STR, DEX, WIL = range(3)
 
 PATHFINDER = {
     "Road Warden" : {
+        "archetype": "Pathfinder",
         "equipment" : [
             "Polearm - d10 dmg, two hands, 3 slots",
             "------",
@@ -32,22 +35,38 @@ PATHFINDER = {
         },
     },
     "Ranger" : {
+        "archetype": "Pathfinder",
         "equipment" : [
-
+            "Longbow - d8 dmg, two hands, 3 slots",
+            "------",
+            "------",
+            "Sword - d8 dmg, 2 slots",
+            "------",
+            "------",
+            "Trap - d6 dmg, on failed STR save stuck",
         ],
         "retainers" : None,
         "mount" : None,
     },
     "Bounty Hunter" : {
+        "archetype": "Pathfinder",
         "equipment" : [
-
+            "Pistol - d10 dmg, round to reload, loud, 2 slots",
+            "Ammo",
+            "Sturdy Rope",
+            "Manacles",
+            f"{d.xdy(1, 3)} wanted posters",
         ],
         "retainers" : None,
         "mount" : None,
     },
     "Outlaw" : {
+        "archetype": "Pathfinder",
         "equipment" : [
-
+            random.choice(["Hooded Cloak", "Hat and Mask"]),
+            "Shortbow - d6 dmg, two hands, 2 slots",
+            "------",
+            "Ammo",
         ],
         "retainers" : None,
         "mount" : None,
@@ -55,28 +74,32 @@ PATHFINDER = {
 }
 
 CLERIC = {
-    "Ranger" : {
+    "x" : {
+        "archetype": "Cleric",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "xx" : {
+        "archetype": "Cleric",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "xxx" : {
+        "archetype": "Cleric",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "ax" : {
+        "archetype": "Cleric",
         "equipment" : [
 
         ],
@@ -86,28 +109,32 @@ CLERIC = {
 }
 
 FIGHTER = {
-    "Ranger" : {
+    "z" : {
+        "archetype": "Fighter",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "x" : {
+        "archetype": "Fighter",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "xx" : {
+        "archetype": "Fighter",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "xxx" : {
+        "archetype": "Fighter",
         "equipment" : [
 
         ],
@@ -117,63 +144,67 @@ FIGHTER = {
 }
 
 MAGICUSER = {
-    "Ranger" : {
+    "z" : {
+        "archetype": "Magic-User",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
-        "spells": True
     },
-    "Ranger" : {
+    "x" : {
+        "archetype": "Magic-User",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
-        "spells": True
     },
-    "Ranger" : {
+    "xx" : {
+        "archetype": "Magic-User",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
-        "spells": True
     },
-    "Ranger" : {
+    "xxx" : {
+        "archetype": "Magic-User",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
-        "spells": True
     },
 }
 
 THIEF = {
-    "Ranger" : {
+    "z" : {
+        "archetype": "Thief",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "x" : {
+        "archetype": "Thief",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "xx" : {
+        "archetype": "Thief",
         "equipment" : [
 
         ],
         "retainers" : None,
         "mount" : None,
     },
-    "Ranger" : {
+    "xxx" : {
+        "archetype": "Thief",
         "equipment" : [
 
         ],
@@ -308,6 +339,19 @@ NAMES = {
             'Wygarthe', 'Zatchet', 'Zethergyll'
         ]
     }
+}
+
+ARCHETYPE_DESCRIPTIONS = {
+    "Pathfinder": "A Pathfinder is considered skilled at tasks related to surviving in the world, or navigation. "
+    "Gain a Buff on relevant saves.",
+    "Fighter": "A Fighter is considered skilled at all tasks related to endurance, fighting, and combat. "
+    "Gain a Buff on relevant saves.",
+    "Cleric": "A Cleric is considered skilled at tasks related to religious activities, or church. "
+    "Gain a Buff on relevant saves.",
+    "Magic-User": "A Magic-User is considered skilled at all tasks pertaining to magic, and arcane lore. "
+    "Gain a Buff on relevant saves.",
+    "Thief": "A Thief is considered skilled at all tasks pertaining to thievery, such as stealth, pick-pocketing, "
+    "lock-picking, and so on. Gain a Buff on relevant saves.",
 }
 
 ARCHETYPES = [PATHFINDER, FIGHTER, CLERIC, MAGICUSER, THIEF]

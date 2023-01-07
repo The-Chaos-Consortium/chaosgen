@@ -7,18 +7,16 @@ from dice import d, xdy
 
 class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
     def __init__(self, *args, **kwargs):
-        classname = kwargs.pop('classname', None)
-        testing = kwargs.pop('testing', False)
+        classname = kwargs.pop("classname", None)
 
         super(Character, self).__init__(*args, **kwargs)
 
         self.character_class = self.get_character_class(classname)
         self.class_name = classname.title()
+        self.archetype = self.get_archetype()
         self.appearance = self.get_appearance()
         self.name = self.get_name()
         self.personality = self.get_personality()
-        if testing:
-            return
         self.equipment = self.get_equipment()
         self.mount = self.get_mount()
         self.retainers = self.get_retainers()
@@ -52,15 +50,18 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         """
         if classname:
             return character_class.BACKGROUND_BY_NAME[classname]
-    
+
+    def get_archetype(self):
+        return self.character_class["archetype"]
+
     def get_equipment(self):
-        return self.character_class['equipment']
+        return self.character_class["equipment"] + ["Dagger - d6 dmg", "Supply", "Supply"]
 
     def get_mount(self):
-        return self.character_class['mount']
+        return self.character_class["mount"]
 
     def get_retainers(self):
-        return self.character_class['retainers']
+        return self.character_class["retainers"]
 
     def get_hp(self):
         """
@@ -78,12 +79,14 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         return ""
 
     def get_personality(self):
-        return ', '.join(random.sample(character_class.PERSONALITY, 2))
+        return ", ".join(random.sample(character_class.PERSONALITY, 2))
 
     def get_notes(self):
         """
         Are there any additional notes about the character?
         """
-        notes = f"Appearance: {self.appearance}\nPersonality: {self.personality}"
+        notes = (
+            f"{self.archetype} Description: {character_class.ARCHETYPE_DESCRIPTIONS[self.archetype]}\n"
+            f"Appearance: {self.appearance}\nPersonality: {self.personality}"
+        )
         return notes
-        

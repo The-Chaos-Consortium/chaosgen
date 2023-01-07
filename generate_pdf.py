@@ -44,7 +44,7 @@ def generate_char():
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
     data = {
         # "Name": char.name,
-        "Background": char.class_name,
+        "Background": f"{char.class_name} ({char.archetype})",
         "STR": char.STR,
         "DEX": char.DEX,
         "WIL": char.WIL,
