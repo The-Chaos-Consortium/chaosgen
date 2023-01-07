@@ -84,5 +84,6 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         """
         Are there any additional notes about the character?
         """
-        return []
+        notes = f"Appearance: {self.appearance}\nPersonality: {self.personality}"
+        return notes
         

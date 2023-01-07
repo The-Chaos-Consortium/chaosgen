@@ -39,9 +39,7 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
     merger.close()
 
 
-if __name__ == "__main__":
-    pdf_template = "char-sheet.pdf"
-    cli_vars = dict(arg.split("=") for arg in sys.argv[1:] if "=" in arg)
+def generate_char():
     char = Character(classname=cli_vars["class"])
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
     data = {
@@ -55,10 +53,17 @@ if __name__ == "__main__":
         "SP": char.sp,
         "Slots": char.slots,
         "Spells": char.spell,
+        "Notes": char.notes,
     }
     if char.mount:
         data["Mount Slots"] = char.mount["Slots"]
+    for index, item in enumerate(char.equipment):
+        data["Item" + str(index + 1)] = item
+
     fill_pdf(pdf_template, pdf_output, data)
-    print(char.appearance)
-    print(char.personality)
-    print(char.equipment)
+
+
+if __name__ == "__main__":
+    pdf_template = "templates/char-sheet.pdf"
+    cli_vars = dict(arg.split("=") for arg in sys.argv[1:] if "=" in arg)
+    generate_char()

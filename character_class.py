@@ -13,12 +13,12 @@ STR, DEX, WIL = range(3)
 PATHFINDER = {
     "Road Warden" : {
         "equipment" : [
-            "Polearm - d10 dmg, two hands",
-            "Polearm - d10 dmg, two hands",
-            "Polearm - d10 dmg, two hands",
-            "Crossbow - d8 dmg, two hands",
-            "Crossbow - d8 dmg, two hands",
-            "Crossbow - d8 dmg, two hands",
+            "Polearm - d10 dmg, two hands, 3 slots",
+            "------",
+            "------",
+            "Crossbow - d8 dmg, two hands, 3 slots",
+            "------",
+            "------",
             "Ammo",
             "Small tent & cooking gear",
         ],
