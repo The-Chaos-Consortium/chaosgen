@@ -94,7 +94,7 @@ def generate_hirelings(char, h_type: str):
         data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
         data["Cost1"] = "N/A"
         for i in range(10):
-            data["Item" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
+            data["HItem" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
         data["Role2"] = char.retainer["name"]
         data["Skill2"] = char.retainer["Skill"]
         data["Morale2"] = char.retainer["ML"]
@@ -102,7 +102,7 @@ def generate_hirelings(char, h_type: str):
         data["Cost2"] = "N/A"
         data["Level2"] = "1"
         for index, item in enumerate(char.retainer["equipment"]):
-            data["Item" + str(index + 11)] = item
+            data["HItem" + str(index + 11)] = item
     if h_type == "hireling":
         data["Role1"] = char.retainer["name"]
         data["Skill1"] = char.retainer["Skill"]
@@ -111,7 +111,7 @@ def generate_hirelings(char, h_type: str):
         data["Cost1"] = "N/A"
         data["Level1"] = "1"
         for index, item in enumerate(char.retainer["equipment"]):
-            data["Item" + str(index + 1)] = item
+            data["HItem" + str(index + 1)] = item
     if h_type == "mount":
         data["Role1"] = char.mount["name"]
         data["Skill1"] = char.mount["Skill"]
@@ -119,7 +119,7 @@ def generate_hirelings(char, h_type: str):
         data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
         data["Cost1"] = "N/A"
         for i in range(10):
-            data["Item" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
+            data["HItem" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
 
     return fill_pdf(pdf_template, pdf_output, data)
 
