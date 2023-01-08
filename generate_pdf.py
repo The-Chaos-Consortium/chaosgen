@@ -42,9 +42,9 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
     merger.close()
 
 
-def generate_char():
+def generate_char(amount = 1, classname = "random"):
     pdf_template = "templates/char-sheet.pdf"
-    char = Character(classname=cli_vars["class"])
+    char = Character(classname=classname)
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
     merge_list = []
     tmp_hirelings: str = None
@@ -78,7 +78,7 @@ def generate_char():
     merge_list.append(fill_pdf(pdf_template, pdf_output, data))
     if tmp_hirelings:
         merge_list.append(tmp_hirelings)
-    merge_pdfs(merge_list, "output/merge.pdf")
+    merge_pdfs(merge_list, pdf_output)
     if tmp_hirelings:
         os.remove(tmp_hirelings)
 
@@ -126,4 +126,15 @@ def generate_hirelings(char, h_type: str):
 
 if __name__ == "__main__":
     cli_vars = dict(arg.split("=") for arg in sys.argv[1:] if "=" in arg)
-    generate_char()
+    kwargs = {}
+    if "num" in cli_vars:
+        num = int(cli_vars["num"])
+        kwargs["amount"] = num
+        if num < 1:
+            sys.exit("Amount must be greater than 0")
+        if num > 20:
+            sys.exit("Amount must be less than 100")
+    if "class" in cli_vars:
+        kwargs["classname"] = cli_vars["class"]
+        
+    generate_char(**{k: v for k, v in kwargs.items() if v is not None})
