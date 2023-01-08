@@ -7,12 +7,12 @@ from dice import d, xdy
 
 class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
     def __init__(self, *args, **kwargs):
-        classname = kwargs.pop("classname", None)
+        self.classname = kwargs.pop("classname", None)
 
         super(Character, self).__init__(*args, **kwargs)
 
-        self.character_class = self.get_character_class(classname)
-        self.class_name = classname.title()
+        self.character_class = self.get_character_class(self.classname)
+        self.class_name = self.classname.title()
         self.archetype = self.get_archetype()
         self.appearance = self.get_appearance()
         self.name = self.get_name()
@@ -49,6 +49,10 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         We determine character class based on the given class name.
         """
         if classname:
+            if classname == "random":
+                self.classname = random.choice(list(character_class.BACKGROUND_BY_NAME.keys()))
+                print(f"A random class: {self.classname} has been chosen.")
+                return character_class.BACKGROUND_BY_NAME[self.classname]
             return character_class.BACKGROUND_BY_NAME[classname]
 
     def get_archetype(self):

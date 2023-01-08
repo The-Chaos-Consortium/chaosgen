@@ -1,7 +1,9 @@
 import sys
+import os
 import pdfrw
 from pypdf import PdfMerger
 from character import Character
+import character_class
 import dice
 
 
@@ -28,6 +30,7 @@ def fill_pdf(input_pdf_path: str, output_pdf_path: str, data_dict: dict):
         pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject("true"))
     )
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
+    return output_pdf_path
 
 
 def merge_pdfs(input_pdfs: list, output_pdf_path: str):
@@ -40,10 +43,12 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
     merger.close()
 
 
-def generate_char():
+def generate_char(classname = "random"):
     pdf_template = "templates/char-sheet.pdf"
-    char = Character(classname=cli_vars["class"])
+    char = Character(classname=classname)
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
+    merge_list = []
+    tmp_hirelings: str = None
     data = {
         # "Name": char.name,
         "Background": f"{char.class_name} ({char.archetype})",
@@ -63,15 +68,21 @@ def generate_char():
             for index, item in enumerate(char.mount["equipment"]):
                 data["Mount" + str(index + 1)] = item
         if char.retainer:
-            generate_hirelings(char, "mount/hireling")
+            tmp_hirelings = generate_hirelings(char, "mount/hireling")
         else:
-            generate_hirelings(char, "mount")
+            tmp_hirelings = generate_hirelings(char, "mount")
     elif char.retainer:
-        generate_hirelings(char, "hireling")
+        tmp_hirelings = generate_hirelings(char, "hireling")
     for index, item in enumerate(char.equipment):
         data["Item" + str(index + 1)] = item
 
-    fill_pdf(pdf_template, pdf_output, data)
+    merge_list.append(fill_pdf(pdf_template, pdf_output, data))
+    if tmp_hirelings:
+        merge_list.append(tmp_hirelings)
+    merge_pdfs(merge_list, pdf_output)
+    if tmp_hirelings:
+        os.remove(tmp_hirelings)
+    return pdf_output
 
 
 def generate_hirelings(char, h_type: str):
@@ -85,7 +96,7 @@ def generate_hirelings(char, h_type: str):
         data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
         data["Cost1"] = "N/A"
         for i in range(10):
-            data["Item" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
+            data["HItem" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
         data["Role2"] = char.retainer["name"]
         data["Skill2"] = char.retainer["Skill"]
         data["Morale2"] = char.retainer["ML"]
@@ -93,7 +104,7 @@ def generate_hirelings(char, h_type: str):
         data["Cost2"] = "N/A"
         data["Level2"] = "1"
         for index, item in enumerate(char.retainer["equipment"]):
-            data["Item" + str(index + 11)] = item
+            data["HItem" + str(index + 11)] = item
     if h_type == "hireling":
         data["Role1"] = char.retainer["name"]
         data["Skill1"] = char.retainer["Skill"]
@@ -102,7 +113,7 @@ def generate_hirelings(char, h_type: str):
         data["Cost1"] = "N/A"
         data["Level1"] = "1"
         for index, item in enumerate(char.retainer["equipment"]):
-            data["Item" + str(index + 1)] = item
+            data["HItem" + str(index + 1)] = item
     if h_type == "mount":
         data["Role1"] = char.mount["name"]
         data["Skill1"] = char.mount["Skill"]
@@ -110,11 +121,30 @@ def generate_hirelings(char, h_type: str):
         data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
         data["Cost1"] = "N/A"
         for i in range(10):
-            data["Item" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
+            data["HItem" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
 
-    fill_pdf(pdf_template, pdf_output, data)
+    return fill_pdf(pdf_template, pdf_output, data)
 
 
 if __name__ == "__main__":
     cli_vars = dict(arg.split("=") for arg in sys.argv[1:] if "=" in arg)
-    generate_char()
+    kwargs = {}
+    num = 1
+    merge_list = []
+    if "num" in cli_vars:
+        num = int(cli_vars["num"])
+        if num < 1:
+            sys.exit("Amount must be greater than 0")
+        if num > 20:
+            sys.exit("Amount must be no more than 20")
+    if "class" in cli_vars:
+        kwargs["classname"] = cli_vars["class"]
+    
+    if kwargs["classname"] == "all":
+        for character in character_class.VALID_BACKGROUND_NAMES:
+            merge_list.append(generate_char(classname=character))
+    else:
+        for i in range(num):
+            merge_list.append(generate_char(**{k: v for k, v in kwargs.items() if v is not None}))
+    # The below will stay commented until I find a way to not overwrite the annotations when merging
+    # merge_pdfs(merge_list, "output/all chars.pdf")
