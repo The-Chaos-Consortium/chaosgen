@@ -3,6 +3,7 @@ import os
 import pdfrw
 from pypdf import PdfMerger
 from character import Character
+import character_class
 import dice
 
 
@@ -42,7 +43,7 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
     merger.close()
 
 
-def generate_char(amount = 1, classname = "random"):
+def generate_char(classname = "random"):
     pdf_template = "templates/char-sheet.pdf"
     char = Character(classname=classname)
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
@@ -81,6 +82,7 @@ def generate_char(amount = 1, classname = "random"):
     merge_pdfs(merge_list, pdf_output)
     if tmp_hirelings:
         os.remove(tmp_hirelings)
+    return pdf_output
 
 
 def generate_hirelings(char, h_type: str):
@@ -127,14 +129,22 @@ def generate_hirelings(char, h_type: str):
 if __name__ == "__main__":
     cli_vars = dict(arg.split("=") for arg in sys.argv[1:] if "=" in arg)
     kwargs = {}
+    num = 1
+    merge_list = []
     if "num" in cli_vars:
         num = int(cli_vars["num"])
-        kwargs["amount"] = num
         if num < 1:
             sys.exit("Amount must be greater than 0")
         if num > 20:
-            sys.exit("Amount must be less than 100")
+            sys.exit("Amount must be no more than 20")
     if "class" in cli_vars:
         kwargs["classname"] = cli_vars["class"]
-        
-    generate_char(**{k: v for k, v in kwargs.items() if v is not None})
+    
+    if kwargs["classname"] == "all":
+        for character in character_class.VALID_BACKGROUND_NAMES:
+            merge_list.append(generate_char(classname=character))
+    else:
+        for i in range(num):
+            merge_list.append(generate_char(**{k: v for k, v in kwargs.items() if v is not None}))
+    # The below will stay commented until I find a way to not overwrite the annotations when merging
+    # merge_pdfs(merge_list, "output/all chars.pdf")
