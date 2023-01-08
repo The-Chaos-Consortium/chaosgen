@@ -47,7 +47,7 @@ def generate_char():
     char = Character(classname=cli_vars["class"])
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
     merge_list = []
-    tmp_hirelings = ""
+    tmp_hirelings: str = None
     data = {
         # "Name": char.name,
         "Background": f"{char.class_name} ({char.archetype})",
@@ -76,9 +76,11 @@ def generate_char():
         data["Item" + str(index + 1)] = item
 
     merge_list.append(fill_pdf(pdf_template, pdf_output, data))
-    merge_list.append(tmp_hirelings)
-    merge_pdfs(merge_list, pdf_output)
-    os.remove(tmp_hirelings)
+    if tmp_hirelings:
+        merge_list.append(tmp_hirelings)
+    merge_pdfs(merge_list, "output/merge.pdf")
+    if tmp_hirelings:
+        os.remove(tmp_hirelings)
 
 
 def generate_hirelings(char, h_type: str):
