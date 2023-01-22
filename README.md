@@ -1,5 +1,5 @@
-# a-a-character-generator
-Python based character generator for the Ampersand &amp; Alliteration TTRPG.
+# c-c-character-generator
+Python based character generator for the Chaos &amp; Conquest TTRPG.
 # Usage
 ## Command
 ```sh

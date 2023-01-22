@@ -9,7 +9,7 @@ from dice import d
 
 class BasicAttributesMixin:
     """
-    Generates the basic attributes of a A&A character: STR, DEX, WIL. The scores are rolled using d3+5 in order.
+    Generates the basic attributes of a C&C character: STR, DEX, WIL. The scores are rolled using d3+5 in order.
     """
 
     def __init__(self):

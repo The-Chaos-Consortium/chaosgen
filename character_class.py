@@ -1,5 +1,5 @@
 """
-Attributes and general information about the A&A Character Classes.
+Attributes and general information about the C&C Character Classes.
 """
 import random
 import dice as d
