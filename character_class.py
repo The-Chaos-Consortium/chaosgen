@@ -81,7 +81,7 @@ FIGHTER = {
     "Soldier": {
         "archetype": "Fighter",
         "equipment": [
-            "Suit of Mail - 5 Armor, 2 slots",
+            "Suit of Mail - 2 Armor, 2 slots",
             "------",
             "Arming Sword - d8 dmg, 2 slots",
             "------",
@@ -93,7 +93,7 @@ FIGHTER = {
     "Knight": {
         "archetype": "Fighter",
         "equipment": [
-            "Heavy Plate Armor - 7 Armor, 3 slots",
+            "Heavy Plate Armor - 3 Armor, 3 slots",
             "------",
             "------",
             "Greatsword - d10 dmg, two hands, 3 slots",
@@ -134,7 +134,7 @@ FIGHTER = {
                     ],
                 ]
             ),
-            "Light armor - 3 Armor",
+            "Light armor - 1 Armor",
         ],
         "retainer": None,
         "mount": None,
@@ -142,7 +142,7 @@ FIGHTER = {
     "Slayer": {
         "archetype": "Fighter",
         "equipment": [
-            "Kickass hat - 2 Armor",
+            "Kickass hat - 1 Armor",
             random.choice(
                 ["String of Garlic", "Holy Water - undead take d8 dmg if doused in it"]
             ),
@@ -167,7 +167,7 @@ CLERIC = {
     "Paladin": {
         "archetype": "Cleric",
         "equipment": [
-            "Brigandine - 5 Armor, 2 slots",
+            "Brigandine - 2 Armor, 2 slots",
             "------",
             "Warhammer - d10 dmg, two hands, 3 slots",
             "------",
@@ -181,7 +181,7 @@ CLERIC = {
     "Initiate": {
         "archetype": "Cleric",
         "equipment": [
-            "Raiment of your Order - 3 Armor",
+            "Raiment of your Order - 1 Armor",
             "Book of Hymns or Prayers or Theology",
             "Bottle of Fine Trappist Beer",
         ],
