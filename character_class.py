@@ -85,7 +85,7 @@ FIGHTER = {
             "------",
             "Arming Sword - d8 dmg, 2 slots",
             "------",
-            "Emblazoned Shield - reduce dmg by 1, no lower than 1",
+            "Emblazoned Shield - reduce dmg by 1",
         ],
         "retainer": None,
         "mount": None,
