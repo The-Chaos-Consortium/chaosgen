@@ -164,7 +164,7 @@ CLERIC = {
         "retainer": None,
         "mount": None,
     },
-    "Paladin": {
+    "Warpriest": {
         "archetype": "Cleric",
         "equipment": [
             "Brigandine - 2 Armor, 2 slots",
