@@ -1,4 +1,4 @@
-# c-c-character-generator
+# chaosgen
 Python based character generator for the Chaos & Conquest TTRPG.
 # Usage
 ## Command for PDF generation
