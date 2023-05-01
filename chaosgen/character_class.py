@@ -13,7 +13,7 @@ STR, DEX, WIL = range(3)
 # The character classes
 
 PATHFINDER = {
-    "Road Warden": {
+    "Roadwarden": {
         "archetype": "Pathfinder",
         "equipment": [
             "Polearm - d10 dmg, two hands, 3 slots",

@@ -50,7 +50,9 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         """
         if classname:
             if classname == "random":
-                self.classname = random.choice(list(character_class.BACKGROUND_BY_NAME.keys()))
+                self.classname = random.choice(
+                    list(character_class.BACKGROUND_BY_NAME.keys())
+                )
                 print(f"A random class: {self.classname} has been chosen.")
                 return character_class.BACKGROUND_BY_NAME[self.classname]
             return character_class.BACKGROUND_BY_NAME[classname]

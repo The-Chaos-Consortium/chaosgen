@@ -12,7 +12,7 @@ If both parameters are left out, a single random class sheet will be generated.
 `num` can be any value from `1-20`, or `all`.
 ## Class Options
 ```
-road warden
+roadwarden
 ranger
 bounty hunter
 outlaw

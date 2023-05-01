@@ -1,11 +1,15 @@
 # Convert character generation code to discord bot output
+import random
 from chaosgen.character import Character
 from chaosgen import character_class
 from chaosgen import dice
 
-def random_character():
+def generate_character(background=None):
     """Builds a random character."""
-    char = Character(classname="random")
+    if background is None:
+        char = Character(classname="random")
+    else:
+        char = Character(classname=background)
     newline = "\n"
     data = (
         f"**Background**: {char.class_name} ({char.archetype})\n" +
@@ -41,3 +45,8 @@ def random_character():
             f"**Retainer Equipment**: \n{newline.join(f'{index+1}. {equip}' for index, equip in enumerate(char.retainer['equipment']))}\n"
         )
     return data
+
+def random_spell():
+    """Generates a random spell."""
+    spell = random.choice(character_class.SPELLS)
+    return f"**Spell**: {spell}"

@@ -43,7 +43,7 @@ def merge_pdfs(input_pdfs: list, output_pdf_path: str):
     merger.close()
 
 
-def generate_char(classname = "random"):
+def generate_char(classname="random"):
     pdf_template = "templates/char-sheet.pdf"
     char = Character(classname=classname)
     pdf_output = f"output/{char.class_name} {char.name}.pdf"
@@ -145,6 +145,8 @@ if __name__ == "__main__":
             merge_list.append(generate_char(classname=character))
     else:
         for i in range(num):
-            merge_list.append(generate_char(**{k: v for k, v in kwargs.items() if v is not None}))
+            merge_list.append(
+                generate_char(**{k: v for k, v in kwargs.items() if v is not None})
+            )
     # The below will stay commented until I find a way to not overwrite the annotations when merging
     # merge_pdfs(merge_list, "output/all chars.pdf")
