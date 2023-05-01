@@ -4,7 +4,7 @@ from chaosgen import character_class
 from chaosgen import dice
 
 def random_character():
-    """Builds a random characte."""
+    """Builds a random character."""
     char = Character(classname="random")
     newline = "\n"
     data = (
