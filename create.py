@@ -2,9 +2,9 @@ import json
 
 from flask import request, Response, redirect, render_template, url_for, Flask
 
-import character
-import character_class
-import dice
+import chaosgen.character as character
+import chaosgen.character_class as character_class
+import chaosgen.dice as dice
 
 DEBUG = True
 

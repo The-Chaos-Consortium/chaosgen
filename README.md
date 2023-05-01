@@ -3,7 +3,7 @@ Python based character generator for the Chaos &amp; Conquest TTRPG.
 # Usage
 ## Command
 ```sh
-python generate_pdf.py "class"="{class}" "num"="{num}"
+python -m chaosgen.generate_pdf class="{class}" num="{num}"
 ```
 If both parameters are left out, a single random class sheet will be generated.
 
@@ -21,7 +21,7 @@ knight
 duelist
 slayer
 exorcist
-paladin
+warpriest
 initiate
 charlatan
 wizards apprentice

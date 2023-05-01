@@ -2,9 +2,9 @@ import sys
 import os
 import pdfrw
 from pypdf import PdfMerger
-from character import Character
-import character_class
-import dice
+from chaosgen.character import Character
+import chaosgen.character_class as character_class
+import chaosgen.dice as dice
 
 
 def fill_pdf(input_pdf_path: str, output_pdf_path: str, data_dict: dict):
@@ -139,7 +139,7 @@ if __name__ == "__main__":
             sys.exit("Amount must be no more than 20")
     if "class" in cli_vars:
         kwargs["classname"] = cli_vars["class"]
-    
+    os.makedirs("output", exist_ok=True)
     if kwargs["classname"] == "all":
         for character in character_class.VALID_BACKGROUND_NAMES:
             merge_list.append(generate_char(classname=character))
