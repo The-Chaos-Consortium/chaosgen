@@ -1,8 +1,8 @@
 import random
 
-import character_class
-from mixins import BasicAttributesMixin, AppearanceMixin, NameMixin
-from dice import d, xdy
+import chaosgen.character_class as character_class
+from chaosgen.mixins import BasicAttributesMixin, AppearanceMixin, NameMixin
+from chaosgen.dice import d, xdy
 
 
 class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
@@ -26,7 +26,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         self.spell = self.get_spell()
         self.notes = self.get_notes()
         self.sp = xdy(3, 6) * 5
-        self.slots = self.STR + 5
+        self.slots = max(10, self.STR)
 
     def to_dict(self):
         """
@@ -50,7 +50,9 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         """
         if classname:
             if classname == "random":
-                self.classname = random.choice(list(character_class.BACKGROUND_BY_NAME.keys()))
+                self.classname = random.choice(
+                    list(character_class.BACKGROUND_BY_NAME.keys())
+                )
                 print(f"A random class: {self.classname} has been chosen.")
                 return character_class.BACKGROUND_BY_NAME[self.classname]
             return character_class.BACKGROUND_BY_NAME[classname]

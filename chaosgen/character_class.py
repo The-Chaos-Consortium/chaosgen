@@ -2,7 +2,7 @@
 Attributes and general information about the C&C Character Classes.
 """
 import random
-import dice as d
+import chaosgen.dice as d
 
 # The 3 attributes, in order.
 ATTRIBUTES = ["STR", "DEX", "WIL"]
@@ -13,7 +13,7 @@ STR, DEX, WIL = range(3)
 # The character classes
 
 PATHFINDER = {
-    "Road Warden": {
+    "Roadwarden": {
         "archetype": "Pathfinder",
         "equipment": [
             "Polearm - d10 dmg, two hands, 3 slots",
@@ -85,7 +85,7 @@ FIGHTER = {
             "------",
             "Arming Sword - d8 dmg, 2 slots",
             "------",
-            "Emblazoned Shield - reduce dmg by 1",
+            "Emblazoned Shield - 1 Armor",
         ],
         "retainer": None,
         "mount": None,
@@ -96,7 +96,7 @@ FIGHTER = {
             "Heavy Plate Armor - 3 Armor, 3 slots",
             "------",
             "------",
-            "Greatsword - d10 dmg, two hands, 3 slots",
+            "Longsword - d10 dmg, two hands, 3 slots",
             "------",
             "------",
         ],
