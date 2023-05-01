@@ -30,7 +30,7 @@ async def on_ready():
 
 @bot.command(
     name="chargen",
-    help="Generates a random character or specific with !chargen '<background>'"
+    help="Generates a random character or specific with !chargen \"<background>\""
     + "(you can find a list of backgrounds with !chargen list)",
 )
 async def generate_random_character(ctx, background: Optional[str]):
