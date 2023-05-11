@@ -33,6 +33,7 @@ PATHFINDER = {
             "Slots": "5/15",
             "equipment": [
                 "Small tent & cooking gear",
+                "Writ that shows your powers and legal rights.",
             ],
         },
     },
