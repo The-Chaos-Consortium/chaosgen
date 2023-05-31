@@ -19,7 +19,7 @@ def generate_character(background=None):
         + f"**WIL**: {char.WIL}\n"
         + f"**Max HP**: {char.hp}\n"
         + "**Level**: 1\n"
-        + f"**SP**: {char.sp}\n"
+        + f"**Shillings (S)**: {char.sp}\n"
         + f"**Spells**: {char.spell}\n"
         + f"**Notes**: \n{char.notes}\n\n"
         + f"**Slots**: {char.slots}\n"
