@@ -86,7 +86,7 @@ FIGHTER = {
             "------",
             "Arming Sword - d8 dmg, 2 slots",
             "------",
-            "Emblazoned Shield - 1 Armor",
+            "Emblazoned Shield - can sunder to negate a hit",
         ],
         "retainer": None,
         "mount": None,
