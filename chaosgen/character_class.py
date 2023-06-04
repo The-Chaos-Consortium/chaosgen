@@ -932,15 +932,15 @@ NAMES = {
 
 ARCHETYPE_DESCRIPTIONS = {
     "Pathfinder": "A Pathfinder is considered skilled at tasks related to surviving in the world, or navigation. "
-    "Gain a Buff on relevant saves.",
-    "Fighter": "A Fighter is considered skilled at all tasks related to endurance, fighting, and combat. "
-    "Gain a Buff on relevant saves.",
+    "They all gain the Survival talent.",
+    "Fighter": "A Fighter is considered skilled at tasks related to endurance, fighting, and combat. "
+    "They all gain the Armor Master talent.",
     "Cleric": "A Cleric is considered skilled at tasks related to religious activities, or church. "
-    "Gain a Buff on relevant saves.",
-    "Magic-User": "A Magic-User is considered skilled at all tasks pertaining to magic, and arcane lore. "
-    "Gain a Buff on relevant saves.",
-    "Thief": "A Thief is considered skilled at all tasks pertaining to thievery, such as stealth, pick-pocketing, "
-    "lock-picking, and so on. Gain a Buff on relevant saves.",
+    "They all gain the Religion talent.",
+    "Magic-User": "A Magic-User is considered skilled at tasks pertaining to magic, and arcane lore. "
+    "They all gain the Arcane talent.",
+    "Thief": "A Thief is considered skilled at tasks pertaining to thievery, such as stealth, pick-pocketing, "
+    "lock-picking, and so on. They all gain the Stealth talent.",
 }
 
 ARCHETYPES = [PATHFINDER, FIGHTER, CLERIC, MAGICUSER, THIEF]
