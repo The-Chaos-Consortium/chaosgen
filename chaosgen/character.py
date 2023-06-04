@@ -18,6 +18,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         self.name = self.get_name()
         self.personality = self.get_personality()
         self.equipment = self.get_equipment()
+        self.talents = self.get_talents()
         self.mount = self.get_mount()
         self.retainer = self.get_retainer()
         self.hp = self.get_hp()
@@ -69,6 +70,9 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
                 for i in temp:
                     equip.append(i)
         return equip + ["Dagger - d6 dmg", "Supply", "Supply"]
+    
+    def get_talents(self):
+        return self.character_class["talents"]
 
     def get_mount(self):
         return self.character_class["mount"]
