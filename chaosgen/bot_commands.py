@@ -24,6 +24,7 @@ def generate_character(background=None):
         + f"**Notes**: \n{char.notes}\n\n"
         + f"**Slots**: {char.slots}\n"
         + f"**Equipment**: \n{newline.join(f'{index+1}. {equip}' for index, equip in enumerate(char.equipment))}\n"
+        + f"**Talents**: {char.talents}\n"
     )
     if char.mount:
         data += (
