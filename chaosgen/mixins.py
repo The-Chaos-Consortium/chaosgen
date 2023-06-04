@@ -29,9 +29,9 @@ class BasicAttributesMixin:
 
     def roll_attribute_scores(self):
         """
-        Rolls the attribute scores: 2d4+4 in order.
+        Rolls the attribute scores: 3d6 in order.
         """
-        return [(attribute, xdy(2, 4) + 4) for attribute in character_class.ATTRIBUTES]
+        return [(attribute, xdy(3, 6)) for attribute in character_class.ATTRIBUTES]
 
 
 class NameMixin:
