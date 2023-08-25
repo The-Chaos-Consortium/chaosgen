@@ -88,7 +88,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
 
     def get_spell(self):
         """
-        Magic-Users begin with a single spell.
+        Mages begin with a single spell.
         """
         if "spells" in self.character_class:
             spells = character_class.SPELLS

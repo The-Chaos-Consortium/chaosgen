@@ -215,9 +215,9 @@ PRIEST = {
     },
 }
 
-MAGICUSER = {
+MAGE = {
     "Wizard's Apprentice": {
-        "archetype": "Magic-User",
+        "archetype": "Mage",
         "equipment": [
             "A Cloak with Magical Emblems so You Look the Part",
             "Staff - d6 dmg",
@@ -231,7 +231,7 @@ MAGICUSER = {
         "spells": True,
     },
     "Warlock": {
-        "archetype": "Magic-User",
+        "archetype": "Mage",
         "equipment": [
             "Eyes that Glow an Unnatural Color and Grant Night Vision",
             "Skull of a Demon",
@@ -244,7 +244,7 @@ MAGICUSER = {
         "spells": True,
     },
     "Alchemist": {
-        "archetype": "Magic-User",
+        "archetype": "Mage",
         "equipment": [
             "Small Chest Containing Alchemy Equipment",
             "Tonic of Health - Heals d12 dmg and any affliction",
@@ -257,7 +257,7 @@ MAGICUSER = {
         "spells": True,
     },
     "Witch": {
-        "archetype": "Magic-User",
+        "archetype": "Mage",
         "equipment": [
             "Candles, Herbs, Chalk, Needles",
             "Grimoire - 2 slots",
@@ -937,13 +937,13 @@ ARCHETYPE_DESCRIPTIONS = {
     "They all gain the Armor Master talent.",
     "Priest": "A Priest is considered skilled at tasks related to religious activities, or church. "
     "They all gain the Religion talent.",
-    "Magic-User": "A Magic-User is considered skilled at tasks pertaining to magic, and arcane lore. "
+    "Mage": "A Mage is considered skilled at tasks pertaining to magic, and arcane lore. "
     "They all gain the Arcane talent.",
     "Thief": "A Thief is considered skilled at tasks pertaining to thievery, such as stealth, pick-pocketing, "
     "lock-picking, and so on. They all gain the Stealth talent.",
 }
 
-ARCHETYPES = [PATHFINDER, FIGHTER, PRIEST, MAGICUSER, THIEF]
+ARCHETYPES = [PATHFINDER, FIGHTER, PRIEST, MAGE, THIEF]
 VALID_BACKGROUND_NAMES = [
     background.lower().replace("'", "") for a in ARCHETYPES for background in a
 ]
