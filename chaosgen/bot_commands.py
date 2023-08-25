@@ -17,7 +17,7 @@ def generate_character(background=None):
         + f"**STR**: {char.STR}\n"
         + f"**DEX**: {char.DEX}\n"
         + f"**WIL**: {char.WIL}\n"
-        + f"**Max HP**: {char.hp}\n"
+        + f"**Max Stamina**: {char.stamina}\n"
         + "**Level**: 1\n"
         + f"**Shillings (S)**: {char.sp}\n"
         + f"**Spells**: {char.spell}\n"
@@ -29,7 +29,7 @@ def generate_character(background=None):
     if char.mount:
         data += (
             f"\n**Mount Type**: {char.mount['name']}\n"
-            + f"**Mount HP**: {dice.xdy(char.mount['HD'], 8)}\n"
+            + f"**Mount Stamina**: {dice.xdy(char.mount['HD'], 8)}\n"
             + f"**Mount Skill**: {char.mount['Skill']}\n"
             + f"**Mount Morale**: {char.mount['ML']}\n"
             + f"**Mount Slots**: {char.mount['Slots']}\n"
@@ -39,7 +39,7 @@ def generate_character(background=None):
     if char.retainer:
         data += (
             f"\n**Retainer Type**: {char.retainer['name']}\n"
-            + f"**Retainer HP**: {dice.xdy(char.retainer['HD'], 8)}\n"
+            + f"**Retainer Stamina**: {dice.xdy(char.retainer['HD'], 8)}\n"
             + f"**Retainer Skill**: {char.retainer['Skill']}\n"
             + f"**Retainer Morale**: {char.retainer['ML']}\n"
             + f"**Retainer Level**: 1\n"

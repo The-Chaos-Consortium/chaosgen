@@ -55,7 +55,7 @@ def generate_char(classname="random"):
         "STR": char.STR,
         "DEX": char.DEX,
         "WIL": char.WIL,
-        "Max HP": char.hp,
+        "Max Stamina": char.stamina,
         "Level": "1",
         "SP": char.sp,
         "Slots": char.slots,
@@ -93,14 +93,14 @@ def generate_hirelings(char, h_type: str):
         data["Role1"] = char.mount["name"]
         data["Skill1"] = char.mount["Skill"]
         data["Morale1"] = char.mount["ML"]
-        data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
+        data["Max STAMINA1"] = dice.xdy(char.mount["HD"], 8)
         data["Cost1"] = "N/A"
         for i in range(10):
             data["HItem" + str(i + 1)] = "------ Use Slots on Character Sheet ------"
         data["Role2"] = char.retainer["name"]
         data["Skill2"] = char.retainer["Skill"]
         data["Morale2"] = char.retainer["ML"]
-        data["Max HP2"] = dice.xdy(char.retainer["HD"], 8)
+        data["Max STAMINA2"] = dice.xdy(char.retainer["HD"], 8)
         data["Cost2"] = "N/A"
         data["Level2"] = "1"
         for index, item in enumerate(char.retainer["equipment"]):
@@ -109,7 +109,7 @@ def generate_hirelings(char, h_type: str):
         data["Role1"] = char.retainer["name"]
         data["Skill1"] = char.retainer["Skill"]
         data["Morale1"] = char.retainer["ML"]
-        data["Max HP1"] = dice.xdy(char.retainer["HD"], 8)
+        data["Max STAMINA1"] = dice.xdy(char.retainer["HD"], 8)
         data["Cost1"] = "N/A"
         data["Level1"] = "1"
         for index, item in enumerate(char.retainer["equipment"]):
@@ -118,7 +118,7 @@ def generate_hirelings(char, h_type: str):
         data["Role1"] = char.mount["name"]
         data["Skill1"] = char.mount["Skill"]
         data["Morale1"] = char.mount["ML"]
-        data["Max HP1"] = dice.xdy(char.mount["HD"], 8)
+        data["Max STAMINA1"] = dice.xdy(char.mount["HD"], 8)
         data["Cost1"] = "N/A"
         for i in range(10):
             data["HItem" + str(i + 1)] = "------ Use Slots on Character Sheet ------"

@@ -21,9 +21,9 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
         self.talents = self.get_talents()
         self.mount = self.get_mount()
         self.retainer = self.get_retainer()
-        self.hp = self.get_hp()
-        if self.hp is not None and self.hp < 1:
-            self.hp = 1
+        self.stamina = self.get_stamina()
+        if self.stamina is not None and self.stamina < 1:
+            self.stamina = 1
         self.spell = self.get_spell()
         self.notes = self.get_notes()
         self.sp = xdy(3, 6) * 5
@@ -80,9 +80,9 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
     def get_retainer(self):
         return self.character_class["retainer"]
 
-    def get_hp(self):
+    def get_stamina(self):
         """
-        Determine HP. Note: this value may be negative and that is handled by the caller.
+        Determine Stamina. Note: this value may be negative and that is handled by the caller.
         """
         return d(8)
 
