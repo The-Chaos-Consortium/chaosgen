@@ -162,9 +162,9 @@ FIGHTER = {
     },
 }
 
-CLERIC = {
+PRIEST = {
     "Exorcist": {
-        "archetype": "Cleric",
+        "archetype": "Priest",
         "equipment": [
             "Necklace of Beads",
             "Holy Water - undead take d8 dmg if doused in it",
@@ -175,7 +175,7 @@ CLERIC = {
         "mount": None,
     },
     "Warpriest": {
-        "archetype": "Cleric",
+        "archetype": "Priest",
         "equipment": [
             "Brigandine - 2 Armor, 2 slots",
             "------",
@@ -190,7 +190,7 @@ CLERIC = {
         "mount": None,
     },
     "Initiate": {
-        "archetype": "Cleric",
+        "archetype": "Priest",
         "equipment": [
             "Raiment of your Order - 1 Armor",
             "Book of Hymns or Prayers or Theology",
@@ -201,7 +201,7 @@ CLERIC = {
         "mount": None,
     },
     "Charlatan": {
-        "archetype": "Cleric",
+        "archetype": "Priest",
         "equipment": [
             "Tools for Divination",
             "Vials of Sugar Water",
@@ -935,7 +935,7 @@ ARCHETYPE_DESCRIPTIONS = {
     "They all gain the Survival talent.",
     "Fighter": "A Fighter is considered skilled at tasks related to endurance, fighting, and combat. "
     "They all gain the Armor Master talent.",
-    "Cleric": "A Cleric is considered skilled at tasks related to religious activities, or church. "
+    "Priest": "A Priest is considered skilled at tasks related to religious activities, or church. "
     "They all gain the Religion talent.",
     "Magic-User": "A Magic-User is considered skilled at tasks pertaining to magic, and arcane lore. "
     "They all gain the Arcane talent.",
@@ -943,7 +943,7 @@ ARCHETYPE_DESCRIPTIONS = {
     "lock-picking, and so on. They all gain the Stealth talent.",
 }
 
-ARCHETYPES = [PATHFINDER, FIGHTER, CLERIC, MAGICUSER, THIEF]
+ARCHETYPES = [PATHFINDER, FIGHTER, PRIEST, MAGICUSER, THIEF]
 VALID_BACKGROUND_NAMES = [
     background.lower().replace("'", "") for a in ARCHETYPES for background in a
 ]
