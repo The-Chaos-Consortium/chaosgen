@@ -1,8 +1,8 @@
 import random
 
 import chaosgen.character_class as character_class
-from chaosgen.mixins import BasicAttributesMixin, AppearanceMixin, NameMixin
 from chaosgen.dice import d, xdy
+from chaosgen.mixins import AppearanceMixin, BasicAttributesMixin, NameMixin
 
 
 class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
@@ -70,7 +70,7 @@ class Character(BasicAttributesMixin, AppearanceMixin, NameMixin):
                 for i in temp:
                     equip.append(i)
         return equip + ["Dagger - d6 dmg", "Supply", "Supply"]
-    
+
     def get_talents(self):
         return self.character_class["talents"]
 

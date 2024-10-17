@@ -1,7 +1,9 @@
 """
 Attributes and general information about the C&C Character Classes.
 """
+
 import random
+
 import chaosgen.dice as d
 
 # The 3 attributes, in order.

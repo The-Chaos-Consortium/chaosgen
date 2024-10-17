@@ -1,16 +1,14 @@
 # bot.py
-import os
 import logging
-
+import os
 from typing import Optional
+
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from chaosgen import bot_commands, character_class, dice
 from chaosgen.character import Character
-from chaosgen import character_class
-from chaosgen import dice
-from chaosgen import bot_commands
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -30,7 +28,7 @@ async def on_ready():
 
 @bot.command(
     name="chargen",
-    help="Generates a random character or specific with !chargen \"<background>\""
+    help='Generates a random character or specific with !chargen "<background>"'
     + "(you can find a list of backgrounds with !chargen list)",
 )
 async def generate_random_character(ctx, background: Optional[str]):

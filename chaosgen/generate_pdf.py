@@ -1,10 +1,12 @@
-import sys
 import os
+import sys
+
 import pdfrw
 from pypdf import PdfMerger
-from chaosgen.character import Character
+
 import chaosgen.character_class as character_class
 import chaosgen.dice as dice
+from chaosgen.character import Character
 
 
 def fill_pdf(input_pdf_path: str, output_pdf_path: str, data_dict: dict):

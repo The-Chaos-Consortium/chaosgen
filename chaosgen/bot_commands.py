@@ -1,8 +1,8 @@
 # Convert character generation code to discord bot output
 import random
+
+from chaosgen import character_class, dice
 from chaosgen.character import Character
-from chaosgen import character_class
-from chaosgen import dice
 
 
 def generate_character(background=None):
