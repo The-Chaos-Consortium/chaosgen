@@ -12,7 +12,7 @@ generated actors, deterministic randomness, template loading, and PDF output.
 ## Tasks
 
 - [x] Choose maintained Node LTS and compatible pinned tooling; add package/lockfile.
-- [ ] Configure strict TypeScript, Vite, build and test commands.
+- [x] Configure strict TypeScript, Vite, build and test commands.
 - [ ] Define definitions versus actor-instance types and validation strategy.
 - [ ] Define seeded RNG injection, batch seed behavior, and original-roll/swap model.
 - [ ] Define PDF byte interfaces independent of filesystem/browser APIs.
@@ -28,11 +28,15 @@ feature is presented as complete.
 
 - `npm install --package-lock-only` passed (46 packages audited, no vulnerabilities).
 - `npm ci` passed (45 packages installed, 46 audited, no vulnerabilities).
+- `npm run typecheck` passed with strict TypeScript settings.
+- `npm test` passed with no test files; feature tests begin with implementation.
+- `npm run build` passed and emitted relative asset URLs under `dist/`.
 - `git diff --check` passed.
 
 ## Partial-work checkpoint
 
-Node 24, npm 11.11.0, TypeScript 7.0.2, Vite 8.3.0, Vitest 5.0.0, and
-pdf-lib 1.17.1 are pinned in `package.json` and `package-lock.json`. See the
-[tooling baseline handoff](../handoffs/2026-09-11-stage-01-tooling-baseline.md).
-Next: configure strict TypeScript, Vite, build, and test commands.
+Node 24 and the TypeScript/Vite/Vitest/pdf-lib toolchain are pinned. Strict
+type checking, test, development, preview, and production build commands are
+configured; the development page explicitly says generation is not implemented.
+See the [tooling configuration handoff](../handoffs/2026-09-11-stage-01-tooling-configuration.md).
+Next: define definition versus actor-instance types and the validation strategy.
