@@ -36,8 +36,16 @@ export interface AttributeSwapRecord {
   readonly second: AttributeName;
 }
 
+/** All creation rolls, with attributes kept explicit for swap provenance. */
+export interface OriginalRolls {
+  readonly attributes: Readonly<Record<AttributeName, RecordedRoll>>;
+  /** Non-attribute creation rolls (stamina, wealth, traits, and future rolls). */
+  readonly additional: readonly RecordedRoll[];
+}
+
 export interface GenerationRecord {
-  readonly originalRolls: readonly RecordedRoll[];
+  /** The sole persisted authority for original creation rolls. */
+  readonly originalRolls: OriginalRolls;
   readonly choices: readonly RecordedChoice[];
   readonly attributeSwap?: AttributeSwapRecord;
 }

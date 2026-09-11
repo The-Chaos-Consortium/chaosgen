@@ -102,7 +102,17 @@ describe("validateActorEnvelope", () => {
       schemaVersion: "1",
       rulesVersion: "test-rules",
       seed: "synthetic-seed",
-      generation: { originalRolls: [], choices: [] },
+      generation: {
+        originalRolls: {
+          attributes: {
+            strength: { id: "attribute.strength", dice: [3, 3, 3], total: 9 },
+            dexterity: { id: "attribute.dexterity", dice: [3, 3, 4], total: 10 },
+            willpower: { id: "attribute.willpower", dice: [3, 4, 4], total: 11 },
+          },
+          additional: [],
+        },
+        choices: [],
+      },
       actor,
     } satisfies GeneratedActorDocument;
 
@@ -114,7 +124,17 @@ describe("validateActorEnvelope", () => {
         schemaVersion: "1",
         rulesVersion: "test-rules",
         seed: "synthetic-seed",
-        generation: { originalRolls: [], choices: [] },
+        generation: {
+          originalRolls: {
+            attributes: {
+              strength: { id: "attribute.strength", dice: [3, 3, 3], total: 9 },
+              dexterity: { id: "attribute.dexterity", dice: [3, 3, 4], total: 10 },
+              willpower: { id: "attribute.willpower", dice: [3, 4, 4], total: 11 },
+            },
+            additional: [],
+          },
+          choices: [],
+        },
         actor: { id: actor.id, kind: actor.kind },
       },
     });
@@ -125,7 +145,17 @@ describe("validateActorEnvelope", () => {
       schemaVersion: "1",
       rulesVersion: "rules",
       seed: "seed",
-      generation: { originalRolls: [], choices: [] },
+      generation: {
+        originalRolls: {
+          attributes: {
+            strength: { id: "attribute.strength", dice: [3, 3, 3], total: 9 },
+            dexterity: { id: "attribute.dexterity", dice: [3, 3, 4], total: 10 },
+            willpower: { id: "attribute.willpower", dice: [3, 4, 4], total: 11 },
+          },
+          additional: [],
+        },
+        choices: [],
+      },
       actor: {
         id: "mount-1",
         kind: "mount",
@@ -159,12 +189,37 @@ describe("validateActorEnvelope", () => {
       success: false,
       errors: [
         { path: "$.schemaVersion", message: "must be a non-empty string" },
-        { path: "$.generation.originalRolls", message: "must be an array" },
+        { path: "$.generation.originalRolls", message: "must be an object" },
         {
           path: "$.actor.kind",
           message: "must be one of: character, retainer, pet, mount",
         },
       ],
+    });
+  });
+
+  it("requires a usable explicit original attribute mapping", () => {
+    const result = validateActorEnvelope({
+      schemaVersion: "1",
+      rulesVersion: "rules",
+      seed: "seed",
+      generation: {
+        originalRolls: {
+          attributes: {
+            strength: { id: "attribute.strength", dice: [3, 3, 3], total: 9 },
+            dexterity: { id: "attribute.dexterity", dice: [3, 3, 4], total: 10 },
+            willpower: { id: "attribute.willpower", dice: [3, "bad", 4], total: 11 },
+          },
+          additional: [],
+        },
+        choices: [],
+      },
+      actor: { id: "character-1", kind: "character" },
+    });
+
+    expect(result).toEqual({
+      success: false,
+      errors: [{ path: "$.generation.originalRolls.attributes.willpower.dice[1]", message: "must be a finite number" }],
     });
   });
 });

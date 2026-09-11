@@ -1,4 +1,4 @@
-import type { TraitName } from "./actors.ts";
+import type { AttributeName, RecordedRoll, TraitName } from "./actors.ts";
 
 const actorKinds = ["character", "retainer", "pet", "mount"] as const;
 const companionKinds = ["retainer", "pet", "mount"] as const;
@@ -46,7 +46,10 @@ export interface ValidatedActorEnvelope {
   readonly rulesVersion: string;
   readonly seed: string;
   readonly generation: {
-    readonly originalRolls: readonly unknown[];
+    readonly originalRolls: {
+      readonly attributes: Readonly<Record<AttributeName, RecordedRoll>>;
+      readonly additional: readonly unknown[];
+    };
     readonly choices: readonly unknown[];
   };
   readonly actor: ValidatedActorIdentity;
@@ -141,6 +144,26 @@ function readBoolean(
   return value;
 }
 
+function readRecordedRoll(
+  value: unknown,
+  path: string,
+  errors: ValidationError[],
+): RecordedRoll | undefined {
+  const roll = readRecord(value, path, errors);
+  if (roll === undefined) return undefined;
+  const id = readString(roll, "id", path, errors);
+  const dice = readArray(roll, "dice", path, errors);
+  dice?.forEach((die, index) => {
+    if (typeof die !== "number" || !Number.isFinite(die)) {
+      errors.push({ path: `${path}.dice[${index}]`, message: "must be a finite number" });
+    }
+  });
+  const total = readNumber(roll, "total", path, errors);
+  if (id === undefined || dice === undefined || total === undefined) return undefined;
+  if (dice.some((die) => typeof die !== "number" || !Number.isFinite(die))) return undefined;
+  return { id, dice: dice as readonly number[], total };
+}
+
 function readEnum<T extends string>(
   object: Record<string, unknown>,
   key: string,
@@ -177,7 +200,32 @@ export function validateActorEnvelope(
   const seed = readString(root, "seed", "$", errors);
   const generation = readRecord(root.generation, "$.generation", errors);
   const originalRolls = generation
-    ? readArray(generation, "originalRolls", "$.generation", errors)
+    ? readRecord(generation.originalRolls, "$.generation.originalRolls", errors)
+    : undefined;
+  const originalAttributesRecord = originalRolls
+    ? readRecord(originalRolls.attributes, "$.generation.originalRolls.attributes", errors)
+    : undefined;
+  const originalAttributes = originalAttributesRecord
+    ? {
+        strength: readRecordedRoll(
+          originalAttributesRecord.strength,
+          "$.generation.originalRolls.attributes.strength",
+          errors,
+        ),
+        dexterity: readRecordedRoll(
+          originalAttributesRecord.dexterity,
+          "$.generation.originalRolls.attributes.dexterity",
+          errors,
+        ),
+        willpower: readRecordedRoll(
+          originalAttributesRecord.willpower,
+          "$.generation.originalRolls.attributes.willpower",
+          errors,
+        ),
+      }
+    : undefined;
+  const additional = originalRolls
+    ? readArray(originalRolls, "additional", "$.generation.originalRolls", errors)
     : undefined;
   const choices = generation
     ? readArray(generation, "choices", "$.generation", errors)
@@ -240,6 +288,11 @@ export function validateActorEnvelope(
     rulesVersion === undefined ||
     seed === undefined ||
     originalRolls === undefined ||
+    originalAttributes === undefined ||
+    originalAttributes.strength === undefined ||
+    originalAttributes.dexterity === undefined ||
+    originalAttributes.willpower === undefined ||
+    additional === undefined ||
     choices === undefined ||
     validatedActor === undefined
   ) {
@@ -251,7 +304,17 @@ export function validateActorEnvelope(
       schemaVersion,
       rulesVersion,
       seed,
-      generation: { originalRolls, choices },
+      generation: {
+        originalRolls: {
+          attributes: {
+            strength: originalAttributes.strength,
+            dexterity: originalAttributes.dexterity,
+            willpower: originalAttributes.willpower,
+          },
+          additional,
+        },
+        choices,
+      },
       actor: validatedActor,
     },
   };
