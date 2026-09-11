@@ -13,7 +13,7 @@ generated actors, deterministic randomness, template loading, and PDF output.
 
 - [x] Choose maintained Node LTS and compatible pinned tooling; add package/lockfile.
 - [x] Configure strict TypeScript, Vite, build and test commands.
-- [ ] Define definitions versus actor-instance types and validation strategy.
+- [x] Define definitions versus actor-instance types and validation strategy.
 - [ ] Define seeded RNG injection, batch seed behavior, and original-roll/swap model.
 - [ ] Define PDF byte interfaces independent of filesystem/browser APIs.
 - [ ] Document scripts/contracts for downstream stages and appropriate ignores.
@@ -31,12 +31,15 @@ feature is presented as complete.
 - `npm run typecheck` passed with strict TypeScript settings.
 - `npm test` passed with no test files; feature tests begin with implementation.
 - `npm run build` passed and emitted relative asset URLs under `dist/`.
+- `npm test` passed with 10 definition/actor envelope validation tests.
+- `npm run typecheck` and `npm run build` passed for the model contracts.
 - `git diff --check` passed.
 
 ## Partial-work checkpoint
 
-Node 24 and the TypeScript/Vite/Vitest/pdf-lib toolchain are pinned. Strict
-type checking, test, development, preview, and production build commands are
-configured; the development page explicitly says generation is not implemented.
-See the [tooling configuration handoff](../handoffs/2026-09-11-stage-01-tooling-configuration.md).
-Next: define definition versus actor-instance types and the validation strategy.
+Rules definitions and readonly generated snapshots now have separate contracts
+covering characters, retainers, pets/familiars, and mounts. External JSON begins
+as `unknown`; dependency-free envelope validators return only the fields they
+actually prove, while Stage 02 retains deep dataset and reference validation.
+See the [model contracts handoff](../handoffs/2026-09-11-stage-01-model-contracts.md).
+Next: define seeded RNG injection, batch seed behavior, and the roll/swap model.
