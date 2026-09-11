@@ -1,5 +1,11 @@
 output/
 
+# macOS metadata
+.DS_Store
+
+# Node.js dependencies
+node_modules/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

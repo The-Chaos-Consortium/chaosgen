@@ -45,7 +45,10 @@ these instructions to source files elsewhere in the repository.
 - Do not commit credentials, `.env` contents, OS metadata, dependency directories,
   private notes, or generated personal PDFs. Use synthetic data for fixtures.
 - Do not include machine-specific paths or private service details in docs.
-- Commit, push, and open PRs only when explicitly requested. Creating a branch
-  alone does not authorize any of those actions.
+- After completing and verifying an agreed stage or discrete subset, review the
+  intended paths and commit the checkpoint. Do not commit incomplete or blocked
+  work unless explicitly requested.
+- Push and open PRs only when explicitly requested. A completed checkpoint or
+  existing branch does not authorize either action.
 - Follow repository commit conventions; do not add AI co-author trailers.
 - Keep implementation and its documentation changes reviewable in small units.

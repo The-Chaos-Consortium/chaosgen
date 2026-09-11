@@ -1,12 +1,12 @@
 # Implementation status
 
-**Current state:** Planning documentation prepared; no implementation started.
-**Active implementation stage:** None. Await explicit implementation instruction.
-**Next candidate:** Stage 01, tooling and shared contracts.
+**Current state:** Stage 01 implementation started.
+**Active implementation stage:** Stage 01, foundation and contracts.
+**Next deliverable:** Configure strict TypeScript, Vite, build, and test commands.
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
-| [01 Foundation](stages/01-foundation.md) | pending | None | — |
+| [01 Foundation](stages/01-foundation.md) | in_progress | None | [Tooling baseline handoff](handoffs/2026-09-11-stage-01-tooling-baseline.md) |
 | [02 Rules data](stages/02-rules-data.md) | pending | 01 contracts | — |
 | [03 Generation](stages/03-generation.md) | pending | 01, 02 | — |
 | [04 PDF templates](stages/04-pdf-templates.md) | pending | 01 tooling | — |
