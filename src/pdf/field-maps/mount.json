@@ -1,0 +1,11 @@
+{
+  "source": "Chaos and Conquest Mount Sheet Printable.pdf",
+  "output": "mount.pdf",
+  "pages": 1,
+  "fields": [
+    ["mount.name", 0, 23, 535, 172, 32], ["mount.player", 0, 283, 535, 156, 32], ["mount.type", 0, 527, 535, 156, 32],
+    ["mount.str.current", 0, 77, 470, 45, 16], ["mount.str.maximum", 0, 124, 470, 45, 16], ["mount.dex.current", 0, 77, 436, 45, 16], ["mount.dex.maximum", 0, 124, 436, 45, 16], ["mount.wil.current", 0, 77, 402, 45, 16], ["mount.wil.maximum", 0, 124, 402, 45, 16],
+    ["mount.armor.current", 0, 100, 300, 42, 16], ["mount.armor.maximum", 0, 143, 300, 42, 16], ["mount.stamina.current", 0, 100, 251, 42, 16], ["mount.stamina.maximum", 0, 143, 251, 42, 16], ["mount.morale", 0, 100, 201, 85, 16], ["mount.corruption.current", 0, 100, 151, 42, 16], ["mount.corruption.maximum", 0, 143, 151, 42, 16], ["mount.notes", 0, 34, 32, 662, 120, true]
+  ],
+  "repeating": [["mount.inventory.", 0, 1, 20, 212, 493, 143, 12, 13.8], ["mount.inventory.", 0, 21, 20, 377, 493, 143, 12, 13.8], ["mount.inventory.", 0, 41, 20, 548, 493, 143, 12, 13.8]]
+}

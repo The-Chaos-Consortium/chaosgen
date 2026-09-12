@@ -1,15 +1,15 @@
 # Implementation status
 
-**Current state:** Stage 03 completed.
+**Current state:** Stage 04 completed.
 **Active implementation stage:** None.
-**Next candidate:** Stage 04, PDF templates.
+**Next candidate:** Stage 05, PDF rendering.
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
 | [01 Foundation](stages/01-foundation.md) | completed | None | [Completion handoff](handoffs/2026-09-12-stage-01-completion.md) |
 | [02 Rules data](stages/02-rules-data.md) | completed | 01 contracts | [Completion handoff](handoffs/2026-09-12-stage-02-completion.md) |
 | [03 Generation](stages/03-generation.md) | completed | 01, 02 | [Completion handoff](handoffs/2026-09-12-stage-03-completion.md) |
-| [04 PDF templates](stages/04-pdf-templates.md) | pending | 01 tooling | — |
+| [04 PDF templates](stages/04-pdf-templates.md) | completed | 01 tooling | [Completion handoff](handoffs/2026-09-12-stage-04-completion.md) |
 | [05 PDF rendering](stages/05-pdf-rendering.md) | pending | 03, 04 | — |
 | [06 CLI](stages/06-cli.md) | pending | 03, 05 | — |
 | [07 Web](stages/07-web.md) | pending | 03; 05 for download | — |

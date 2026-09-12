@@ -1,0 +1,12 @@
+{
+  "source": "Chaos and Conquest Character Sheet Printable.pdf",
+  "output": "character.pdf",
+  "pages": 2,
+  "fields": [
+    ["character.name", 0, 24, 535, 168, 32], ["character.player", 0, 203, 535, 168, 32], ["character.experience", 0, 383, 535, 168, 32], ["character.background", 0, 563, 535, 168, 32],
+    ["character.str.current", 0, 77, 470, 45, 16], ["character.str.maximum", 0, 124, 470, 45, 16], ["character.dex.current", 0, 77, 436, 45, 16], ["character.dex.maximum", 0, 124, 436, 45, 16], ["character.wil.current", 0, 77, 402, 45, 16], ["character.wil.maximum", 0, 124, 402, 45, 16],
+    ["character.armor.current", 0, 100, 300, 42, 16], ["character.armor.maximum", 0, 143, 300, 42, 16], ["character.stamina.current", 0, 100, 251, 42, 16], ["character.stamina.maximum", 0, 143, 251, 42, 16], ["character.corruption.current", 0, 100, 201, 42, 16], ["character.corruption.maximum", 0, 143, 201, 42, 16],
+    ["character.pennies", 0, 104, 109, 68, 32], ["character.marks", 0, 104, 48, 68, 32], ["character.spells", 0, 194, 104, 153, 184, true], ["character.talents", 0, 363, 105, 315, 93, true], ["character.notes", 1, 36, 54, 720, 468, true]
+  ],
+  "repeating": [["character.inventory.", 0, 1, 20, 385, 493, 292, 12, 13.8]]
+}

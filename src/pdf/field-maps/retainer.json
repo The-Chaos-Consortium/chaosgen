@@ -1,0 +1,14 @@
+{
+  "source": "Chaos and Conquest Retainer Sheet Printable.pdf",
+  "output": "retainer.pdf",
+  "pages": 1,
+  "fields": [
+    ["retainer.left.name", 0, 23, 535, 120, 32], ["retainer.left.experience", 0, 145, 535, 104, 32], ["retainer.left.role", 0, 251, 535, 108, 32],
+    ["retainer.left.str.current", 0, 77, 470, 45, 16], ["retainer.left.str.maximum", 0, 124, 470, 45, 16], ["retainer.left.dex.current", 0, 77, 436, 45, 16], ["retainer.left.dex.maximum", 0, 124, 436, 45, 16], ["retainer.left.wil.current", 0, 77, 402, 45, 16], ["retainer.left.wil.maximum", 0, 124, 402, 45, 16],
+    ["retainer.left.armor.current", 0, 100, 344, 42, 16], ["retainer.left.armor.maximum", 0, 143, 344, 42, 16], ["retainer.left.stamina.current", 0, 100, 310, 42, 16], ["retainer.left.stamina.maximum", 0, 143, 310, 42, 16], ["retainer.left.loyalty", 0, 100, 277, 85, 16], ["retainer.left.corruption.current", 0, 100, 238, 42, 16], ["retainer.left.corruption.maximum", 0, 143, 238, 42, 16], ["retainer.left.spells", 0, 194, 158, 162, 82, true], ["retainer.left.notes", 0, 33, 34, 326, 146, true],
+    ["retainer.right.name", 0, 371, 535, 120, 32], ["retainer.right.experience", 0, 493, 535, 104, 32], ["retainer.right.role", 0, 599, 535, 108, 32],
+    ["retainer.right.str.current", 0, 405, 470, 45, 16], ["retainer.right.str.maximum", 0, 452, 470, 45, 16], ["retainer.right.dex.current", 0, 405, 436, 45, 16], ["retainer.right.dex.maximum", 0, 452, 436, 45, 16], ["retainer.right.wil.current", 0, 405, 402, 45, 16], ["retainer.right.wil.maximum", 0, 452, 402, 45, 16],
+    ["retainer.right.armor.current", 0, 428, 344, 42, 16], ["retainer.right.armor.maximum", 0, 471, 344, 42, 16], ["retainer.right.stamina.current", 0, 428, 310, 42, 16], ["retainer.right.stamina.maximum", 0, 471, 310, 42, 16], ["retainer.right.loyalty", 0, 428, 277, 85, 16], ["retainer.right.corruption.current", 0, 428, 238, 42, 16], ["retainer.right.corruption.maximum", 0, 471, 238, 42, 16], ["retainer.right.spells", 0, 523, 158, 162, 82, true], ["retainer.right.notes", 0, 369, 34, 326, 146, true]
+  ],
+  "repeating": [["retainer.left.inventory.", 0, 1, 15, 213, 493, 144, 12, 16.4], ["retainer.right.inventory.", 0, 1, 15, 542, 493, 144, 12, 16.4]]
+}
