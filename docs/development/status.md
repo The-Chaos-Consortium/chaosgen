@@ -1,12 +1,12 @@
 # Implementation status
 
-**Current state:** Stage 01 implementation started.
-**Active implementation stage:** Stage 01, foundation and contracts.
-**Next deliverable:** Document downstream scripts/contracts and verify Stage 01.
+**Current state:** Stage 01 completed.
+**Active implementation stage:** None.
+**Next candidate:** Stage 02, rules data (do not start without authorization).
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
-| [01 Foundation](stages/01-foundation.md) | in_progress | None | [RNG/PDF contracts handoff](handoffs/2026-09-11-stage-01-rng-pdf-contracts.md) |
+| [01 Foundation](stages/01-foundation.md) | completed | None | [Completion handoff](handoffs/2026-09-12-stage-01-completion.md) |
 | [02 Rules data](stages/02-rules-data.md) | pending | 01 contracts | — |
 | [03 Generation](stages/03-generation.md) | pending | 01, 02 | — |
 | [04 PDF templates](stages/04-pdf-templates.md) | pending | 01 tooling | — |

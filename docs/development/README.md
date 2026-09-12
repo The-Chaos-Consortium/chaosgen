@@ -2,7 +2,8 @@
 
 This directory supports incremental development of the Chaos & Conquest web
 generator and PDF-only CLI. The project owner approved the overall plan; the
-implementation has not started.
+implementation is underway. Foundation tooling and contracts exist, but
+character generation and PDF export do not.
 
 ## Start here
 
@@ -19,6 +20,7 @@ implementation has not started.
 | `plan.md` | Scope, architecture, rules requirements, and acceptance criteria |
 | `decisions.md` | Confirmed rulings and unresolved interpretations |
 | `status.md` | Small, current dashboard of implementation progress |
+| `contracts.md` | Working npm scripts and durable Stage 01 downstream boundaries |
 | `stages/` | Independently reviewable work packages and completion evidence |
 | `handoffs/` | Dated checkpoints for interrupted or completed sessions |
 | `templates/` | Reusable stage and handoff document templates |

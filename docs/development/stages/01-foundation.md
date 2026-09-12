@@ -1,6 +1,6 @@
 # Stage 01 — Foundation and contracts
 
-**Status:** in_progress
+**Status:** completed
 
 **Dependencies:** explicit authorization to begin implementation
 
@@ -16,7 +16,7 @@ generated actors, deterministic randomness, template loading, and PDF output.
 - [x] Define definitions versus actor-instance types and validation strategy.
 - [x] Define seeded RNG injection, batch seed behavior, and original-roll/swap model.
 - [x] Define PDF byte interfaces independent of filesystem/browser APIs.
-- [ ] Document scripts/contracts for downstream stages and appropriate ignores.
+- [x] Document scripts/contracts for downstream stages and appropriate ignores.
 
 ## Completion gate
 
@@ -36,10 +36,13 @@ feature is presented as complete.
 - `npm test` passed with 34 validation, RNG/swap, derivation, and PDF contract tests.
 - `npm run typecheck` and `npm run build` passed for the integrated contracts.
 - `git diff --check` passed.
+- 2026-09-12: `npm ci`, `npm test` (3 files, 34 tests), `npm run typecheck`,
+  `npm run build`, and `git diff --check` passed. See the [completion
+  handoff](../handoffs/2026-09-12-stage-01-completion.md).
 
-## Partial-work checkpoint
+## Completion
 
-Seeded generation, batch seed derivation, original-based attribute swaps, confirmed
-derived values, and platform-neutral PDF byte contracts are implemented and tested.
-See the [RNG and PDF contracts handoff](../handoffs/2026-09-11-stage-01-rng-pdf-contracts.md).
-Next: document downstream scripts/contracts and verify the Stage 01 completion gate.
+The completion gate passed: tooling checks succeed; the documented contracts
+cover character, retainer, pet/familiar, and mount data independently of legacy
+rendering; and the development page explicitly says generation is not
+implemented. Downstream stages must follow [the durable contracts](../contracts.md).
