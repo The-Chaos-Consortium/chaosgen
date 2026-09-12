@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 
 import { describe, expect, it } from "vitest";
-import { PDFDocument, PDFTextField } from "pdf-lib";
+import { PDFDocument, PDFTextField, TextAlignment } from "pdf-lib";
 
 const templates = [
   { path: "templates/fillable/character.pdf", pages: 2, fields: 41, multiline: ["character.spells", "character.talents", "character.notes"] },
@@ -31,6 +31,28 @@ describe("fillable PDF templates", () => {
 
     expect(names.filter((name) => name.startsWith("retainer.left."))).toHaveLength(33);
     expect(names.filter((name) => name.startsWith("retainer.right."))).toHaveLength(33);
+  });
+
+  it.each(templates)("uses transparent fills for every field in $path", async ({ path }) => {
+    const pdf = await PDFDocument.load(await readFile(path));
+
+    pdf.getForm().getFields().forEach((field) => {
+      field.acroField.getWidgets().forEach((widget) => {
+        expect(widget.getAppearanceCharacteristics()?.getBackgroundColor()).toBeUndefined();
+      });
+    });
+  });
+
+  it.each(templates)("aligns text appropriately in $path", async ({ path }) => {
+    const pdf = await PDFDocument.load(await readFile(path));
+
+    pdf.getForm().getFields().forEach((field) => {
+      const leftAligned = field.getName().includes(".inventory.")
+        || field.getName().endsWith(".spells")
+        || field.getName().endsWith(".talents")
+        || field.getName().endsWith(".notes");
+      expect((field as PDFTextField).getAlignment()).toBe(leftAligned ? TextAlignment.Left : TextAlignment.Center);
+    });
   });
 
   it("maps all sixty mount inventory rows without treating them as capacity", async () => {

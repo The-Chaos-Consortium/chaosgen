@@ -8,6 +8,10 @@ original metadata and recreate every derivative. The command reads the
 declarative PDF-point maps in `src/pdf/field-maps/`, adds transparent,
 borderless text fields, and reports original SHA-256 hashes and field counts.
 
+Run `npm run prepare:pdf-templates:transparent-fill` to remove fill colors from
+existing derivatives without changing their field rectangles. Use this after
+manual coordinate adjustments.
+
 Run `npm run prepare:pdf-templates:debug` to create flattened synthetic-label
 samples under ignored `templates/debug/` for visual coordinate inspection.
 Those debug PDFs are not inputs to rendering and are not committed.

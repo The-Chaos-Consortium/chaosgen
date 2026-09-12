@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare:pdf-templates": "node scripts/prepare-pdf-templates.mjs",
-    "prepare:pdf-templates:debug": "node scripts/prepare-pdf-templates.mjs --debug"
+    "prepare:pdf-templates:debug": "node scripts/prepare-pdf-templates.mjs --debug",
+    "prepare:pdf-templates:transparent-fill": "node scripts/prepare-pdf-templates.mjs --update-existing"
   },
   "dependencies": {
     "pdf-lib": "1.17.1"
