@@ -57,6 +57,11 @@ export interface InventoryItemInstance {
   readonly quantity: number;
   readonly ownerActorId: string;
   readonly occupiedSlots: readonly number[];
+  /** Present only for armor; ownership is separate from whether it can be worn. */
+  readonly armor?: {
+    readonly armorValue: number;
+    readonly canWear: boolean;
+  };
   readonly notes: readonly string[];
 }
 
@@ -73,6 +78,7 @@ export interface SpellInstance {
 
 export interface SpellBookInstance {
   readonly instanceId: string;
+  readonly definitionId?: string;
   readonly name: string;
   readonly ownerActorId: string;
   readonly occupiedSlots: readonly number[];
@@ -109,6 +115,7 @@ export interface CharacterActor extends ActorBase {
   readonly rank: "Novice";
   readonly traits: Traits;
   readonly corruption: ValueTrack;
+  readonly inventoryCapacity: number;
   readonly currency: {
     readonly amount: number;
     readonly unit: "silver-pennies";

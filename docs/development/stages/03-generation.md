@@ -1,6 +1,6 @@
 # Stage 03 — Generation and customization
 
-**Status:** pending
+**Status:** completed
 
 **Dependencies:** Stages 01 and 02
 
@@ -10,13 +10,13 @@ Pure shared generation returning complete, stable character and companion data.
 
 ## Tasks
 
-- [ ] Implement creation formulas, identity/traits, background grants, and spells.
-- [ ] Implement seeded choices/quantities and independent inventory instances.
-- [ ] Generate squire, familiar, dog, and mounts using confirmed rules.
-- [ ] Implement one optional two-score swap against original rolls.
-- [ ] Derive capacity, corruption, armor restrictions, and retainer loyalty.
-- [ ] Validate customization without unrelated rerolls or state mutation.
-- [ ] Test formula bounds, reproducibility, independence, all backgrounds, and
+- [x] Implement creation formulas, identity/traits, background grants, and spells.
+- [x] Implement seeded choices/quantities and independent inventory instances.
+- [x] Generate squire, familiar, dog, and mounts using confirmed rules.
+- [x] Implement one optional two-score swap against original rolls.
+- [x] Derive capacity, corruption, armor restrictions, and retainer loyalty.
+- [x] Validate customization without unrelated rerolls or state mutation.
+- [x] Test formula bounds, reproducibility, independence, all backgrounds, and
   squire talent uniqueness; include deterministic edge cases rather than flaky
   statistical assertions.
 
@@ -27,8 +27,14 @@ rolls. Excess equipment is preserved and distinguishable from legal capacity.
 
 ## Verification evidence
 
-Not run; implementation pending.
+| Command | Result |
+| --- | --- |
+| `npm test` | passed — 5 test files; 51 tests passed |
+| `npm run typecheck` | passed — strict TypeScript checking completed |
+| `npm run build` | passed — typecheck and Vite production build completed |
+| `git diff --check` | passed |
 
 ## Partial-work checkpoint
 
-No work started. Next: implement formula and RNG tests against agreed contracts.
+Completed. Next: Stage 04 can prepare fillable PDF templates independently of
+the completed pure generation core.

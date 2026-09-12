@@ -46,6 +46,7 @@ const actors = [
     attributes: attributes(9, 10, 11),
     stamina: track(4),
     corruption: track(0, 14),
+    inventoryCapacity: 10,
     currency: { amount: 120, unit: "silver-pennies" },
     talents: [{ name: "Test Talent" }],
     inventory: [],
