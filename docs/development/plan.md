@@ -1,6 +1,6 @@
 # Chaos & Conquest generator development plan
 
-**Status:** Approved direction; implementation not started.
+**Status:** Approved direction; implementation underway.
 
 ## 1. Goal and scope
 

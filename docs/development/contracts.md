@@ -34,12 +34,13 @@ as usable until Stage 06 implements and verifies them.
   not printed-sheet rows.
 - Treat JSON, files, and other external values as `unknown`. The Stage 01
   envelope validators in `src/core/validation.ts` reject malformed top-level
-  shapes and discriminate character, retainer, pet/familiar, and mount
-  envelopes without coercion. They intentionally return unparsed definition
-  arrays and do not validate a full actor snapshot. Stage 02 must deep-parse
-  every definition, reference, discriminant, d20 table, quantity, and domain
-  invariant before treating external data as a contract type; it must not cast
-  an envelope result to `RulesDefinitionDocument` or `ActorSnapshot`.
+  shapes and discriminate character, retainer, pet/familiar, and mount envelopes
+  without coercion. They intentionally return unparsed definition arrays and
+  do not validate a full actor snapshot. Stage 02's
+  `src/core/rules-validation.ts` deep-parses definitions, references,
+  discriminants, d20 tables, quantities, and domain invariants before
+  `src/core/rules.ts` exposes frozen rules and name documents. Do not cast an
+  envelope result to `RulesDefinitionDocument` or `ActorSnapshot`.
 
 ## Randomness, provenance, and derivations
 

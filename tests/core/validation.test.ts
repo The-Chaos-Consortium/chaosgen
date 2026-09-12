@@ -239,6 +239,28 @@ const traitTables = {
 const rules = {
   schemaVersion: "1",
   rulesVersion: "test-rules",
+  characterCreation: {
+    attributeRoll: { kind: "dice", count: 3, sides: 6 },
+    staminaRoll: { kind: "dice", count: 1, sides: 6 },
+    randomAgeRoll: { kind: "dice", count: 2, sides: 10 },
+    randomAgeBase: 16,
+    minimumChosenAge: 18,
+    inventoryMinimum: 10,
+    corruptionMaximumModifier: 3,
+    wealthRoll: { kind: "dice", count: 6, sides: 6 },
+    wealthMultiplier: 10,
+    currencyUnit: "silver-pennies",
+    ancestry: "Human",
+    rank: "Novice",
+    factions: ["Chaos", "Law", "Balance"],
+    sharedEquipmentGrants: [],
+    sources: [],
+  },
+  retainerLoyalty: {
+    bands: [{ minimumWillpower: 3, maximumWillpower: 18, loyalty: 7, retainerMaximum: 4 }],
+    sources: [],
+  },
+  squireTalentIds: ["test-talent"],
   talents: [{ id: "test-talent", name: "Test Talent", description: "Synthetic", sources: [] }],
   traitTables,
   backgrounds: [
@@ -249,8 +271,8 @@ const rules = {
       description: "Synthetic",
       talentIds: ["test-talent"],
       equipmentGrants: [
-        { kind: "receive-all", grants: [{ itemId: "test-dagger", quantity: 1 }] },
-        { kind: "choose-one", grants: [{ itemId: "test-dagger", quantity: 1 }] },
+        { kind: "receive-all", grants: [{ itemId: "test-dagger", quantity: { kind: "fixed", value: 1 } }] },
+        { kind: "choose-one", grants: [{ itemId: "test-dagger", quantity: { kind: "fixed", value: 1 } }] },
       ],
       companionDefinitionIds: [],
       spellBookDefinitionIds: ["test-grimoire"],
@@ -261,7 +283,7 @@ const rules = {
   items: [{ id: "test-dagger", name: "Test Dagger", slots: 1, trivial: false, sources: [] }],
   spells: [{ id: "test-spell", name: "Test Spell", wording: "Synthetic", sources: [] }],
   spellBooks: [
-    { id: "test-grimoire", name: "Test Grimoire", slots: 2, capacity: 6, spellIds: ["test-spell"], sources: [] },
+    { id: "test-grimoire", name: "Test Grimoire", slots: 2, capacity: 6, startingSpellCount: 1, spellIds: ["test-spell"], sources: [] },
   ],
   scrolls: [
     { id: "test-bless-scroll", name: "Bless Scroll", spellName: "Bless", slots: 1, sources: [] },

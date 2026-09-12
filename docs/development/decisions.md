@@ -31,7 +31,6 @@
 
 Resolve these while auditing sources, before encoding an unsupported assumption:
 
-- Slot treatment of unspecified items and bundled kits (including clothing).
 - Initial allocation of gear between character and mount; ridden/unridden state.
 - Any animal corruption fields not explicitly supported by rules. A printed box
   is not evidence of a rule; leave unsupported fields blank and document why.
@@ -43,6 +42,12 @@ Check general equipment rules and background-specific text first. Escalate
 remaining questions when they materially affect statistics or equipment legality.
 The scroll and squire questions are resolved and should not be reopened without
 new conflicting information.
+
+## Source-backed interpretations
+
+| ID | Status | Decision | Source / rationale | Affected stages | Supersedes |
+| --- | --- | --- | --- | --- | --- |
+| D11 | confirmed | Explicit slot counts and trivial labels control when present; otherwise a starting item or bundled textual kit occupies one slot. Clothing is zero-slot only when its background explicitly labels it trivial. | `equipment.md`, Items & Equipment establishes one slot as the general default and `backgrounds.md` repeatedly marks exceptions as trivial. This preserves the source's distinction between the Outlaw/Grave Robber cloaks and the Burglar's separately beneficial cloak and shoes. | 02, 03, 05, 07 | — |
 
 ## Recording future decisions
 

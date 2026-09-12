@@ -21,7 +21,7 @@ export type ValueDefinition = DiceDefinition | FixedValueDefinition;
 
 export interface ItemQuantityGrant {
   readonly itemId: string;
-  readonly quantity: number;
+  readonly quantity: ValueDefinition;
 }
 
 /** A group either grants every entry or requires one explicit alternative. */
@@ -85,6 +85,8 @@ export interface SpellBookDefinition {
   readonly name: string;
   readonly slots: number;
   readonly capacity: number;
+  readonly startingSpellCount: number;
+  /** Valid example spells for the initial selection, not current book contents. */
   readonly spellIds: readonly string[];
   readonly sources: readonly SourceReference[];
 }
@@ -157,9 +159,42 @@ export type CompanionDefinition =
   | PetDefinition
   | MountDefinition;
 
+export interface CharacterCreationDefinition {
+  readonly attributeRoll: DiceDefinition;
+  readonly staminaRoll: DiceDefinition;
+  readonly randomAgeRoll: DiceDefinition;
+  readonly randomAgeBase: number;
+  readonly minimumChosenAge: number;
+  readonly inventoryMinimum: number;
+  readonly corruptionMaximumModifier: number;
+  readonly wealthRoll: DiceDefinition;
+  readonly wealthMultiplier: number;
+  readonly currencyUnit: "silver-pennies";
+  readonly ancestry: string;
+  readonly rank: string;
+  readonly factions: readonly string[];
+  readonly sharedEquipmentGrants: readonly ItemGrantGroup[];
+  readonly sources: readonly SourceReference[];
+}
+
+export interface RetainerLoyaltyBandDefinition {
+  readonly minimumWillpower: number;
+  readonly maximumWillpower: number;
+  readonly loyalty: number;
+  readonly retainerMaximum: number;
+}
+
+export interface RetainerLoyaltyDefinition {
+  readonly bands: readonly RetainerLoyaltyBandDefinition[];
+  readonly sources: readonly SourceReference[];
+}
+
 export interface RulesDefinitionDocument {
   readonly schemaVersion: string;
   readonly rulesVersion: string;
+  readonly characterCreation: CharacterCreationDefinition;
+  readonly retainerLoyalty: RetainerLoyaltyDefinition;
+  readonly squireTalentIds: readonly string[];
   readonly talents: readonly TalentDefinition[];
   readonly traitTables: TraitTables;
   readonly backgrounds: readonly BackgroundDefinition[];
@@ -169,4 +204,16 @@ export interface RulesDefinitionDocument {
   readonly scrolls: readonly ScrollDefinition[];
   readonly spellWordingOracles: readonly SpellWordingOracleDefinition[];
   readonly companions: readonly CompanionDefinition[];
+}
+
+export interface NameDefinitionDocument {
+  readonly schemaVersion: string;
+  readonly rulesVersion: string;
+  readonly source: string;
+  readonly human: {
+    readonly masculine: readonly string[];
+    readonly feminine: readonly string[];
+    readonly family: readonly string[];
+  };
+  readonly ironicOrAbsurdFamiliar: readonly string[];
 }

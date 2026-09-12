@@ -1,13 +1,13 @@
 # Implementation status
 
-**Current state:** Stage 01 completed.
+**Current state:** Stage 02 completed.
 **Active implementation stage:** None.
-**Next candidate:** Stage 02, rules data (do not start without authorization).
+**Next candidate:** Stage 03, generation (do not start without authorization).
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
 | [01 Foundation](stages/01-foundation.md) | completed | None | [Completion handoff](handoffs/2026-09-12-stage-01-completion.md) |
-| [02 Rules data](stages/02-rules-data.md) | pending | 01 contracts | — |
+| [02 Rules data](stages/02-rules-data.md) | completed | 01 contracts | [Completion handoff](handoffs/2026-09-12-stage-02-completion.md) |
 | [03 Generation](stages/03-generation.md) | pending | 01, 02 | — |
 | [04 PDF templates](stages/04-pdf-templates.md) | pending | 01 tooling | — |
 | [05 PDF rendering](stages/05-pdf-rendering.md) | pending | 03, 04 | — |
@@ -17,9 +17,9 @@
 
 ## Blockers and questions
 
-- No implementation blocker has been established yet.
-- Consult the [interpretation queue](decisions.md#interpretation-queue) during the
-  data audit; resolve material gaps before relying on assumptions.
+- No implementation blocker has been established.
+- Stage 02 resolved unspecified starting-item slots in source-backed decision
+  D11. Remaining interpretation-queue items apply to generation and rendering.
 - GitLab project/publication details will be needed for live deployment, not for
   building and testing the static app locally.
 
