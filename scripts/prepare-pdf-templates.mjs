@@ -10,14 +10,16 @@ const debugDirectory = join(templatesDirectory, "debug");
 const mapDirectory = join(root, "src", "pdf", "field-maps");
 const debug = process.argv.includes("--debug");
 const updateExisting = process.argv.includes("--update-existing");
+const syncFieldMaps = process.argv.includes("--sync-field-maps");
 const reproducibleDate = new Date("2026-01-01T00:00:00.000Z");
 
-if (debug && updateExisting) throw new Error("--debug and --update-existing cannot be used together");
+if (debug && (updateExisting || syncFieldMaps)) throw new Error("--debug cannot be used with an existing-derivative operation");
 
 for (const mapName of ["character", "retainer", "mount"]) {
-  const map = JSON.parse(await readFile(join(mapDirectory, `${mapName}.json`), "utf8"));
+  const mapPath = join(mapDirectory, `${mapName}.json`);
+  const map = JSON.parse(await readFile(mapPath, "utf8"));
   const sourcePath = join(templatesDirectory, map.source);
-  const inputPath = updateExisting ? join(outputDirectory, map.output) : sourcePath;
+  const inputPath = updateExisting || syncFieldMaps ? join(outputDirectory, map.output) : sourcePath;
   const source = await readFile(inputPath);
   const fields = expandFields(map);
   const pdf = await PDFDocument.load(source);
@@ -28,6 +30,21 @@ for (const mapName of ["character", "retainer", "mount"]) {
     throw new Error(`${inputPath} does not match the audited template metadata`);
   }
   const form = pdf.getForm();
+  if (syncFieldMaps) {
+    if (form.getFields().length !== fields.length) throw new Error(`${inputPath} field count mismatch`);
+    map.fields = fields.map((field) => {
+      const widgets = form.getTextField(field.name).acroField.getWidgets();
+      if (widgets.length !== 1) throw new Error(`${field.name} must have exactly one widget`);
+      const widget = widgets[0];
+      if (!widget) throw new Error(`${field.name} is missing its widget`);
+      const { x, y, width, height } = widget.getRectangle();
+      return [field.name, field.page, x, y, width, height, ...(field.multiline ? [true] : [])];
+    });
+    map.repeating = [];
+    await writeFile(mapPath, `${JSON.stringify(map, null, 2)}\n`);
+    console.log(JSON.stringify({ source: basename(inputPath), fields: fields.length, map: join("src", "pdf", "field-maps", `${mapName}.json`) }));
+    continue;
+  }
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   if (updateExisting) {
     if (form.getFields().length !== fields.length) throw new Error(`${inputPath} field count mismatch`);

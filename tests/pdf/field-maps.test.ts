@@ -4,10 +4,15 @@ import { describe, expect, it } from "vitest";
 import { PDFDocument, PDFTextField, TextAlignment } from "pdf-lib";
 
 const templates = [
-  { path: "templates/fillable/character.pdf", pages: 2, fields: 41, multiline: ["character.spells", "character.talents", "character.notes"] },
-  { path: "templates/fillable/retainer.pdf", pages: 1, fields: 66, multiline: ["retainer.left.notes", "retainer.right.notes"] },
-  { path: "templates/fillable/mount.pdf", pages: 1, fields: 77, multiline: ["mount.notes"] },
+  { path: "templates/fillable/character.pdf", map: "src/pdf/field-maps/character.json", pages: 2, fields: 41, multiline: ["character.spells", "character.talents", "character.notes"] },
+  { path: "templates/fillable/retainer.pdf", map: "src/pdf/field-maps/retainer.json", pages: 1, fields: 66, multiline: ["retainer.left.notes", "retainer.right.notes"] },
+  { path: "templates/fillable/mount.pdf", map: "src/pdf/field-maps/mount.json", pages: 1, fields: 77, multiline: ["mount.notes"] },
 ] as const;
+
+type FieldMap = {
+  fields: Array<[string, number, number, number, number, number, boolean?]>;
+  repeating: Array<[string, number, number, number, number, number, number, number, number]>;
+};
 
 describe("fillable PDF templates", () => {
   it.each(templates)("preserves pages and creates all mapped editable fields for $path", async ({ path, pages, fields, multiline }) => {
@@ -52,6 +57,30 @@ describe("fillable PDF templates", () => {
         || field.getName().endsWith(".talents")
         || field.getName().endsWith(".notes");
       expect((field as PDFTextField).getAlignment()).toBe(leftAligned ? TextAlignment.Left : TextAlignment.Center);
+    });
+  });
+
+  it.each(templates)("matches the checked-in field rectangles for $path", async ({ path, map: mapPath }) => {
+    const pdf = await PDFDocument.load(await readFile(path));
+    const map = JSON.parse(await readFile(mapPath, "utf8")) as FieldMap;
+    const fields = [
+      ...map.fields.map(([name, page, x, y, width, height]) => ({ name, page, x, y, width, height })),
+      ...map.repeating.flatMap(([prefix, page, first, count, x, y, width, height, yStep]) => (
+        Array.from({ length: count }, (_, offset) => ({ name: `${prefix}${first + offset}`, page, x, y: y - offset * yStep, width, height }))
+      )),
+    ];
+
+    expect(fields).toHaveLength(pdf.getForm().getFields().length);
+    fields.forEach(({ name, x, y, width, height }) => {
+      const widgets = pdf.getForm().getTextField(name).acroField.getWidgets();
+      expect(widgets).toHaveLength(1);
+      const widget = widgets[0];
+      if (!widget) throw new Error(`${name} is missing its widget`);
+      const rectangle = widget.getRectangle();
+      expect(rectangle.x).toBeCloseTo(x, 6);
+      expect(rectangle.y).toBeCloseTo(y, 6);
+      expect(rectangle.width).toBeCloseTo(width, 6);
+      expect(rectangle.height).toBeCloseTo(height, 6);
     });
   });
 

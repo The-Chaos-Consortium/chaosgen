@@ -1,6 +1,6 @@
 # Stage 04 — Fillable PDF templates
 
-**Status:** in_progress - transparent-fill follow-up
+**Status:** completed
 
 **Dependencies:** Stage 01 tooling; original PDFs available
 
@@ -37,6 +37,10 @@ portrait text placeholder or assumption that printed inventory lines equal capac
 | `npm run prepare:pdf-templates:transparent-fill` | passed — applied requested text alignment without changing existing field rectangles |
 | `npm test` | passed — 6 test files; 62 tests passed, including transparent-fill and alignment checks on every widget |
 | `npm run build` | passed |
+| `npm run prepare:pdf-templates:sync-maps` | passed — synchronized all 184 owner-approved field rectangles into the checked-in maps |
+| `npm run prepare:pdf-templates` | passed — recreated all derivatives from the printable originals |
+| Repeated preparation SHA-256 | passed — character/retainer/mount derivatives were byte-identical after coordinate-map synchronization |
+| `npm test` | passed — 6 test files; 65 tests passed, including map-to-widget rectangle checks |
 | `npm run build` | passed |
 | `git diff --check` | passed |
 | `npm run prepare:pdf-templates:transparent-fill` | passed — removed background colors in place from all 41 character, 66 retainer, and 77 mount fields without regenerating coordinate maps |
@@ -56,10 +60,10 @@ and notes are left-aligned; every other field is center-aligned. The owner
 manually positioned the fields and their three derivatives were backed up in
 commit `aa15f82` before field-alignment changes. The owner visually approved the
 result. The obsolete `char-sheet.pdf` and `hireling-sheet.pdf` legacy templates
-were removed from `templates/`.
+were removed from `templates/`. The coordinate maps now reproduce all approved
+field rectangles.
 
 ## Partial-work checkpoint
 
-Field-style corrections and visual alignment are verified. Next: update the
-checked-in PDF-point maps to reproduce the owner-approved derivative positions
-before the Stage 05 handoff resumes.
+Completed. Stage 05 can map generated actor data onto the approved stable field
+names and assemble completed PDF output.

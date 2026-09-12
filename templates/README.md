@@ -12,6 +12,11 @@ Run `npm run prepare:pdf-templates:transparent-fill` to remove fill colors from
 existing derivatives without changing their field rectangles. Use this after
 manual coordinate adjustments.
 
+After approved manual coordinate adjustments, run
+`npm run prepare:pdf-templates:sync-maps` to update the checked-in coordinate
+maps from the existing derivatives. This expands repeating fields into explicit
+records so the approved rectangles are reproduced exactly.
+
 Run `npm run prepare:pdf-templates:debug` to create flattened synthetic-label
 samples under ignored `templates/debug/` for visual coordinate inspection.
 Those debug PDFs are not inputs to rendering and are not committed.

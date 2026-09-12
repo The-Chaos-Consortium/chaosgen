@@ -1,4 +1,4 @@
-# Handoff - Stage 04 transparent field fills
+# Handoff - Stage 04 final template alignment
 
 **Date:** 2026-09-12
 
@@ -6,7 +6,7 @@
 
 **Branch:** `docs/development-plan`
 
-**State:** in progress - coordinate-map reconciliation pending
+**State:** completed
 
 ## Accomplished
 
@@ -24,6 +24,10 @@
   text fields are centered without changing their rectangles.
 - The owner visually approved the field alignment. Removed the obsolete
   `char-sheet.pdf` and `hireling-sheet.pdf` legacy templates.
+- Synchronized the owner-approved widget rectangles into the checked-in maps,
+  expanding repeated inventory definitions into explicit records where needed.
+- Regenerated all derivatives from their printable originals; the output
+  rectangles match the checked-in maps and repeated preparation is byte-identical.
 
 ## Verification
 
@@ -36,15 +40,17 @@
 | `npm run prepare:pdf-templates:transparent-fill` | passed — applied alignment in place to 41/66/77 character/retainer/mount fields |
 | `npm test` | passed — 6 test files; 62 tests passed, including alignment checks |
 | `npm run build` | passed |
+| `npm run prepare:pdf-templates:sync-maps` | passed — 41/66/77 character/retainer/mount field rectangles synchronized |
+| `npm run prepare:pdf-templates` | passed — regenerated from printable originals |
+| Repeated derivative SHA-256 comparison | passed — byte-identical derivatives |
+| `npm test` | passed — 6 test files; 65 tests passed, including rectangle-map checks |
 
 ## Next action
 
-Update the coordinate maps to match the owner-approved fillable derivative
-positions. Keep the approved derivative changes; do not run the normal
-regeneration command until that reconciliation is complete.
+Stage 05 should map generated actor snapshots to the approved stable field
+names, create appearances, flatten filled sheets, and assemble completed output.
 
 ## Residual risks
 
-- Field appearance, count, dimensions, alignment, and visual placement are
-  verified. The checked-in coordinate maps must still be reconciled before
-  derivatives can be reproduced from their printable originals.
+- Blank fields use Helvetica. Stage 05 must embed a Unicode-capable font for
+  completed PDFs and report unsupported text explicitly.
