@@ -1,8 +1,8 @@
 # Implementation status
 
-**Current state:** Stage 08 completed; the TypeScript migration is complete.
-**Active implementation stage:** None.
-**Next external action:** Enable GitHub Pages with GitHub Actions in repository settings and observe the first `main` deployment.
+**Current state:** Stage 08 reopened after branch review found required follow-up work.
+**Active implementation stage:** Stage 08 review remediation.
+**Next concrete deliverable:** Correct quantity preservation and rules-contract behavior with regression tests.
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
@@ -13,12 +13,18 @@
 | [05 PDF rendering](stages/05-pdf-rendering.md) | completed | 03, 04 | [Completion handoff](handoffs/2026-09-13-stage-05-completion.md) |
 | [06 CLI](stages/06-cli.md) | completed | 03, 05 | [Completion handoff](handoffs/2026-09-13-stage-06-completion.md) |
 | [07 Web](stages/07-web.md) | completed | 03; 05 for download | [Completion](handoffs/2026-09-13-stage-07-completion.md); [follow-up](handoffs/2026-09-13-stage-07-follow-up.md) |
-| [08 Delivery and cleanup](stages/08-delivery.md) | completed | 01–07 | [Completion handoff](handoffs/2026-09-13-stage-08-completion.md) |
+| [08 Delivery and cleanup](stages/08-delivery.md) | in_progress | 01–07 | [Completion checkpoint](handoffs/2026-09-13-stage-08-completion.md); [PR review](handoffs/2026-09-13-stage-08-pr-review.md) |
 
 ## Blockers and questions
 
-- No implementation blocker has been established. GitHub Pages activation is an
-  owner-controlled repository setting; no live deployment has been attempted.
+- The branch review found unresolved generation, rendering, browser,
+  documentation, cleanup, and delivery work. The complete checklist and exact
+  locations are recorded in the Stage 08 document and latest handoff.
+- Redistribution rights and attribution for the supplied printable PDF templates
+  must be confirmed before public release.
+- GitHub Pages activation is an owner-controlled repository setting; no live
+  deployment has been attempted. Activation follows remediation, review, merge,
+  and selection of GitHub Actions as the Pages source.
 - Stage 02 resolved unspecified starting-item slots in source-backed decision
   D11. Remaining interpretation-queue items apply to generation and rendering.
 - GitHub Pages must be configured to use GitHub Actions before a live deployment.

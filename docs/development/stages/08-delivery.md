@@ -1,6 +1,6 @@
 # Stage 08 — Deployment, cleanup, and final review
 
-**Status:** completed
+**Status:** in_progress
 
 **Dependencies:** Stages 01–07
 
@@ -45,7 +45,46 @@ Required visual PDF samples were accepted during Stage 05. GitHub Pages is ready
 to deploy after the repository owner selects GitHub Actions as the Pages source;
 no live deployment was attempted.
 
+## Post-completion review follow-up
+
+A branch review after the completion checkpoint found unresolved work that must
+be addressed before opening the migration PR. The automated checks above still
+pass, but they do not cover these findings. See the
+[review handoff](../handoffs/2026-09-13-stage-08-pr-review.md) for exact locations
+and verification context.
+
+- [x] Commit the intended removal of the obsolete Discord `.example_env`.
+- [ ] Preserve rolled quantities for zero-slot inventory in browser and PDF
+  output, and correct the Charlatan counterfeit-coin slot classification under
+  D11.
+- [ ] Resolve the queued faction display/export decision and make browser and
+  PDF output agree.
+- [ ] Make generation and customization consume the validated rules document's
+  attribute roll, inventory minimum, corruption modifier, starting spell count,
+  and retainer loyalty values, or narrow the supported contract explicitly.
+- [ ] Retain the squire's defined inventory capacity in the generated actor.
+- [ ] Validate d20 table ordering or select entries by their recorded d20 index.
+- [ ] Strengthen generated-document validation for original roll IDs, dice,
+  ranges, and totals.
+- [ ] Prevent long names and custom spell wording from being clipped in printable
+  PDF appearances.
+- [ ] Use file-URL-safe path conversion in the PDF template preparation script.
+- [ ] Preserve keyboard focus during browser edits and prevent character state
+  changes from making an in-progress PDF download disagree with the display.
+- [ ] Announce successful generation to assistive technology and correct the
+  button hover contrast failure.
+- [ ] Update public documentation that still describes the migration as
+  incomplete.
+- [ ] Confirm and document redistribution rights and attribution for the supplied
+  printable PDF templates and their published derivatives.
+- [ ] Pin GitHub Actions to reviewed commit SHAs and add a Pages deployment
+  concurrency policy.
+- [ ] Add regression coverage for each corrected behavior, then repeat the full
+  type, test, build, CLI, PDF structural, and required visual checks.
+
 ## Partial-work checkpoint
 
-Completed. The next external action is enabling GitHub Pages with GitHub Actions
-in repository settings, then observing the first `main` deployment.
+Reopened after PR review. The next concrete deliverable is the quantity and
+rules-contract correction with regression tests; the complete remediation list
+is above. GitHub Pages activation remains an external action after the branch is
+review-ready and merged.

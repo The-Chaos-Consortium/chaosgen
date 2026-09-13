@@ -1,3 +1,0 @@
-# .example_env
-# create a .env file with your configuration.
-DISCORD_TOKEN={your-bot-token}
