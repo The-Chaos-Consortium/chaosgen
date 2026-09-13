@@ -70,11 +70,12 @@ export function mountApp(root: HTMLElement, dependencies: AppDependencies = defa
 
   root.replaceChildren(
     element("div", { className: "shell" },
-      element("header", { className: "masthead" }, element("h1", {}, "Chaos & Conquest"), element("p", {}, "A new character, ready for the road.")),
+      element("header", { className: "masthead" }, element("h1", {}, "Chaos & Conquest Character Generator"), element("p", {}, "A new character, ready for the road.")),
       element("section", { className: "panel", ariaLabel: "Character generation" },
         element("h2", {}, "Begin a Character"),
-        element("div", { className: "controls" }, label("background", "Background", background), generate),
+        element("div", { className: "controls" }, label("background", "Background", background)),
         element("p", { className: "muted" }, "Choose a background or let fate choose. Generating creates a new character; editing never rolls again."),
+        element("div", { className: "generate-action" }, generate),
       ),
       status,
       result,
