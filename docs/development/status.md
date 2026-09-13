@@ -1,8 +1,8 @@
 # Implementation status
 
-**Current state:** Stage 05 completed.
+**Current state:** Stage 06 completed.
 **Active implementation stage:** None.
-**Next candidate:** Stage 06, CLI.
+**Next candidate:** Stage 07, web interface.
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
@@ -11,7 +11,7 @@
 | [03 Generation](stages/03-generation.md) | completed | 01, 02 | [Completion handoff](handoffs/2026-09-12-stage-03-completion.md) |
 | [04 PDF templates](stages/04-pdf-templates.md) | completed | 01 tooling | [Final handoff](handoffs/2026-09-12-stage-04-transparent-fill.md) |
 | [05 PDF rendering](stages/05-pdf-rendering.md) | completed | 03, 04 | [Completion handoff](handoffs/2026-09-13-stage-05-completion.md) |
-| [06 CLI](stages/06-cli.md) | pending | 03, 05 | — |
+| [06 CLI](stages/06-cli.md) | completed | 03, 05 | [Completion handoff](handoffs/2026-09-13-stage-06-completion.md) |
 | [07 Web](stages/07-web.md) | pending | 03; 05 for download | — |
 | [08 Delivery and cleanup](stages/08-delivery.md) | pending | 01–07 | — |
 

@@ -1,6 +1,6 @@
 # Stage 06 — PDF-only CLI
 
-**Status:** pending
+**Status:** completed
 
 **Dependencies:** Stages 03 and 05
 
@@ -10,14 +10,14 @@ Node CLI producing one complete PDF per character with usable random defaults.
 
 ## Tasks
 
-- [ ] Add command entry point and documented invocation/install workflow.
-- [ ] Support background, count, all, seed, output, and output-dir options.
-- [ ] Validate names, numbers, conflicts, and output-path semantics.
-- [ ] Load packaged assets independently of current working directory.
-- [ ] Sanitize filenames, avoid collisions, and report paths/errors appropriately.
-- [ ] Verify default, individual, seeded batch, all-background, invalid-input, and
+- [x] Add command entry point and documented invocation/install workflow.
+- [x] Support background, count, all, seed, output, and output-dir options.
+- [x] Validate names, numbers, conflicts, and output-path semantics.
+- [x] Load packaged assets independently of current working directory.
+- [x] Sanitize filenames, avoid collisions, and report paths/errors appropriately.
+- [x] Verify default, individual, seeded batch, all-background, invalid-input, and
   outside-repository invocation cases.
-- [ ] Document working CLI usage and limits.
+- [x] Document working CLI usage and limits.
 
 ## Completion gate
 
@@ -27,8 +27,20 @@ without repeating the same seeded character accidentally.
 
 ## Verification evidence
 
-Not run; implementation pending.
+| Check/command | Result |
+| --- | --- |
+| `npm run typecheck` | passed |
+| `npm test` | passed: 8 files, 74 tests |
+| `npm run build` | passed |
+| `git diff --check` | passed |
+| CLI default outside the repository | passed: generated one PDF from a temporary current directory |
+| CLI individual output | passed: Knight PDF generated with `--output` |
+| CLI seeded batch | passed: two distinct background PDFs generated with `--count 2` |
+| CLI all backgrounds | passed: 20 PDFs generated with `--all` |
+| CLI invalid input | passed: `--all --count 2` rejected with a nonzero exit status |
+| External `pdfinfo` inspection | skipped: `pdfinfo` is not installed; renderer structural and visual checks remain recorded in Stage 05 |
 
 ## Partial-work checkpoint
 
-No work started. Next: argument/output contract implementation.
+Completed. Next: Stage 07 can consume the core generator and PDF renderer for
+browser generation and download.
