@@ -28,12 +28,12 @@ and dedicated mount output. Exporting cannot reroll, mutate, or silently truncat
 
 | Command | Result |
 | --- | --- |
-| `npm test` | passed - 7 test files; 69 tests passed, including all-background structural exports and renderer non-mutation checks. |
+| `npm test` | passed - 7 test files; 70 tests passed, including all-background structural exports and renderer non-mutation checks. |
 | `npm run typecheck` | passed |
 | `npm run build` | passed |
 | `git diff --check` | passed |
 | `npm run generate:pdf-review-samples` | passed - wrote six synthetic PDFs under ignored `output/pdf-review/`. |
-| Editable field regression checks | passed - Knight output has 184 fields with transparent widgets and slot-only inventory text. |
+| Editable field regression checks | passed - Knight output has 184 fields, transparent widgets, singular per-slot item text, and score-only loyalty; Warpriest labels the Holy Symbol as trivial. |
 | Visual PDF review | pending - required samples are generated but have not yet been opened and inspected. |
 
 Record visual review of Knight, Roadwarden, Witch, Warpriest, Duelist, and long

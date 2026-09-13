@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 
 import { describe, expect, it } from "vitest";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, PDFTextField } from "pdf-lib";
 
 import { generateCharacter } from "../../src/core/generation.ts";
 import { createSeededRandom } from "../../src/core/rng.ts";
@@ -42,9 +42,11 @@ describe("PdfLibCharacterRenderer", () => {
     expect(pdf.getForm().getFields()).toHaveLength(184);
     const firstSlot = knight.actor.inventory.find(({ occupiedSlots }) => occupiedSlots.includes(1));
     if (firstSlot === undefined) throw new Error("expected an item in inventory slot 1");
-    const firstSlotText = firstSlot.quantity === 1 ? firstSlot.name : `${firstSlot.name} x${firstSlot.quantity}`;
-    expect(pdf.getForm().getTextField("character.inventory.1").getText()).toBe(firstSlotText);
-    expect(pdf.getForm().getTextField("character.inventory.2").getText()).toBe(firstSlotText);
+    const squire = knight.actor.companions.find((companion) => companion.kind === "retainer");
+    if (squire === undefined) throw new Error("expected a squire");
+    expect(pdf.getForm().getTextField("character.inventory.1").getText()).toBe(firstSlot.name);
+    expect(pdf.getForm().getTextField("character.inventory.2").getText()).toBe(firstSlot.name);
+    expect(pdf.getForm().getTextField("retainer.left.loyalty").getText()).toBe(String(squire.loyalty.score));
     pdf.getForm().getFields().forEach((field) => {
       field.acroField.getWidgets().forEach((widget) => {
         expect(widget.getAppearanceCharacteristics()?.getBackgroundColor()).toBeUndefined();
@@ -59,6 +61,16 @@ describe("PdfLibCharacterRenderer", () => {
 
     expect(roadwarden.getPageCount()).toBe(3);
     expect(duelist.getPageCount()).toBe(2);
+  });
+
+  it("marks zero-slot gear as trivial", async () => {
+    const warpriest = document("warpriest");
+    if (warpriest.actor.kind !== "character") throw new Error("expected a character");
+    const holySymbol = warpriest.actor.inventory.find(({ name }) => name === "Holy Symbol");
+    if (holySymbol === undefined || holySymbol.occupiedSlots.length !== 0) throw new Error("expected a trivial holy symbol");
+    const pdf = await PDFDocument.load(await renderer.render({ document: warpriest, templates: await templates() }));
+
+    expect(pdf.getForm().getFields().some((field) => (field as PDFTextField).getText() === "Holy Symbol - trivial")).toBe(true);
   });
 
   it("rejects custom wording Helvetica cannot encode instead of dropping it", async () => {

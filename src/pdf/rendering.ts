@@ -154,7 +154,7 @@ function retainerPanelValues(panel: "left" | "right", actor: Exclude<CompanionAc
     [`${prefix}.wil.maximum`]: String(actor.attributes.willpower.maximum),
     [`${prefix}.stamina.current`]: String(actor.stamina.current),
     [`${prefix}.stamina.maximum`]: String(actor.stamina.maximum),
-    ...(actor.kind === "retainer" ? { [`${prefix}.loyalty`]: `${actor.loyalty.score} / ${actor.loyalty.retainerMaximum}` } : {}),
+    ...(actor.kind === "retainer" ? { [`${prefix}.loyalty`]: String(actor.loyalty.score) } : {}),
     [`${prefix}.notes`]: notes,
     ...inventory.values,
   };
@@ -189,15 +189,10 @@ function mountValues(character: CharacterActor, mount: MountActor): FieldValues 
 
 function inventoryEntries(inventory: readonly InventoryItemInstance[], books: CharacterActor["spellBooks"] = [], scrolls: CharacterActor["scrolls"] = []): readonly { readonly name: string; readonly slots: readonly number[] }[] {
   return [
-    ...inventory.map((item) => ({ name: inventoryName(item), slots: item.occupiedSlots })),
+    ...inventory.map((item) => ({ name: item.name, slots: item.occupiedSlots })),
     ...books.map((book) => ({ name: book.name, slots: book.occupiedSlots })),
     ...scrolls.map((scroll) => ({ name: scroll.name, slots: scroll.occupiedSlots })),
   ];
-}
-
-function inventoryName(item: InventoryItemInstance): string {
-  const quantity = item.quantity === 1 ? "" : ` x${item.quantity}`;
-  return `${item.name}${quantity}`;
 }
 
 function inventoryFields(prefix: string, rowCount: number, entries: readonly { readonly name: string; readonly slots: readonly number[] }[]): { readonly values: FieldValues; readonly overflow: readonly string[] } {
@@ -206,7 +201,7 @@ function inventoryFields(prefix: string, rowCount: number, entries: readonly { r
   const trivial: string[] = [];
   for (const entry of entries) {
     if (entry.slots.length === 0) {
-      trivial.push(entry.name);
+      trivial.push(`${entry.name} - trivial`);
       continue;
     }
     for (const slot of entry.slots) {

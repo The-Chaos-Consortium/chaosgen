@@ -23,8 +23,9 @@
   Helvetica cannot encode.
 - Added `npm run generate:pdf-review-samples`, which creates six reproducible,
   synthetic PDFs under ignored `output/pdf-review/` for the required visual review.
-- Updated the renderer after owner review: multi-slot gear is repeated as plain
-  item text in each occupied row, and no completed field is flattened or filled.
+- Updated the renderer after owner review: multi-slot gear is repeated as its
+  singular name in each occupied row, zero-slot gear is marked `- trivial`,
+  loyalty shows only its score, and no completed field is flattened or filled.
 
 ## Working tree and Git state
 
@@ -35,18 +36,18 @@
 
 | Check/command | Result | Evidence or limitation |
 | --- | --- | --- |
-| `npm test` | passed | 7 test files and 69 tests passed. |
+| `npm test` | passed | 7 test files and 70 tests passed. |
 | `npm run typecheck` | passed | Strict TypeScript checking passed. |
 | `npm run build` | passed | Typecheck and Vite production build passed. |
 | `git diff --check` | passed | No whitespace errors. |
 | `npm run generate:pdf-review-samples` | passed | Wrote Knight, Roadwarden, Witch, Warpriest, Duelist, and long custom-spell samples. |
-| Editable field regression checks | passed | Knight has 184 transparent editable fields; the first two inventory rows contain only the first multi-slot item text. |
+| Editable field regression checks | passed | Knight has 184 transparent editable fields with singular per-slot item text and score-only loyalty; Warpriest labels the Holy Symbol as trivial. |
 | Visual PDF review | pending | Required generated samples remain to be opened and inspected. |
 
 ## Decisions and blockers
 
-- D12 records the owner decision to preserve editable transparent fields and use
-  item-only inventory rows. D11 continues to govern actual slot occupancy.
+- D12 records the owner decision to preserve editable transparent fields; D13
+  records per-slot, trivial-item, and loyalty display. D11 governs slot occupancy.
 - Completed PDFs use Helvetica and reject unsupported characters explicitly;
   embedding a Unicode-capable font remains future improvement work.
 
