@@ -31,7 +31,7 @@ function document(backgroundId: string): GeneratedCharacterDocument {
 }
 
 describe("PdfLibCharacterRenderer", () => {
-  it("flattens and assembles the character, retainer, and mount sheets without mutating a knight", async () => {
+  it("keeps editable fields while assembling the character, retainer, and mount sheets without mutating a knight", async () => {
     const knight = document("knight");
     if (knight.actor.kind !== "character") throw new Error("expected a character");
     const before = structuredClone(knight);
@@ -39,7 +39,17 @@ describe("PdfLibCharacterRenderer", () => {
     const pdf = await PDFDocument.load(await renderer.render({ document: knight, templates: await templates() }));
 
     expect(pdf.getPageCount()).toBe(4);
-    expect(pdf.getForm().getFields()).toHaveLength(0);
+    expect(pdf.getForm().getFields()).toHaveLength(184);
+    const firstSlot = knight.actor.inventory.find(({ occupiedSlots }) => occupiedSlots.includes(1));
+    if (firstSlot === undefined) throw new Error("expected an item in inventory slot 1");
+    const firstSlotText = firstSlot.quantity === 1 ? firstSlot.name : `${firstSlot.name} x${firstSlot.quantity}`;
+    expect(pdf.getForm().getTextField("character.inventory.1").getText()).toBe(firstSlotText);
+    expect(pdf.getForm().getTextField("character.inventory.2").getText()).toBe(firstSlotText);
+    pdf.getForm().getFields().forEach((field) => {
+      field.acroField.getWidgets().forEach((widget) => {
+        expect(widget.getAppearanceCharacteristics()?.getBackgroundColor()).toBeUndefined();
+      });
+    });
     expect(knight).toEqual(before);
   });
 
@@ -62,7 +72,7 @@ describe("PdfLibCharacterRenderer", () => {
     await expect(renderer.render({ document: custom, templates: await templates() })).rejects.toThrow("unsupported Helvetica character U+2603");
   });
 
-  it("exports every background as a flattened PDF", async () => {
+  it("exports every background as an editable PDF", async () => {
     const suppliedTemplates = await templates();
 
     for (const background of rules.backgrounds) {
@@ -70,7 +80,7 @@ describe("PdfLibCharacterRenderer", () => {
         document: document(background.id),
         templates: suppliedTemplates,
       }));
-      expect(pdf.getForm().getFields()).toHaveLength(0);
+      expect(pdf.getForm().getFields().length).toBeGreaterThanOrEqual(41);
       expect(pdf.getPageCount()).toBeGreaterThanOrEqual(2);
     }
   });

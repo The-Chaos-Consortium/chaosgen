@@ -11,8 +11,8 @@
 ## Accomplished
 
 - Added `src/pdf/rendering.ts`, a byte-in/byte-out pdf-lib renderer that fills
-  supplied derivatives, creates appearances, flattens every sheet, and merges
-  character pages before retainer/pet and mount sheets.
+  supplied derivatives, creates appearances, preserves editable transparent
+  fields, and merges character pages before retainer/pet and mount sheets.
 - Mapped character statistics, gear, spells, talents, and traits. Inventory
   displays occupied-slot ranges and trivial gear separately; overflow is kept in
   notes rather than discarded.
@@ -23,6 +23,8 @@
   Helvetica cannot encode.
 - Added `npm run generate:pdf-review-samples`, which creates six reproducible,
   synthetic PDFs under ignored `output/pdf-review/` for the required visual review.
+- Updated the renderer after owner review: multi-slot gear is repeated as plain
+  item text in each occupied row, and no completed field is flattened or filled.
 
 ## Working tree and Git state
 
@@ -38,11 +40,13 @@
 | `npm run build` | passed | Typecheck and Vite production build passed. |
 | `git diff --check` | passed | No whitespace errors. |
 | `npm run generate:pdf-review-samples` | passed | Wrote Knight, Roadwarden, Witch, Warpriest, Duelist, and long custom-spell samples. |
+| Editable field regression checks | passed | Knight has 184 transparent editable fields; the first two inventory rows contain only the first multi-slot item text. |
 | Visual PDF review | pending | Required generated samples remain to be opened and inspected. |
 
 ## Decisions and blockers
 
-- No new rules decision was required. Existing D11 governs printed slot labels.
+- D12 records the owner decision to preserve editable transparent fields and use
+  item-only inventory rows. D11 continues to govern actual slot occupancy.
 - Completed PDFs use Helvetica and reject unsupported characters explicitly;
   embedding a Unicode-capable font remains future improvement work.
 

@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts } from "pdf-lib";
+import { PDFDocument, PDFName, PDFTextField, StandardFonts } from "pdf-lib";
 
 import type {
   CharacterActor,
@@ -18,15 +18,13 @@ type FieldValues = Readonly<Record<string, string>>;
 
 /**
  * Renders supplied fillable templates without loading assets or changing the
- * generated document. Completed sheets use Helvetica, so unsupported text is
+ * generated document. Editable sheets use Helvetica, so unsupported text is
  * rejected rather than being silently omitted by pdf-lib.
  */
 export class PdfLibCharacterRenderer implements CharacterPdfRenderer {
   async render(request: Readonly<CharacterPdfRenderRequest>): Promise<Uint8Array> {
     const { actor } = request.document;
-    const result = await PDFDocument.create();
-
-    await appendFilledTemplate(result, request.templates.character, characterValues(actor));
+    const result = await filledTemplate(request.templates.character, characterValues(actor));
 
     const retainersAndPets = actor.companions.filter((companion) => companion.kind !== "mount");
     if (retainersAndPets.length > 0) {
@@ -34,7 +32,7 @@ export class PdfLibCharacterRenderer implements CharacterPdfRenderer {
       for (let index = 0; index < retainersAndPets.length; index += 2) {
         const left = retainersAndPets[index];
         const right = retainersAndPets[index + 1];
-        await appendFilledTemplate(result, request.templates.retainer, {
+        await appendEditableTemplate(result, request.templates.retainer, {
           ...(left === undefined ? {} : retainerPanelValues("left", left)),
           ...(right === undefined ? {} : retainerPanelValues("right", right)),
         });
@@ -44,28 +42,76 @@ export class PdfLibCharacterRenderer implements CharacterPdfRenderer {
     const mounts = actor.companions.filter((companion): companion is MountActor => companion.kind === "mount");
     if (mounts.length > 0) {
       if (request.templates.mount === undefined) throw new RangeError("mount template is required for mount companions");
-      for (const mount of mounts) await appendFilledTemplate(result, request.templates.mount, mountValues(actor, mount));
+      for (const mount of mounts) await appendEditableTemplate(result, request.templates.mount, mountValues(actor, mount));
     }
 
     return result.save();
   }
 }
 
-async function appendFilledTemplate(output: PDFDocument, bytes: ReadonlyPdfBytes, values: FieldValues): Promise<void> {
+async function filledTemplate(bytes: ReadonlyPdfBytes, values: FieldValues): Promise<PDFDocument> {
   assertHelveticaText(values);
   const filled = await PDFDocument.load(Uint8Array.from(bytes));
   const form = filled.getForm();
   for (const [name, value] of Object.entries(values)) form.getTextField(name).setText(value);
   form.updateFieldAppearances(await filled.embedFont(StandardFonts.Helvetica));
-  form.flatten();
+  return filled;
+}
+
+async function appendEditableTemplate(output: PDFDocument, bytes: ReadonlyPdfBytes, values: FieldValues): Promise<void> {
+  const filled = await filledTemplate(bytes, values);
   const pages = await output.copyPages(filled, filled.getPageIndices());
   for (const page of pages) output.addPage(page);
+  const targetPage = pages[0];
+  if (targetPage === undefined || pages.length !== 1) throw new RangeError("companion templates must contain exactly one page");
+
+  // Copied page annotations are not registered in the target AcroForm. Rebuild
+  // them from the source widgets so the assembled PDF remains editable.
+  targetPage.node.delete(PDFName.of("Annots"));
+  const form = output.getForm();
+  const existingNames = new Set(form.getFields().map((field) => field.getName()));
+  const font = await output.embedFont(StandardFonts.Helvetica);
+  for (const sourceField of filled.getForm().getFields()) {
+    if (!(sourceField instanceof PDFTextField)) throw new TypeError(`${sourceField.getName()} is not a text field`);
+    const widget = sourceField.acroField.getWidgets()[0];
+    if (widget === undefined) throw new RangeError(`${sourceField.getName()} is missing its widget`);
+    const rectangle = widget.getRectangle();
+    const name = uniqueFieldName(sourceField.getName(), existingNames);
+    const targetField = form.createTextField(name);
+    if (sourceField.isMultiline()) targetField.enableMultiline();
+    targetField.addToPage(targetPage, {
+      x: rectangle.x,
+      y: rectangle.y,
+      width: rectangle.width,
+      height: rectangle.height,
+      borderWidth: 0,
+      font,
+    });
+    targetField.acroField.getWidgets().forEach((targetWidget) => {
+      targetWidget.getAppearanceCharacteristics()?.dict.delete(PDFName.of("BG"));
+    });
+    targetField.setFontSize(sourceField.isMultiline() ? 8 : 10);
+    targetField.setAlignment(sourceField.getAlignment());
+    targetField.setText(sourceField.getText() ?? "");
+  }
+  form.updateFieldAppearances(font);
+}
+
+function uniqueFieldName(name: string, existingNames: Set<string>): string {
+  if (!existingNames.has(name)) {
+    existingNames.add(name);
+    return name;
+  }
+  let suffix = 2;
+  while (existingNames.has(`${name}.${suffix}`)) suffix += 1;
+  const unique = `${name}.${suffix}`;
+  existingNames.add(unique);
+  return unique;
 }
 
 function characterValues(actor: CharacterActor): FieldValues {
   const armor = armorValue(actor.inventory);
-  const inventory = inventoryLines(actor.inventory, actor.spellBooks, actor.scrolls);
-  const overflow = inventory.slice(20);
+  const inventory = inventoryFields("character.inventory", 20, inventoryEntries(actor.inventory, actor.spellBooks, actor.scrolls));
   return {
     "character.name": actor.name,
     "character.experience": actor.rank,
@@ -85,15 +131,17 @@ function characterValues(actor: CharacterActor): FieldValues {
     "character.pennies": String(actor.currency.amount),
     "character.talents": actor.talents.map(({ name }) => name).join("\n"),
     "character.spells": spellLines(actor),
-    "character.notes": characterNotes(actor, overflow),
-    ...Object.fromEntries(inventory.slice(0, 20).map((line, index) => [`character.inventory.${index + 1}`, line])),
+    "character.notes": characterNotes(actor, inventory.overflow),
+    ...inventory.values,
   };
 }
 
 function retainerPanelValues(panel: "left" | "right", actor: Exclude<CompanionActor, MountActor>): FieldValues {
   const prefix = `retainer.${panel}`;
-  const inventory = actor.kind === "retainer" ? inventoryLines(actor.inventory) : [];
-  const notes = actor.kind === "retainer" ? retainerNotes(actor, inventory.slice(15)) : petNotes(actor);
+  const inventory = actor.kind === "retainer"
+    ? inventoryFields(`${prefix}.inventory`, 15, inventoryEntries(actor.inventory))
+    : { values: {}, overflow: [] };
+  const notes = actor.kind === "retainer" ? retainerNotes(actor, inventory.overflow) : petNotes(actor);
   return {
     [`${prefix}.name`]: actor.name,
     [`${prefix}.experience`]: "Novice",
@@ -108,12 +156,12 @@ function retainerPanelValues(panel: "left" | "right", actor: Exclude<CompanionAc
     [`${prefix}.stamina.maximum`]: String(actor.stamina.maximum),
     ...(actor.kind === "retainer" ? { [`${prefix}.loyalty`]: `${actor.loyalty.score} / ${actor.loyalty.retainerMaximum}` } : {}),
     [`${prefix}.notes`]: notes,
-    ...Object.fromEntries(inventory.slice(0, 15).map((line, index) => [`${prefix}.inventory.${index + 1}`, line])),
+    ...inventory.values,
   };
 }
 
 function mountValues(character: CharacterActor, mount: MountActor): FieldValues {
-  const inventory = inventoryLines(mount.inventory);
+  const inventory = inventoryFields("mount.inventory", 60, inventoryEntries(mount.inventory));
   return {
     "mount.name": mount.name,
     "mount.player": character.name,
@@ -133,29 +181,45 @@ function mountValues(character: CharacterActor, mount: MountActor): FieldValues 
       ...(mount.attacks.length === 0 ? [] : [`Attacks: ${mount.attacks.join(", ")}`]),
       ...(mount.abilities.length === 0 ? [] : [`Abilities: ${mount.abilities.join(", ")}`]),
       ...mount.notes,
-      ...(inventory.slice(60).length === 0 ? [] : ["Additional inventory:", ...inventory.slice(60)]),
+      ...(inventory.overflow.length === 0 ? [] : ["Additional inventory:", ...inventory.overflow]),
     ].join("\n"),
-    ...Object.fromEntries(inventory.slice(0, 60).map((line, index) => [`mount.inventory.${index + 1}`, line])),
+    ...inventory.values,
   };
 }
 
-function inventoryLines(inventory: readonly InventoryItemInstance[], books: CharacterActor["spellBooks"] = [], scrolls: CharacterActor["scrolls"] = []): readonly string[] {
+function inventoryEntries(inventory: readonly InventoryItemInstance[], books: CharacterActor["spellBooks"] = [], scrolls: CharacterActor["scrolls"] = []): readonly { readonly name: string; readonly slots: readonly number[] }[] {
   return [
-    ...inventory.map((item) => inventoryLine(item)),
-    ...books.map((book) => slotLine(book.occupiedSlots, book.name)),
-    ...scrolls.map((scroll) => slotLine(scroll.occupiedSlots, scroll.name)),
+    ...inventory.map((item) => ({ name: inventoryName(item), slots: item.occupiedSlots })),
+    ...books.map((book) => ({ name: book.name, slots: book.occupiedSlots })),
+    ...scrolls.map((scroll) => ({ name: scroll.name, slots: scroll.occupiedSlots })),
   ];
 }
 
-function inventoryLine(item: InventoryItemInstance): string {
+function inventoryName(item: InventoryItemInstance): string {
   const quantity = item.quantity === 1 ? "" : ` x${item.quantity}`;
-  return slotLine(item.occupiedSlots, `${item.name}${quantity}`);
+  return `${item.name}${quantity}`;
 }
 
-function slotLine(slots: readonly number[], name: string): string {
-  if (slots.length === 0) return `Trivial: ${name}`;
-  const label = slots.length === 1 ? String(slots[0]) : `${slots[0]}-${slots.at(-1)}`;
-  return `${label}: ${name}`;
+function inventoryFields(prefix: string, rowCount: number, entries: readonly { readonly name: string; readonly slots: readonly number[] }[]): { readonly values: FieldValues; readonly overflow: readonly string[] } {
+  const values: Record<string, string> = {};
+  const overflow: string[] = [];
+  const trivial: string[] = [];
+  for (const entry of entries) {
+    if (entry.slots.length === 0) {
+      trivial.push(entry.name);
+      continue;
+    }
+    for (const slot of entry.slots) {
+      if (slot > rowCount) overflow.push(entry.name);
+      else values[`${prefix}.${slot}`] = entry.name;
+    }
+  }
+  for (const name of trivial) {
+    const row = Array.from({ length: rowCount }, (_, index) => index + 1).find((index) => values[`${prefix}.${index}`] === undefined);
+    if (row === undefined) overflow.push(name);
+    else values[`${prefix}.${row}`] = name;
+  }
+  return { values, overflow };
 }
 
 function armorValue(inventory: readonly InventoryItemInstance[]): number {

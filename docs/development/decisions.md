@@ -48,6 +48,7 @@ new conflicting information.
 | ID | Status | Decision | Source / rationale | Affected stages | Supersedes |
 | --- | --- | --- | --- | --- | --- |
 | D11 | confirmed | Explicit slot counts and trivial labels control when present; otherwise a starting item or bundled textual kit occupies one slot. Clothing is zero-slot only when its background explicitly labels it trivial. | `equipment.md`, Items & Equipment establishes one slot as the general default and `backgrounds.md` repeatedly marks exceptions as trivial. This preserves the source's distinction between the Outlaw/Grave Robber cloaks and the Burglar's separately beneficial cloak and shoes. | 02, 03, 05, 07 | — |
+| D12 | confirmed | Completed generated PDFs remain editable with clear, borderless AcroForm fields; do not flatten them. Each occupied inventory row shows only its item text, with multi-slot items repeated in each occupied row. | Owner review of Stage 05 samples. This supersedes the approved-plan default to flatten completed PDFs. | 05, 06, 07 | approved plan default |
 
 ## Recording future decisions
 
