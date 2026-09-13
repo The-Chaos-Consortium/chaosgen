@@ -53,10 +53,25 @@ updates derived values without rerolling unrelated data. `Download PDF` creates
 an editable PDF locally in the browser; no account, backend, or external runtime
 service is required.
 
-Deployment and removal of the legacy Python/Discord implementation are remaining
-migration work.
+## GitHub Pages
+
+The repository includes a GitHub Actions workflow that tests, builds, and uploads
+the static site on pull requests, then deploys the `main` branch artifact to
+GitHub Pages. In repository settings, set **Pages** to **GitHub Actions** as the
+source before the first deployment. The application uses relative asset URLs, so
+the generated PDFs load at the root site URL and under a repository project path.
+
+Preview the production build locally with:
+
+```sh
+npm run build
+npm run preview
+```
 
 ## License
 
-Chaos & Conquest was created by Alex Gomez and licensed under
-[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+The generator code is licensed under [GPL-3.0](LICENSE). The adapted Chaos &
+Conquest rules data is licensed under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); credit
+Alexander Gomez and The Chaos Consortium. See [data/README.md](data/README.md)
+for data provenance and attribution.

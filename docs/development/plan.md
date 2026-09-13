@@ -7,7 +7,7 @@
 Replace the Python/Discord generator with a lightweight browser application and
 a Node.js CLI sharing current rules data, generation logic, and PDF rendering.
 The browser displays generated characters as HTML and downloads completed PDFs.
-The CLI writes PDFs. Both work locally; the static application targets GitLab
+The CLI writes PDFs. Both work locally; the static application targets GitHub
 Pages without an application server.
 
 Confirmed rulings are in [decisions.md](decisions.md). Delivery is divided into
@@ -286,12 +286,12 @@ and paths are console output; generated character artifacts are PDFs.
 
 ## 10. Deployment and cleanup
 
-GitLab Pages serves the build output, template bytes, and any bundled fonts.
+GitHub Pages serves the build output, template bytes, and any bundled fonts.
 Generation/filling happens locally in the browser. Configure CI checks and static
-publication with relative/base-aware URLs. The source repository is public GitHub;
-document the GitLab project/mirroring prerequisite rather than claiming a GitLab
-pipeline automatically runs on GitHub. Actual hosting setup requires owner input
-and authorization; verify the deployable artifact locally first.
+publication with relative/base-aware URLs. Configure GitHub Actions to test,
+build, publish the Pages artifact, and deploy it from the default branch. Actual
+hosting setup requires owner authorization; verify the deployable artifact locally
+first.
 
 After replacements pass: remove Python modules/dependencies, Discord modules,
 bot environment examples, bot-specific Docker configuration, and unused legacy
