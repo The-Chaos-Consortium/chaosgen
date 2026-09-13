@@ -17,7 +17,7 @@ h1 { color: #ff9a78; font-size: clamp(2.1rem, 5vw, 4rem); letter-spacing: -.04em
 h2 { font-size: 1.3rem; margin: 0 0 .8rem; }
 h3 { font-size: 1.05rem; margin: 0 0 .45rem; }
 
-.panel { background: #222625; border: 1px solid #59584e; box-shadow: 5px 5px 0 #343630; margin: 1rem 0; padding: clamp(1rem, 3vw, 1.5rem); }
+.panel { background: #222625; border: 1px solid #59584e; margin: 1rem 0; padding: clamp(1rem, 3vw, 1.5rem); }
 .controls, .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .generate-action { display: flex; justify-content: flex-end; margin-top: 1rem; }
 .generate-action button { min-width: min(100%, 17rem); }
@@ -26,7 +26,7 @@ input, select, textarea { background: #171a19; border: 1px solid #77766b; border
 textarea { min-height: 5rem; resize: vertical; }
 button { background: #bd4937; border: 1px solid #f08b69; color: #fff; font-weight: bold; min-height: 2.45rem; padding: .45rem 1rem; }
 button:hover { background: #e35b43; }
-button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #ffca58; outline-offset: 2px; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #ffca58; outline-offset: -2px; }
 .secondary { background: #456858; border-color: #78a18a; }
 .status { min-height: 1.5rem; font-weight: bold; }
 .status.error { color: #ff9384; }
@@ -49,7 +49,6 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 @media (max-width: 680px) {
   .shell { width: min(100% - 1rem, 1120px); margin-top: 1rem; }
   .section-grid { grid-template-columns: 1fr; }
-  .panel { box-shadow: 3px 3px 0 #343630; }
   .generate-action { justify-content: stretch; }
   .generate-action button { width: 100%; }
 }
