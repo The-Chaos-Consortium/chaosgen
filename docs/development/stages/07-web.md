@@ -40,3 +40,11 @@ is required. All confirmed basic customization works without unrelated rerolls.
 
 Completed. Next: Stage 08 can configure delivery and remove superseded legacy
 integration after reviewing its scope and deployment prerequisites.
+
+## Follow-up refinements
+
+After completion, the browser page title was expanded to `Chaos & Conquest
+Character Generator`; the generation action was separated from background
+selection; the default palette became dark; panel shadows and overlapping focus
+styles were removed. Squires now receive generated human names with recorded
+name choices. See the [follow-up handoff](../handoffs/2026-09-13-stage-07-follow-up.md).

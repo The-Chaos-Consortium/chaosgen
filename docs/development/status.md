@@ -1,6 +1,6 @@
 # Implementation status
 
-**Current state:** Stage 07 completed.
+**Current state:** Stage 07 completed, including post-completion UI and squire-name refinements.
 **Active implementation stage:** None.
 **Next candidate:** Stage 08, delivery and cleanup.
 
@@ -12,7 +12,7 @@
 | [04 PDF templates](stages/04-pdf-templates.md) | completed | 01 tooling | [Final handoff](handoffs/2026-09-12-stage-04-transparent-fill.md) |
 | [05 PDF rendering](stages/05-pdf-rendering.md) | completed | 03, 04 | [Completion handoff](handoffs/2026-09-13-stage-05-completion.md) |
 | [06 CLI](stages/06-cli.md) | completed | 03, 05 | [Completion handoff](handoffs/2026-09-13-stage-06-completion.md) |
-| [07 Web](stages/07-web.md) | completed | 03; 05 for download | [Completion handoff](handoffs/2026-09-13-stage-07-completion.md) |
+| [07 Web](stages/07-web.md) | completed | 03; 05 for download | [Completion](handoffs/2026-09-13-stage-07-completion.md); [follow-up](handoffs/2026-09-13-stage-07-follow-up.md) |
 | [08 Delivery and cleanup](stages/08-delivery.md) | pending | 01–07 | — |
 
 ## Blockers and questions
