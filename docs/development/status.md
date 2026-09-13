@@ -1,9 +1,8 @@
 # Implementation status
 
-**Current state:** Stage 05 in progress.
-**Active implementation stage:** Stage 05, PDF rendering.
-**Next deliverable:** Visually inspect required generated PDF samples and correct
-any field-fit issues.
+**Current state:** Stage 05 completed.
+**Active implementation stage:** None.
+**Next candidate:** Stage 06, CLI.
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
@@ -11,7 +10,7 @@ any field-fit issues.
 | [02 Rules data](stages/02-rules-data.md) | completed | 01 contracts | [Completion handoff](handoffs/2026-09-12-stage-02-completion.md) |
 | [03 Generation](stages/03-generation.md) | completed | 01, 02 | [Completion handoff](handoffs/2026-09-12-stage-03-completion.md) |
 | [04 PDF templates](stages/04-pdf-templates.md) | completed | 01 tooling | [Final handoff](handoffs/2026-09-12-stage-04-transparent-fill.md) |
-| [05 PDF rendering](stages/05-pdf-rendering.md) | in_progress | 03, 04 | [Rendering checkpoint](handoffs/2026-09-13-stage-05-rendering-checkpoint.md) |
+| [05 PDF rendering](stages/05-pdf-rendering.md) | completed | 03, 04 | [Completion handoff](handoffs/2026-09-13-stage-05-completion.md) |
 | [06 CLI](stages/06-cli.md) | pending | 03, 05 | — |
 | [07 Web](stages/07-web.md) | pending | 03; 05 for download | — |
 | [08 Delivery and cleanup](stages/08-delivery.md) | pending | 01–07 | — |
