@@ -1,6 +1,6 @@
 # Stage 05 — PDF rendering and assembly
 
-**Status:** pending
+**Status:** in_progress
 
 **Dependencies:** Stages 03 and 04
 
@@ -10,14 +10,14 @@ Shared byte-in/byte-out PDF export of a character and all granted companions.
 
 ## Tasks
 
-- [ ] Map character values, both current/max statistics, traits, talents, and spells.
-- [ ] Lay out slot occupancy, trivial items, long text, and continuation content.
-- [ ] Route squire/pets to retainer panels and every mount to the mount sheet.
-- [ ] Put squire talents and pet morale in correctly labeled notes.
-- [ ] Record mount capacities and abilities without inventing unsupported fields.
-- [ ] Generate appearances, flatten filled sheets, then merge in defined order.
-- [ ] Handle fonts, custom wording, and unsupported-character errors explicitly.
-- [ ] Export all backgrounds; verify stable data and visually inspect required samples.
+- [x] Map character values, both current/max statistics, traits, talents, and spells.
+- [x] Lay out slot occupancy, trivial items, long text, and continuation content.
+- [x] Route squire/pets to retainer panels and every mount to the mount sheet.
+- [x] Put squire talents and pet morale in correctly labeled notes.
+- [x] Record mount capacities and abilities without inventing unsupported fields.
+- [x] Generate appearances, flatten filled sheets, then merge in defined order.
+- [x] Handle fonts, custom wording, and unsupported-character errors explicitly.
+- [ ] Visually inspect required samples after structural export of all backgrounds.
 
 ## Completion gate
 
@@ -26,9 +26,20 @@ and dedicated mount output. Exporting cannot reroll, mutate, or silently truncat
 
 ## Verification evidence
 
-Not run; implementation pending. Record structural checks and visual review of
-Knight, Roadwarden, Witch, Warpriest, Duelist, and long synthetic content separately.
+| Command | Result |
+| --- | --- |
+| `npm test` | passed - 7 test files; 69 tests passed, including all-background structural exports and renderer non-mutation checks. |
+| `npm run typecheck` | passed |
+| `npm run build` | passed |
+| `git diff --check` | passed |
+| Visual PDF review | not run - required samples have not yet been opened and inspected. |
+
+Record visual review of Knight, Roadwarden, Witch, Warpriest, Duelist, and long
+synthetic content separately before completing the stage.
 
 ## Partial-work checkpoint
 
-No work started. Next: actor-to-field mappings once core and forms are available.
+Implemented `src/pdf/rendering.ts`: supplied template bytes are filled,
+appearance-generated, flattened, and merged without changing the actor or input
+bytes. The next concrete deliverable is visual review of generated required
+samples, followed by any field-fit corrections it identifies.
