@@ -1,6 +1,6 @@
 # Stage 07 — Lightweight web application
 
-**Status:** pending
+**Status:** completed
 
 **Dependencies:** Stage 03 for UI; Stage 05 for PDF download
 
@@ -10,14 +10,14 @@ Responsive HTML character generation/customization with client-side PDF download
 
 ## Tasks
 
-- [ ] Add random/selected-background generation and structured HTML results.
-- [ ] Add identity, traits, faction, spell choices, and optional attribute swap.
-- [ ] Show inventory occupancy, armor restrictions, and starting companions.
-- [ ] Preserve generated state while editing/exporting; recompute dependent values.
-- [ ] Add browser template/font loading, download, progress, and error handling.
-- [ ] Ensure accessible labels, keyboard flow, safe text insertion, and mobile layout.
-- [ ] Verify production asset paths under both root and nested project base.
-- [ ] Run browser integration checks for generation, customization, and actual download.
+- [x] Add random/selected-background generation and structured HTML results.
+- [x] Add identity, traits, faction, spell choices, and optional attribute swap.
+- [x] Show inventory occupancy, armor restrictions, and starting companions.
+- [x] Preserve generated state while editing/exporting; recompute dependent values.
+- [x] Add browser template/font loading, download, progress, and error handling.
+- [x] Ensure accessible labels, keyboard flow, safe text insertion, and mobile layout.
+- [x] Verify production asset paths under both root and nested project base.
+- [x] Run browser integration checks for generation, customization, and actual download.
 
 ## Completion gate
 
@@ -26,8 +26,17 @@ is required. All confirmed basic customization works without unrelated rerolls.
 
 ## Verification evidence
 
-Not run; implementation pending.
+| Check/command | Result |
+| --- | --- |
+| `npm run typecheck` | passed |
+| `npm test` | passed: 9 files, 75 tests, including jsdom browser integration |
+| `npm run build` | passed |
+| `git diff --check` | passed |
+| Browser integration test | passed: selected Knight generation, identity edit, swap, companion template selection, and download callback |
+| Production asset paths | passed: built HTML uses `./assets/` paths and bundles character, retainer, and mount PDF assets |
+| Production bundle warning | recorded: the JavaScript bundle is approximately 505 kB because it includes `pdf-lib`; code splitting is a future optimization |
 
 ## Partial-work checkpoint
 
-No work started. Next: UI/state contract following shared core availability.
+Completed. Next: Stage 08 can configure delivery and remove superseded legacy
+integration after reviewing its scope and deployment prerequisites.

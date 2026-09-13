@@ -1,7 +1,7 @@
 # chaosgen
 
 Chaos & Conquest character generator. The TypeScript migration is in progress;
-the current interface is a local PDF-only CLI.
+the current interfaces are a local browser application and PDF CLI.
 
 ## Requirements
 
@@ -37,8 +37,24 @@ entry point, rather than the current directory.
 
 Current limits: output text must be representable by Helvetica, completed PDFs
 remain editable, and generation covers only new characters plus companions
-granted by their backgrounds. The browser interface, deployment, and removal of
-the legacy Python/Discord implementation are remaining migration work.
+granted by their backgrounds.
+
+## Browser application
+
+Start the local application from the repository root:
+
+```sh
+npm run dev
+```
+
+Choose a background or leave it random, generate a character, then edit its
+name, age, faction, traits, starting spell, or one attribute swap. The review
+updates derived values without rerolling unrelated data. `Download PDF` creates
+an editable PDF locally in the browser; no account, backend, or external runtime
+service is required.
+
+Deployment and removal of the legacy Python/Discord implementation are remaining
+migration work.
 
 ## License
 
