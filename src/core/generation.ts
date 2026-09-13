@@ -58,7 +58,7 @@ export function generateCharacter(options: GenerateCharacterOptions): GeneratedA
   assertFaction(faction, characterCreation.factions);
   const age = options.age ?? rollValue(options.random, characterCreation.randomAgeRoll, "identity.age", additional) + characterCreation.randomAgeBase;
   assertAge(age, characterCreation.minimumChosenAge);
-  const generatedName = options.name ?? `${choose(options.random, names.human.masculine, choices, "identity.given-name").value} ${choose(options.random, names.human.family, choices, "identity.family-name").value}`;
+  const generatedName = options.name ?? generateHumanName(options.random, choices, "identity");
   assertName(generatedName);
   const originalRolls: OriginalRolls = {
     attributes: rollOriginalAttributes(options.random),
@@ -180,7 +180,7 @@ function generateCompanions(random: RandomSource, definition: RulesDefinitionDoc
     const stamina = rollValue(random, companion.stamina, `${actorId}.stamina`, rolls);
     if (companion.kind === "retainer") {
       const talentIds = sampleDistinct(random, definition.squireTalentIds, companion.talentSelectionCount, choices, `${actorId}.talents`);
-      return { id: actorId, kind: "retainer", definitionId: companion.id, role: companion.role, name: companion.name, attributes, stamina: track(stamina), loyalty: deriveRetainerLoyalty(employerWillpower), talents: talentIds.map((talentId) => { const talent = requireById(definition.talents, talentId, "talent"); return { definitionId: talent.id, name: talent.name }; }), inventory: generateInventory(random, definition, companion.equipmentGrants, actorId, rolls, choices), notes: [] };
+      return { id: actorId, kind: "retainer", definitionId: companion.id, role: companion.role, name: generateHumanName(random, choices, `${actorId}.name`), attributes, stamina: track(stamina), loyalty: deriveRetainerLoyalty(employerWillpower), talents: talentIds.map((talentId) => { const talent = requireById(definition.talents, talentId, "talent"); return { definitionId: talent.id, name: talent.name }; }), inventory: generateInventory(random, definition, companion.equipmentGrants, actorId, rolls, choices), notes: [] };
     }
     if (companion.kind === "pet") {
       const name = companion.petKind === "familiar" ? choose(random, names.ironicOrAbsurdFamiliar, choices, `${actorId}.name`).value : companion.name;
@@ -267,6 +267,10 @@ function choose<T>(random: RandomSource, options: readonly T[], choices: Recorde
   const value = options[index]!;
   choices.push({ id, value: typeof value === "string" || typeof value === "number" || typeof value === "boolean" ? value : index });
   return { value };
+}
+
+function generateHumanName(random: RandomSource, choices: RecordedChoice[], id: string): string {
+  return `${choose(random, names.human.masculine, choices, `${id}.given-name`).value} ${choose(random, names.human.family, choices, `${id}.family-name`).value}`;
 }
 
 function sampleDistinct(random: RandomSource, options: readonly string[], count: number, choices: RecordedChoice[], id: string): readonly string[] {

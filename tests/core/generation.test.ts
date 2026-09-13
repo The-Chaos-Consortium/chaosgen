@@ -71,6 +71,12 @@ describe("character generation", () => {
       expect(squire.talents).toHaveLength(3);
       expect(new Set(squire.talents.map(({ definitionId }) => definitionId)).size).toBe(3);
       expect(squire.inventory.map(({ definitionId }) => definitionId)).toEqual(["spear"]);
+      const nameChoices = knight.generation.choices.filter(({ id }) => id.startsWith(`${squire.id}.name.`));
+      expect(nameChoices.map(({ id }) => id)).toEqual([
+        `${squire.id}.name.given-name`,
+        `${squire.id}.name.family-name`,
+      ]);
+      expect(squire.name).toBe(`${nameChoices[0]?.value} ${nameChoices[1]?.value}`);
     }
     expect(witch.actor.companions.find(({ definitionId }) => definitionId === "familiar")).toMatchObject({
       kind: "pet",
