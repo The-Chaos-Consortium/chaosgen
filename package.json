@@ -17,7 +17,8 @@
     "prepare:pdf-templates": "node scripts/prepare-pdf-templates.mjs",
     "prepare:pdf-templates:debug": "node scripts/prepare-pdf-templates.mjs --debug",
     "prepare:pdf-templates:transparent-fill": "node scripts/prepare-pdf-templates.mjs --update-existing",
-    "prepare:pdf-templates:sync-maps": "node scripts/prepare-pdf-templates.mjs --sync-field-maps"
+    "prepare:pdf-templates:sync-maps": "node scripts/prepare-pdf-templates.mjs --sync-field-maps",
+    "generate:pdf-review-samples": "node --experimental-strip-types scripts/generate-pdf-review-samples.ts"
   },
   "dependencies": {
     "pdf-lib": "1.17.1"

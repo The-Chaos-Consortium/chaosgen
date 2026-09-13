@@ -32,7 +32,8 @@ and dedicated mount output. Exporting cannot reroll, mutate, or silently truncat
 | `npm run typecheck` | passed |
 | `npm run build` | passed |
 | `git diff --check` | passed |
-| Visual PDF review | not run - required samples have not yet been opened and inspected. |
+| `npm run generate:pdf-review-samples` | passed - wrote six synthetic PDFs under ignored `output/pdf-review/`. |
+| Visual PDF review | pending - required samples are generated but have not yet been opened and inspected. |
 
 Record visual review of Knight, Roadwarden, Witch, Warpriest, Duelist, and long
 synthetic content separately before completing the stage.

@@ -21,6 +21,8 @@
 - Added all-background structural rendering coverage, assembly checks for Knight,
   Roadwarden, and Duelist, non-mutation coverage, and explicit rejection of text
   Helvetica cannot encode.
+- Added `npm run generate:pdf-review-samples`, which creates six reproducible,
+  synthetic PDFs under ignored `output/pdf-review/` for the required visual review.
 
 ## Working tree and Git state
 
@@ -35,7 +37,8 @@
 | `npm run typecheck` | passed | Strict TypeScript checking passed. |
 | `npm run build` | passed | Typecheck and Vite production build passed. |
 | `git diff --check` | passed | No whitespace errors. |
-| Visual PDF review | not run | Required generated samples remain to be opened and inspected. |
+| `npm run generate:pdf-review-samples` | passed | Wrote Knight, Roadwarden, Witch, Warpriest, Duelist, and long custom-spell samples. |
+| Visual PDF review | pending | Required generated samples remain to be opened and inspected. |
 
 ## Decisions and blockers
 
@@ -45,7 +48,7 @@
 
 ## Next steps
 
-1. Produce and visually inspect Knight, Roadwarden, Witch, Warpriest, Duelist,
-   and synthetic long-name/custom-spell PDFs for field fit and legibility.
+1. Open and visually inspect Knight, Roadwarden, Witch, Warpriest, Duelist, and
+   synthetic long-name/custom-spell PDFs for field fit and legibility.
 2. Correct any visual issues, then update Stage 05 evidence and complete the
    stage only after visual acceptance.

@@ -1,5 +1,5 @@
-import namesData from "../../data/names-v1.json";
-import rulesData from "../../data/rules-v1.json";
+import namesData from "../../data/names-v1.json" with { type: "json" };
+import rulesData from "../../data/rules-v1.json" with { type: "json" };
 
 import type { NameDefinitionDocument, RulesDefinitionDocument } from "./definitions.ts";
 import { validateNameDocument, validateRulesDocument } from "./rules-validation.ts";
