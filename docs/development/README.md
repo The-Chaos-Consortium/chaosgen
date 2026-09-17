@@ -1,35 +1,37 @@
 # Development documentation
 
-This directory supports incremental development of the Chaos & Conquest web
-generator and PDF-only CLI. The project owner approved the overall plan; the
-implementation is underway. Foundation tooling and contracts exist, but
-character generation and PDF export do not.
+This directory preserves the completed staged delivery record for the Chaos &
+Conquest web generator and PDF-only CLI. It also contains maintained technical
+contracts and owner decisions. The plan, stages, and dated handoffs are historical
+records; current setup and usage live in the [project README](../../README.md).
 
 ## Start here
 
-1. Read [AGENTS.md](AGENTS.md) for development and handoff conventions.
-2. Read [the approved plan](plan.md) and [confirmed decisions](decisions.md).
-3. Check [status.md](status.md) for the active work package and blockers.
-4. Open the relevant [stage](stages/README.md), then inspect the working tree.
-5. When stopping, update the stage and status and add a [handoff](handoffs/README.md).
+1. Read the repository [AGENTS.md](../../AGENTS.md) and this directory's
+   [development guidance](AGENTS.md).
+2. Read [confirmed decisions](decisions.md) and the maintained
+   [technical contracts](contracts.md) for affected behavior.
+3. Use [status.md](status.md) for final delivery status and external release work.
+4. Consult the [plan](plan.md), [stages](stages/README.md), and
+   [handoffs](handoffs/README.md) when historical implementation context matters.
 
 ## Structure
 
 | Document/directory | Purpose |
 | --- | --- |
-| `plan.md` | Scope, architecture, rules requirements, and acceptance criteria |
-| `decisions.md` | Confirmed rulings and unresolved interpretations |
-| `status.md` | Small, current dashboard of implementation progress |
-| `contracts.md` | Working npm scripts and durable Stage 01 downstream boundaries |
+| `plan.md` | Historical scope, architecture, requirements, and acceptance criteria |
+| `decisions.md` | Confirmed rulings and implemented interpretation boundaries |
+| `status.md` | Final implementation status and remaining external release action |
+| `contracts.md` | Working npm scripts and durable architecture boundaries |
 | `stages/` | Independently reviewable work packages and completion evidence |
 | `handoffs/` | Dated checkpoints for interrupted or completed sessions |
 | `templates/` | Reusable stage and handoff document templates |
 | `AGENTS.md`, `CLAUDE.md` | Development-specific agent guidance |
 
-Keep enduring design decisions in `decisions.md`, current progress in `status.md`,
-and session-specific context in handoffs. Link between documents rather than
-copying competing versions of the requirements.
+Keep enduring design decisions in `decisions.md`, current release state in
+`status.md`, and checkpoint-specific context in handoffs. Link between documents
+rather than copying competing versions of requirements.
 
-User-facing setup and usage documentation will be added as the corresponding
-features become usable. Do not present planned commands as working commands in
-the project README before implementation.
+User-facing setup and working commands are maintained in the project README.
+Historical proposed commands remain in the archived plan only when clearly
+identified as planning context.

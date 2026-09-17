@@ -47,11 +47,11 @@ no live deployment was attempted.
 
 ## Post-completion review follow-up
 
-A branch review after the completion checkpoint found unresolved work that must
-be addressed before opening the migration PR. The automated checks above still
-pass, but they do not cover these findings. See the
-[review handoff](../handoffs/2026-09-13-stage-08-pr-review.md) for exact locations
-and verification context.
+A branch review after the initial completion checkpoint found the issues listed
+below. They were subsequently resolved and verified in the
+[remediation handoff](../handoffs/2026-09-17-stage-08-remediation.md). The earlier
+[review handoff](../handoffs/2026-09-13-stage-08-pr-review.md) is retained for the
+original findings and verification context.
 
 - [x] Commit the intended removal of the obsolete Discord `.example_env`.
 - [x] Preserve rolled quantities for zero-slot inventory in browser and PDF
@@ -148,7 +148,7 @@ name. The generic button hover background is `#963729`, which has approximately
 D15 records the owner ruling to include faction in the character notes field.
 The browser continues to display and edit faction, and the completed PDF now
 records the selected value in its notes. Public usage and template documentation
-now describe implemented behavior rather than a migration in progress.
+now describe the implemented application.
 
 | Check/command | Result |
 | --- | --- |
@@ -192,3 +192,6 @@ Stage 08 is complete and the branch is ready for review. D17 authorizes public
 distribution of the supplied templates and fillable derivatives through this
 repository and GitHub Pages. GitHub Pages activation remains an external action:
 after review and merge, the owner must select GitHub Actions as the Pages source.
+The final [PR-readiness re-review](../handoffs/2026-09-17-pr-readiness-review.md)
+verified the remediation again and closed the remaining configured-rank contract
+and explicit regression-coverage gaps.

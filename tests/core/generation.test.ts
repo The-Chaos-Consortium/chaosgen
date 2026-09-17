@@ -102,7 +102,7 @@ describe("character generation", () => {
   it("consumes configurable creation, spell, and loyalty rules", () => {
     const configured = {
       ...rules,
-      characterCreation: { ...rules.characterCreation, attributeRoll: { kind: "dice" as const, count: 1, sides: 4 }, inventoryMinimum: 12, corruptionMaximumModifier: 5 },
+      characterCreation: { ...rules.characterCreation, attributeRoll: { kind: "dice" as const, count: 1, sides: 4 }, inventoryMinimum: 12, corruptionMaximumModifier: 5, rank: "Veteran" },
       spellBooks: rules.spellBooks.map((book, index) => index === 0 ? { ...book, startingSpellCount: 2 } : book),
       retainerLoyalty: { ...rules.retainerLoyalty, bands: [{ minimumWillpower: 3, maximumWillpower: 18, loyalty: 11, retainerMaximum: 8 }] },
     };
@@ -112,6 +112,7 @@ describe("character generation", () => {
     if (generated.actor.kind !== "character" || witch.actor.kind !== "character") throw new Error("expected characters");
 
     expect(Object.values(generated.generation.originalRolls.attributes).every(({ dice, total }) => dice.length === 1 && total === 3)).toBe(true);
+    expect(generated.actor.rank).toBe("Veteran");
     expect(generated.actor.inventoryCapacity).toBe(12);
     expect(generated.actor.corruption.maximum).toBe(8);
     expect(generated.actor.companions.find(({ kind }) => kind === "retainer")).toMatchObject({ loyalty: { score: 11, retainerMaximum: 8 } });

@@ -27,21 +27,19 @@
 - Do not automatically deduct a squire hiring fee from starting wealth.
 - Keep all granted gear recorded even if it exceeds carrying capacity.
 
-## Interpretation queue
+## Implemented interpretation boundaries
 
-Resolve these while auditing sources, before encoding an unsupported assumption:
+- Starting gear remains with the character; it is not automatically moved to a
+  mount. Mount ridden state is not inferred during generation.
+- Animal corruption fields unsupported by rules remain blank. A printed box is
+  not evidence of a mechanic.
+- Faction is displayed in the browser and exported under D15.
+- Legacy archetype terminology does not gate current mechanics without rules
+  support.
 
-- Initial allocation of gear between character and mount; ridden/unridden state.
-- Any animal corruption fields not explicitly supported by rules. A printed box
-  is not evidence of a rule; leave unsupported fields blank and document why.
-- Faction display/export treatment, given the rules' advice to keep it private.
-- Legacy archetype terminology: do not use it to gate mechanics without support
-  in current rules.
-
-Check general equipment rules and background-specific text first. Escalate
-remaining questions when they materially affect statistics or equipment legality.
-The scroll and squire questions are resolved and should not be reopened without
-new conflicting information.
+Escalate new questions when they materially affect statistics or equipment
+legality. Do not reopen resolved scroll, squire, or faction behavior without new
+conflicting information.
 
 ## Source-backed interpretations
 
@@ -52,8 +50,8 @@ new conflicting information.
 | D13 | confirmed | A multi-slot item's occupied rows show its singular item name, not an aggregate quantity. Zero-slot gear is labeled `<item> - trivial`. Retainer loyalty fields show only the loyalty score, not the retainer maximum. | Owner review of Stage 05 samples. | 05, 06, 07 | — |
 | D14 | confirmed | Target GitHub Pages, built and published by GitHub Actions; do not configure GitLab Pages. | Owner correction during Stage 08 delivery work. | 08 | D05 |
 | D15 | confirmed | Include faction in the character PDF notes. | Owner ruling during Stage 08 remediation. This keeps browser display and PDF export aligned without assigning faction to an unsupported dedicated form field. | 05, 07, 08 | — |
-| D16 | confirmed | The supplied printable PDFs are copyright The Chaos Consortium LLC and Alexander Gomez. They are licensed for end-user use only and must not be sold or modified then redistributed. | Owner ruling during Stage 08 remediation. This permits local end-user use but prohibits public redistribution of the fillable modified derivatives. | 04, 05, 08 | — |
-| D17 | confirmed | The copyright holders authorize this repository and its GitHub Pages deployment to distribute the supplied templates and fillable derivatives. End users may not sell or redistribute generated PDFs. | Owner clarification during Stage 08 remediation. This permits the planned static application while retaining the end-user output restriction. | 04, 05, 08 | D16 application |
+| D16 | confirmed | The supplied printable PDFs are copyright The Chaos Consortium LLC and Alexander Gomez. They are licensed for end-user use only and must not be sold or modified then redistributed. | Owner ruling during Stage 08 remediation. This establishes the general end-user restriction; D17 records the specific repository-distribution exception granted by the copyright holders. | 04, 05, 08 | — |
+| D17 | confirmed | As a specific exception to D16, the copyright holders authorize this repository and its GitHub Pages deployment to distribute the supplied templates and fillable derivatives. End users may not sell or redistribute generated PDFs. | Owner clarification during Stage 08 remediation. This permits the static application while retaining the end-user output restriction. | 04, 05, 08 | D16 repository-distribution restriction |
 
 ## Recording future decisions
 

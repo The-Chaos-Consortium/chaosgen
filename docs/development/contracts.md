@@ -1,8 +1,8 @@
 # Stage 01 contracts
 
-This document records the boundaries implemented in Stage 01. It is the
-downstream contract for data, generation, PDF, CLI, and web work; it is not a
-claim that character generation or PDF export is available yet.
+This document began as the Stage 01 boundary record and now summarizes durable
+contracts for data, generation, PDF, CLI, and web work. Character generation and
+PDF export are available as documented in the [project README](../../README.md).
 
 ## Working npm scripts
 
@@ -12,22 +12,25 @@ in `package.json`.
 | Command | Current behavior |
 | --- | --- |
 | `npm ci` | Reproduces the lockfile installation. |
-| `npm run dev` | Starts the Vite development server for the development-status page. |
+| `npm run dev` | Starts the Vite development server for the browser generator. |
 | `npm run build` | Runs `typecheck`, then creates the Vite production output in ignored `dist/`. |
 | `npm run preview` | Serves an existing Vite production build for local preview. |
 | `npm test` | Runs the Vitest contract tests once. |
 | `npm run test:watch` | Runs Vitest in watch mode. |
 | `npm run typecheck` | Runs strict TypeScript checking without emitting files. |
+| `npm run chaosgen -- [options]` | Runs the PDF-only CLI. |
+| `npm run prepare:pdf-templates` | Validates printable originals and recreates fillable derivatives. |
+| `npm run generate:pdf-review-samples` | Creates ignored synthetic samples for visual PDF review. |
 
-There is no `chaosgen` CLI command yet. Do not document proposed CLI examples
-as usable until Stage 06 implements and verifies them.
+See the project README for supported CLI examples and `templates/README.md` for
+the complete template-maintenance workflow.
 
 ## Data and actor boundary
 
 - `src/core/definitions.ts` defines immutable, declarative rules definitions.
   Definitions record data, source references, and roll formulas; they do not
-  evaluate randomness or become mutable generated state. Stage 02 owns their
-  normalized snapshots and provenance.
+  evaluate randomness or become mutable generated state. Their normalized
+  snapshots and provenance are maintained under `data/`.
 - `src/core/actors.ts` defines generated actor snapshots and their generation
   record. A document carries `schemaVersion`, `rulesVersion`, `seed`, original
   rolls, choices, and an actor. Inventory ownership/slots remain actor state,
@@ -35,9 +38,7 @@ as usable until Stage 06 implements and verifies them.
 - Treat JSON, files, and other external values as `unknown`. The Stage 01
   envelope validators in `src/core/validation.ts` reject malformed top-level
   shapes and discriminate character, retainer, pet/familiar, and mount envelopes
-  without coercion. They intentionally return unparsed definition arrays and
-  do not validate a full actor snapshot. Stage 02's
-  `src/core/rules-validation.ts` deep-parses definitions, references,
+  without coercion. `src/core/rules-validation.ts` deep-parses definitions, references,
   discriminants, d20 tables, quantities, and domain invariants before
   `src/core/rules.ts` exposes frozen rules and name documents. Do not cast an
   envelope result to `RulesDefinitionDocument` or `ActorSnapshot`.
@@ -56,10 +57,10 @@ as usable until Stage 06 implements and verifies them.
   `deriveCharacterCreation` starts from it every time. An attribute swap names
   two different attributes and replaces the previous swap; omitting it clears
   the swap. Never compose swaps or overwrite original rolls during an edit.
-- The confirmed Stage 01 derivations are attribute current/maximum values,
+- The confirmed derivations are attribute current/maximum values,
   inventory capacity `max(STR, 10)`, corruption maximum `WIL + 3`, and the
-  confirmed employer-WIL retainer loyalty table. Later stages must derive these
-  from current actor state after a swap and must record any new rules ruling in
+  confirmed employer-WIL retainer loyalty table. Implementations derive these
+  from current actor state after a swap and record any new rules ruling in
   `decisions.md` rather than inventing mechanics.
 
 ## PDF and platform boundary
@@ -79,4 +80,4 @@ as usable until Stage 06 implements and verifies them.
 
 These contracts support character, retainer, pet/familiar, and mount data
 without a legacy rendering dependency. See [Stage 01](stages/01-foundation.md)
-for completion evidence and [the plan](plan.md) for later functional scope.
+for original completion evidence and [the plan](plan.md) for historical scope.

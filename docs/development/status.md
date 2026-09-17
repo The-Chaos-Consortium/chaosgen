@@ -1,8 +1,9 @@
 # Implementation status
 
-**Current state:** Stage 08 remediation is complete; the branch is ready for review.
+**Current state:** PR-readiness re-review is complete; changes are ready for commit and PR review.
 **Active implementation stage:** None.
-**Next concrete deliverable:** Owner review, merge, then select GitHub Actions as the Pages source.
+**Next concrete deliverable:** Review and commit the intended diff, open the PR,
+then merge and select GitHub Actions as the Pages source.
 
 | Stage | Status | Dependencies | Evidence / handoff |
 | --- | --- | --- | --- |
@@ -13,24 +14,23 @@
 | [05 PDF rendering](stages/05-pdf-rendering.md) | completed | 03, 04 | [Completion handoff](handoffs/2026-09-13-stage-05-completion.md) |
 | [06 CLI](stages/06-cli.md) | completed | 03, 05 | [Completion handoff](handoffs/2026-09-13-stage-06-completion.md) |
 | [07 Web](stages/07-web.md) | completed | 03; 05 for download | [Completion](handoffs/2026-09-13-stage-07-completion.md); [follow-up](handoffs/2026-09-13-stage-07-follow-up.md) |
-| [08 Delivery and cleanup](stages/08-delivery.md) | completed | 01–07 | [Completion checkpoint](handoffs/2026-09-13-stage-08-completion.md); [PR review](handoffs/2026-09-13-stage-08-pr-review.md); [remediation completion](handoffs/2026-09-17-stage-08-remediation.md) |
+| [08 Delivery and cleanup](stages/08-delivery.md) | completed | 01–07 | [Completion checkpoint](handoffs/2026-09-13-stage-08-completion.md); [PR review](handoffs/2026-09-13-stage-08-pr-review.md); [remediation](handoffs/2026-09-17-stage-08-remediation.md); [readiness re-review](handoffs/2026-09-17-pr-readiness-review.md) |
 
-## Blockers and questions
+## External release action and retained constraints
 
 - D17 authorizes this repository and GitHub Pages to distribute the printable
   templates and fillable derivatives. End users may not sell or redistribute
   generated PDFs.
-- GitHub Pages activation is an owner-controlled repository setting; no live
-  deployment has been attempted. Activation follows remediation, review, merge,
-  and selection of GitHub Actions as the Pages source.
-- Stage 02 resolved unspecified starting-item slots in source-backed decision
-  D11. Remaining interpretation-queue items apply to generation and rendering.
-- GitHub Pages must be configured to use GitHub Actions before a live deployment.
+- No implementation blocker remains. GitHub Pages activation is an
+  owner-controlled repository setting; no live deployment has been attempted.
+  After review and merge, configure Pages to use GitHub Actions and observe the
+  first deployment from `main`.
+- Source-backed rules interpretations and implemented boundaries are retained in
+  `decisions.md`; they are not outstanding migration work.
 
 ## Updating this dashboard
 
-Use `pending`, `in_progress`, `blocked`, or `completed`. A partial stage remains
-`in_progress` (or `blocked`), with exact remaining tasks in its document. Link to
-verification evidence and the latest relevant handoff. Do not mark stages complete
-on intent, and do not start implementation solely because this file lists a next
-candidate.
+For future work packages, use `pending`, `in_progress`, `blocked`, or `completed`.
+A partial stage remains `in_progress` (or `blocked`), with exact remaining tasks
+in its document. Link verification evidence and the latest relevant handoff; do
+not mark work complete on intent.

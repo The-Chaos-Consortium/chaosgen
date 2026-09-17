@@ -112,7 +112,7 @@ export interface CharacterActor extends ActorBase {
     readonly name: string;
   };
   readonly faction: "Chaos" | "Law" | "Balance";
-  readonly rank: "Novice";
+  readonly rank: string;
   readonly traits: Traits;
   readonly corruption: ValueTrack;
   readonly inventoryCapacity: number;

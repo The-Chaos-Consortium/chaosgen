@@ -98,7 +98,7 @@ export function generateCharacter(options: GenerateCharacterOptions): GeneratedA
     identity: { age, ancestry: characterCreation.ancestry },
     background: { id: background.id, name: background.name },
     faction,
-    rank: "Novice",
+    rank: characterCreation.rank,
     attributes: derivations.attributes,
     stamina: track(stamina),
     traits,

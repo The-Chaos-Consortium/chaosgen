@@ -1,6 +1,11 @@
 # Chaos & Conquest generator development plan
 
-**Status:** Approved direction; implementation underway.
+**Status:** Completed historical plan. See [status.md](status.md) for final
+delivery evidence and the remaining external GitHub Pages activation step.
+
+This document preserves the approved pre-implementation scope and wording.
+Later decisions, stage records, and the current project README supersede its
+future-tense proposals where the implementation changed or completed them.
 
 ## 1. Goal and scope
 
@@ -10,9 +15,8 @@ The browser displays generated characters as HTML and downloads completed PDFs.
 The CLI writes PDFs. Both work locally; the static application targets GitHub
 Pages without an application server.
 
-Confirmed rulings are in [decisions.md](decisions.md). Delivery is divided into
-[stages](stages/README.md); partial completion is expected and tracked in
-[status.md](status.md).
+Confirmed rulings are in [decisions.md](decisions.md). Delivery was divided into
+[stages](stages/README.md), with completion recorded in [status.md](status.md).
 
 Included: all 20 backgrounds, current creation rules and traits, starting gear,
 spell choices, background-granted companions, basic customization, three new PDF
@@ -265,7 +269,7 @@ required, not merely successful file creation.
 
 ## 9. CLI contract
 
-Proposed commands (not implemented yet):
+Commands proposed during planning (implemented through the npm CLI entry point):
 
 ```sh
 chaosgen --background knight --output knight.pdf

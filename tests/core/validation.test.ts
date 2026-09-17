@@ -242,6 +242,26 @@ describe("validateActorEnvelope", () => {
       { path: "$.generation.originalRolls.attributes.willpower.total", message: "must equal the sum of dice" },
     ] });
   });
+
+  it("rejects malformed additional roll provenance", () => {
+    const result = validateActorEnvelope({
+      schemaVersion: "1", rulesVersion: "rules", seed: "seed",
+      generation: { originalRolls: { attributes: {
+        strength: { id: "attribute.strength", dice: [3, 3, 3], total: 9 },
+        dexterity: { id: "attribute.dexterity", dice: [3, 3, 4], total: 10 },
+        willpower: { id: "attribute.willpower", dice: [3, 4, 4], total: 11 },
+      }, additional: [
+        { id: "stamina", dice: [0], total: 0 },
+        { id: "wealth", dice: [3, 4], total: 99 },
+      ] }, choices: [] },
+      actor: { id: "character-1", kind: "character" },
+    });
+
+    expect(result).toEqual({ success: false, errors: [
+      { path: "$.generation.originalRolls.additional[0].dice[0]", message: "must be a positive safe integer" },
+      { path: "$.generation.originalRolls.additional[1].total", message: "must equal the sum of dice" },
+    ] });
+  });
 });
 
 const traitTables = {

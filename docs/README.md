@@ -2,6 +2,6 @@
 
 The current application's usage is documented in the [project README](../README.md).
 
-Migration implementation records are in
-[development/README.md](development/README.md). They distinguish completed work
-from remaining delivery tasks.
+Completed-stage records, technical contracts, and historical handoffs are in
+[development/README.md](development/README.md). The only remaining release action
+is the repository owner's GitHub Pages setting described in the project README.

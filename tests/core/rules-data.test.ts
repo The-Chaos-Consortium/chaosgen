@@ -113,8 +113,10 @@ describe("bundled Stage 02 rules", () => {
   it("encodes quantities and alternatives declaratively", () => {
     const posters = background("bounty-hunter").equipmentGrants[0]?.grants.at(-1);
     const coins = background("charlatan").equipmentGrants[0]?.grants.at(-2);
+    const coinDefinition = rules.items.find(({ id }) => id === coins?.itemId);
     expect(posters?.quantity).toEqual({ kind: "dice", count: 1, sides: 3 });
     expect(coins?.quantity).toEqual({ kind: "dice", count: 1, sides: 6 });
+    expect(coinDefinition).toMatchObject({ slots: 1, trivial: false });
     expect(background("outlaw").equipmentGrants[0]?.kind).toBe("choose-one");
     expect(background("beggar").equipmentGrants[0]?.kind).toBe("choose-one");
   });

@@ -23,7 +23,7 @@ Alexander Gomez and The Chaos Consortium. No source artwork is included.
   moved to a mount; allocation and ridden state are later user/generation
   choices.
 - A starting grimoire has one selected spell, six-spell capacity, and all 36
-  examples as selection options. Custom wording remains a Stage 03 choice.
+  examples as selection options. The generator also accepts custom wording.
 - Scrolls record only the names Bless and Heal. They intentionally contain no
   effect, parameter, or cost data.
 - Familiar and dog morale is distinct from retainer loyalty. Unsupported animal

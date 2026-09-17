@@ -1,8 +1,8 @@
 # Staged work packages
 
-Each numbered document is a reviewable delivery unit, not necessarily one session
-or one commit. Split checklist items into smaller tasks as needed. Keep status
-and evidence current without changing agreed requirements silently.
+The numbered documents are historical records of the reviewable delivery units
+used to complete the implementation. They preserve the checklist, dependencies,
+and evidence available at each checkpoint.
 
 Dependency outline:
 
@@ -13,10 +13,10 @@ Dependency outline:
 01–07 → 08
 ```
 
-Template preparation can progress after foundation tooling while data/core work
-continues, provided coordination is explicitly authorized. Web display can be
-built after the core; PDF download needs rendering. No stage requires delegating
-work to subagents.
+The dependency model allowed template preparation after foundation tooling while
+data/core work continued. Web display followed the core, and PDF download
+depended on rendering. These sequencing notes describe the completed delivery,
+not active work.
 
 | Stage | Deliverable |
 | --- | --- |
@@ -29,4 +29,6 @@ work to subagents.
 | [07](07-web.md) | Accessible lightweight generation/customization UI |
 | [08](08-delivery.md) | Static deployment configuration, cleanup, final verification |
 
-Use [the stage template](../templates/stage.md) for additional work packages.
+Use [the stage template](../templates/stage.md) only when a future change genuinely
+needs another staged work package; do not reopen these completed records merely
+to track routine maintenance.

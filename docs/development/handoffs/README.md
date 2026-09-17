@@ -10,4 +10,5 @@ performed, and any blocker. Distinguish staged/committed/pushed work accurately.
 
 Use relative paths and synthetic examples. Do not paste credentials, private
 conversations, personal data, or full unreviewed terminal logs into this public
-repository. No implementation handoffs exist yet.
+repository. Existing dated handoffs are historical records and should not be
+rewritten to match later repository state; add a new handoff for new work.
