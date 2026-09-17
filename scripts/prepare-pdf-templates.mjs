@@ -1,9 +1,10 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { PDFDocument, PDFName, StandardFonts, TextAlignment, rgb } from "pdf-lib";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const templatesDirectory = join(root, "templates");
 const outputDirectory = join(templatesDirectory, "fillable");
 const debugDirectory = join(templatesDirectory, "debug");

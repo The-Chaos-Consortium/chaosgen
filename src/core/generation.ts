@@ -30,11 +30,12 @@ export interface GenerateCharacterOptions {
   readonly faction?: CharacterActor["faction"];
   readonly age?: number;
   readonly name?: string;
-  readonly startingSpells?: Readonly<Record<string, StartingSpellSelection>>;
+  readonly startingSpells?: Readonly<Record<string, StartingSpellSelections>>;
   readonly rules?: RulesDefinitionDocument;
 }
 
 export type StartingSpellSelection = string | { readonly customWording: string };
+type StartingSpellSelections = StartingSpellSelection | readonly StartingSpellSelection[];
 
 export interface CharacterCustomization {
   readonly name?: string;
@@ -42,7 +43,7 @@ export interface CharacterCustomization {
   readonly faction?: CharacterActor["faction"];
   readonly traits?: Partial<Traits>;
   readonly attributeSwap?: AttributeSwapRecord;
-  readonly startingSpells?: Readonly<Record<string, StartingSpellSelection>>;
+  readonly startingSpells?: Readonly<Record<string, StartingSpellSelections>>;
 }
 
 /** Generates a complete character snapshot using only the supplied random stream. */
@@ -61,7 +62,7 @@ export function generateCharacter(options: GenerateCharacterOptions): GeneratedA
   const generatedName = options.name ?? generateHumanName(options.random, choices, "identity");
   assertName(generatedName);
   const originalRolls: OriginalRolls = {
-    attributes: rollOriginalAttributes(options.random),
+    attributes: rollOriginalAttributes(options.random, characterCreation.attributeRoll),
     additional,
   };
   const stamina = rollValue(options.random, characterCreation.staminaRoll, "stamina", additional);
@@ -78,9 +79,7 @@ export function generateCharacter(options: GenerateCharacterOptions): GeneratedA
   );
   const spellBooks = background.spellBookDefinitionIds.map((id, index) => {
     const book = requireById(definition.spellBooks, id, "spell book");
-    const provided = options.startingSpells?.[book.id];
-    const selected = provided ?? choose(options.random, book.spellIds, choices, `spell-book.${index}`).value;
-    if (provided !== undefined) choices.push({ id: `spell-book.${index}`, value: typeof provided === "string" ? provided : provided.customWording });
+    const selected = selectStartingSpells(options.random, book, options.startingSpells?.[book.id], choices, index);
     return {
       instanceId: `character:spell-book:${index}`,
       definitionId: book.id,
@@ -88,10 +87,10 @@ export function generateCharacter(options: GenerateCharacterOptions): GeneratedA
       ownerActorId: "character",
       occupiedSlots: slotsFor(book.slots, nextSlot(inventory)),
       capacity: book.capacity,
-      spells: [spellFromSelection(selected, book.spellIds, definition, book.name)],
+      spells: selected.map((selection) => spellFromSelection(selection, book.spellIds, definition, book.name)),
     } satisfies SpellBookInstance;
   });
-  const derivations = deriveCharacterCreation(originalRolls);
+  const derivations = deriveCharacterCreation(originalRolls, undefined, characterCreation);
   const actor: CharacterActor = {
     id: "character",
     kind: "character",
@@ -139,7 +138,7 @@ export function customizeCharacter(
   assertAge(age, definition.characterCreation.minimumChosenAge);
   const name = customization.name ?? actor.name;
   assertName(name);
-  const derivations = deriveCharacterCreation(document.generation.originalRolls, customization.attributeSwap);
+  const derivations = deriveCharacterCreation(document.generation.originalRolls, customization.attributeSwap, definition.characterCreation);
   const background = requireById(definition.backgrounds, actor.background.id, "background");
   const spellBooks = actor.spellBooks.map((book) => customizeSpellBook(book, customization.startingSpells, definition));
   return {
@@ -157,7 +156,7 @@ export function customizeCharacter(
       inventory: applyArmorEligibility(actor.inventory, derivations.attributes.strength.current, background.talentIds, definition),
       spellBooks,
       companions: actor.companions.map((companion) => companion.kind === "retainer"
-        ? { ...companion, loyalty: deriveRetainerLoyalty(derivations.attributes.willpower.current) }
+        ? { ...companion, loyalty: deriveRetainerLoyalty(derivations.attributes.willpower.current, definition.retainerLoyalty) }
         : companion),
     },
   };
@@ -167,7 +166,9 @@ function generateTraits(random: RandomSource, definition: RulesDefinitionDocumen
   return Object.fromEntries(
     (Object.keys(definition.traitTables) as TraitName[]).map((trait) => {
       const result = rollValue(random, { kind: "dice", count: 1, sides: 20 }, `trait.${trait}`, rolls);
-      return [trait, definition.traitTables[trait][result - 1]!.value];
+      const entry = definition.traitTables[trait].find(({ d20Index }) => d20Index === result);
+      if (entry === undefined) throw new RangeError(`trait.${trait} has no d20 entry for ${result}`);
+      return [trait, entry.value];
     }),
   ) as Traits;
 }
@@ -180,7 +181,7 @@ function generateCompanions(random: RandomSource, definition: RulesDefinitionDoc
     const stamina = rollValue(random, companion.stamina, `${actorId}.stamina`, rolls);
     if (companion.kind === "retainer") {
       const talentIds = sampleDistinct(random, definition.squireTalentIds, companion.talentSelectionCount, choices, `${actorId}.talents`);
-      return { id: actorId, kind: "retainer", definitionId: companion.id, role: companion.role, name: generateHumanName(random, choices, `${actorId}.name`), attributes, stamina: track(stamina), loyalty: deriveRetainerLoyalty(employerWillpower), talents: talentIds.map((talentId) => { const talent = requireById(definition.talents, talentId, "talent"); return { definitionId: talent.id, name: talent.name }; }), inventory: generateInventory(random, definition, companion.equipmentGrants, actorId, rolls, choices), notes: [] };
+      return { id: actorId, kind: "retainer", definitionId: companion.id, role: companion.role, name: generateHumanName(random, choices, `${actorId}.name`), attributes, stamina: track(stamina), inventoryCapacity: companion.inventoryCapacity, loyalty: deriveRetainerLoyalty(employerWillpower, definition.retainerLoyalty), talents: talentIds.map((talentId) => { const talent = requireById(definition.talents, talentId, "talent"); return { definitionId: talent.id, name: talent.name }; }), inventory: generateInventory(random, definition, companion.equipmentGrants, actorId, rolls, choices), notes: [] };
     }
     if (companion.kind === "pet") {
       const name = companion.petKind === "familiar" ? choose(random, names.ironicOrAbsurdFamiliar, choices, `${actorId}.name`).value : companion.name;
@@ -239,7 +240,19 @@ function customizeSpellBook(book: SpellBookInstance, selections: CharacterCustom
     ? undefined
     : requireById(definition.spellBooks, book.definitionId, "spell book");
   if (bookDefinition === undefined) throw new RangeError(`spell book definition is missing for ${book.name}`);
-  return { ...book, spells: [spellFromSelection(selection, bookDefinition.spellIds, definition, book.name)] };
+  const selected = Array.isArray(selection) ? selection : [selection];
+  if (selected.length !== book.spells.length) throw new RangeError(`${book.name} requires ${book.spells.length} starting spell selections`);
+  return { ...book, spells: selected.map((entry) => spellFromSelection(entry, bookDefinition.spellIds, definition, book.name)) };
+}
+
+function selectStartingSpells(random: RandomSource, book: RulesDefinitionDocument["spellBooks"][number], provided: StartingSpellSelections | undefined, choices: RecordedChoice[], bookIndex: number): readonly StartingSpellSelection[] {
+  if (provided === undefined) {
+    return Array.from({ length: book.startingSpellCount }, (_, spellIndex) => choose(random, book.spellIds, choices, `spell-book.${bookIndex}.${spellIndex}`).value);
+  }
+  const selected = Array.isArray(provided) ? provided : [provided];
+  if (selected.length !== book.startingSpellCount) throw new RangeError(`${book.name} requires ${book.startingSpellCount} starting spell selections`);
+  selected.forEach((selection, spellIndex) => choices.push({ id: `spell-book.${bookIndex}.${spellIndex}`, value: typeof selection === "string" ? selection : selection.customWording }));
+  return selected;
 }
 
 function spellFromSelection(selection: StartingSpellSelection, allowedSpellIds: readonly string[], definition: RulesDefinitionDocument, bookName: string) {

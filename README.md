@@ -1,7 +1,7 @@
 # chaosgen
 
-Chaos & Conquest character generator. The TypeScript migration is in progress;
-the current interfaces are a local browser application and PDF CLI.
+Chaos & Conquest character generator with a local browser application and PDF
+CLI.
 
 ## Requirements
 
@@ -76,3 +76,8 @@ Conquest rules data is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); credit
 Alexander Gomez and The Chaos Consortium. See [data/README.md](data/README.md)
 for data provenance and attribution.
+
+The supplied printable PDF templates are separately copyrighted by The Chaos
+Consortium LLC and Alexander Gomez. The copyright holders authorize their
+distribution through this repository and GitHub Pages; end users may not sell or
+redistribute generated PDFs. See [templates/README.md](templates/README.md).

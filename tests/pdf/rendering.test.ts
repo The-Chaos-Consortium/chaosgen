@@ -73,6 +73,29 @@ describe("PdfLibCharacterRenderer", () => {
     expect(pdf.getForm().getFields().some((field) => (field as PDFTextField).getText() === "Holy Symbol - trivial")).toBe(true);
   });
 
+  it("preserves rolled quantities for zero-slot gear", async () => {
+    const warpriest = document("warpriest");
+    if (warpriest.actor.kind !== "character") throw new Error("expected a character");
+    const holySymbol = warpriest.actor.inventory.find(({ name }) => name === "Holy Symbol");
+    if (holySymbol === undefined) throw new Error("expected a holy symbol");
+    const withQuantity = {
+      ...warpriest,
+      actor: { ...warpriest.actor, inventory: warpriest.actor.inventory.map((item) => item === holySymbol ? { ...item, quantity: 3 } : item) },
+    };
+    const pdf = await PDFDocument.load(await renderer.render({ document: withQuantity, templates: await templates() }));
+
+    expect(pdf.getForm().getFields().some((field) => (field as PDFTextField).getText() === "Holy Symbol x3 - trivial")).toBe(true);
+  });
+
+  it("exports the selected faction in character notes", async () => {
+    const witch = document("witch");
+    if (witch.actor.kind !== "character") throw new Error("expected a character");
+    const withFaction = { ...witch, actor: { ...witch.actor, faction: "Balance" as const } };
+    const pdf = await PDFDocument.load(await renderer.render({ document: withFaction, templates: await templates() }));
+
+    expect(pdf.getForm().getTextField("character.notes").getText()).toContain("Faction: Balance");
+  });
+
   it("rejects custom wording Helvetica cannot encode instead of dropping it", async () => {
     const witch = document("witch");
     if (witch.actor.kind !== "character") throw new Error("expected a character");
@@ -82,6 +105,25 @@ describe("PdfLibCharacterRenderer", () => {
     };
 
     await expect(renderer.render({ document: custom, templates: await templates() })).rejects.toThrow("unsupported Helvetica character U+2603");
+  });
+
+  it("fits long names and spell wording or reports text that cannot fit", async () => {
+    const witch = document("witch");
+    if (witch.actor.kind !== "character") throw new Error("expected a character");
+    const long = {
+      ...witch,
+      actor: {
+        ...witch.actor,
+        name: "Synthetic Character With An Unusually Long Printable Name",
+        spellBooks: witch.actor.spellBooks.map((book) => ({ ...book, spells: [{ name: "Custom spell", wording: "Call a storm of ash over the ancient ruined citadel while the bell tower rings." }] })),
+      },
+    };
+    const pdf = await PDFDocument.load(await renderer.render({ document: long, templates: await templates() }));
+
+    expect(pdf.getForm().getTextField("character.name").getText()).toBe(long.actor.name);
+    expect(pdf.getForm().getTextField("character.spells").getText()).toContain("Call a storm of ash");
+    const tooLong = { ...long, actor: { ...long.actor, name: "A".repeat(500) } };
+    await expect(renderer.render({ document: tooLong, templates: await templates() })).rejects.toThrow("character.name text does not fit");
   });
 
   it("exports every background as an editable PDF", async () => {

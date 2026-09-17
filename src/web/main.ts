@@ -47,21 +47,23 @@ const defaultDependencies: AppDependencies = {
 interface AppState {
   document?: GeneratedCharacterDocument;
   busy: boolean;
+  generationControls: readonly (HTMLSelectElement | HTMLButtonElement)[];
 }
 
 export function mountApp(root: HTMLElement, dependencies: AppDependencies = defaultDependencies): void {
-  const state: AppState = { busy: false };
+  const state: AppState = { busy: false, generationControls: [] };
   const status = element("p", { className: "status", role: "status", ariaLive: "polite" }) as HTMLParagraphElement;
   const result = element("div");
   const background = select("background", [option("", "Random background"), ...rules.backgrounds.map(({ id, d20Index, name }) => option(id, `${d20Index}. ${name}`))]);
-  const generate = element("button", { type: "button" }, "Generate character");
+  const generate = element("button", { type: "button" }, "Generate character") as HTMLButtonElement;
+  state.generationControls = [background, generate];
   generate.addEventListener("click", () => {
     try {
       const seed = dependencies.newSeed();
       const generated = generateCharacter({ seed, random: createSeededRandom(seed), ...(background.value === "" ? {} : { backgroundId: background.value }) });
       if (generated.actor.kind !== "character") throw new Error("Character generation returned an unsupported actor.");
       state.document = { ...generated, actor: generated.actor };
-      setStatus(status, "", "");
+      setStatus(status, "success", `Generated ${generated.actor.name}.`);
       renderResult();
     } catch (error: unknown) {
       setStatus(status, "error", message(error));
@@ -85,7 +87,9 @@ export function mountApp(root: HTMLElement, dependencies: AppDependencies = defa
   function renderResult(): void {
     const document = state.document;
     if (document === undefined) return;
+    const focused = focusedControl(result);
     result.replaceChildren(buildResult(document, state, dependencies, status, renderResult));
+    restoreFocus(result, focused);
   }
 }
 
@@ -125,7 +129,8 @@ function buildResult(document: GeneratedCharacterDocument, state: AppState, depe
       setStatus(status, "error", message(error));
     }
   };
-  for (const field of [name, age, faction, swapFirst, swapSecond, ...traits.map(([, field]) => field), ...(spell === undefined ? [] : [spell]), ...(customWording === undefined ? [] : [customWording])]) {
+  const editableFields = [name, age, faction, swapFirst, swapSecond, ...traits.map(([, field]) => field), ...(spell === undefined ? [] : [spell]), ...(customWording === undefined ? [] : [customWording])];
+  for (const field of editableFields) {
     field.addEventListener("change", () => {
       if (field === spell && customWording !== undefined) customWording.disabled = spell.value !== "custom";
       if ((field === swapFirst && swapSecond.value === "") || (field === swapSecond && swapFirst.value === "")) return;
@@ -137,7 +142,9 @@ function buildResult(document: GeneratedCharacterDocument, state: AppState, depe
     const current = state.document;
     if (current === undefined || state.busy) return;
     state.busy = true;
-    download.disabled = true;
+    const controls = [...state.generationControls, ...editableFields, download];
+    const disabled = controls.map((control) => control.disabled);
+    controls.forEach((control) => { control.disabled = true; });
     setStatus(status, "", "Preparing editable PDF...");
     try {
       const templates = await loadTemplates(current.actor, dependencies);
@@ -147,7 +154,7 @@ function buildResult(document: GeneratedCharacterDocument, state: AppState, depe
       setStatus(status, "error", message(error));
     } finally {
       state.busy = false;
-      download.disabled = false;
+      controls.forEach((control, index) => { control.disabled = disabled[index]!; });
     }
   });
 
@@ -186,15 +193,15 @@ function statisticList(actor: CharacterActor): HTMLElement {
 }
 
 function inventory(actor: CharacterActor): HTMLElement {
-  const rows = actor.inventory.map((item) => [item.name, item.occupiedSlots.length === 0 ? "Trivial" : item.occupiedSlots.join(", "), item.armor === undefined ? "" : item.armor.canWear ? `AV ${item.armor.armorValue}` : `AV ${item.armor.armorValue}; cannot wear`]);
+  const rows = actor.inventory.map((item) => [item.name, String(item.quantity), item.occupiedSlots.length === 0 ? "Trivial" : item.occupiedSlots.join(", "), item.armor === undefined ? "" : item.armor.canWear ? `AV ${item.armor.armorValue}` : `AV ${item.armor.armorValue}; cannot wear`]);
   const used = actor.inventory.flatMap(({ occupiedSlots }) => occupiedSlots).length + actor.spellBooks.flatMap(({ occupiedSlots }) => occupiedSlots).length + actor.scrolls.flatMap(({ occupiedSlots }) => occupiedSlots).length;
-  return element("div", {}, element("p", { className: used > actor.inventoryCapacity ? "warning" : "muted" }, `${used}/${actor.inventoryCapacity} occupied slots${used > actor.inventoryCapacity ? "; granted gear exceeds capacity." : "."}`), table(["Item", "Slots", "Armor"], rows));
+  return element("div", {}, element("p", { className: used > actor.inventoryCapacity ? "warning" : "muted" }, `${used}/${actor.inventoryCapacity} occupied slots${used > actor.inventoryCapacity ? "; granted gear exceeds capacity." : "."}`), table(["Item", "Quantity", "Slots", "Armor"], rows));
 }
 
 function companions(actor: CharacterActor): HTMLElement {
   if (actor.companions.length === 0) return element("p", { className: "muted" }, "No background-granted companions.");
   return list(actor.companions.map((companion) => {
-    if (companion.kind === "retainer") return `${companion.name}, ${companion.role}: loyalty ${companion.loyalty.score}; talents ${companion.talents.map(({ name }) => name).join(", ")}.`;
+    if (companion.kind === "retainer") return `${companion.name}, ${companion.role}: loyalty ${companion.loyalty.score}; capacity ${companion.inventoryCapacity} slots; talents ${companion.talents.map(({ name }) => name).join(", ")}.`;
     if (companion.kind === "pet") return `${companion.name}, ${companion.petKind}: morale ${companion.morale}; attacks ${companion.attacks.join(", ")}.`;
     return `${companion.name}: morale ${companion.morale}; capacity ${companion.capacity.ridden}/${companion.capacity.unridden} slots ridden/unridden.`;
   }));
@@ -236,6 +243,18 @@ function element(tag: string, properties: Record<string, unknown> = {}, ...child
   return node;
 }
 function setStatus(element: HTMLParagraphElement, kind: StatusKind, text: string): void { element.className = `status ${kind}`; element.textContent = text; }
+function focusedControl(root: HTMLElement): { readonly id: string; readonly selectionStart: number | null; readonly selectionEnd: number | null } | undefined {
+  const active = document.activeElement;
+  if (!(active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active instanceof HTMLSelectElement) || !root.contains(active) || active.id === "") return undefined;
+  return { id: active.id, selectionStart: "selectionStart" in active ? active.selectionStart : null, selectionEnd: "selectionEnd" in active ? active.selectionEnd : null };
+}
+function restoreFocus(root: HTMLElement, focused: ReturnType<typeof focusedControl>): void {
+  if (focused === undefined) return;
+  const control = root.querySelector<HTMLElement>(`[id="${focused.id}"]`);
+  if (!(control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement || control instanceof HTMLSelectElement)) return;
+  control.focus();
+  if (focused.selectionStart !== null && focused.selectionEnd !== null && "setSelectionRange" in control) control.setSelectionRange(focused.selectionStart, focused.selectionEnd);
+}
 function safeFilename(value: string): string { const result = value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); return result.length === 0 ? "character" : result; }
 function title(value: string): string { return value.replace(/\b\w/g, (letter) => letter.toUpperCase()); }
 function message(error: unknown): string { return error instanceof Error ? error.message : String(error); }

@@ -161,7 +161,7 @@
     {"id":"divination-tools","name":"Tools for divination","slots":1,"trivial":false,"sources":[{"document":"backgrounds.md","section":"(12) Charlatan"},{"document":"equipment.md","section":"Items & Equipment"}]},
     {"id":"sugar-water-vials","name":"Vials of sugar water","slots":1,"trivial":false,"sources":[{"document":"backgrounds.md","section":"(12) Charlatan"},{"document":"equipment.md","section":"Items & Equipment"}]},
     {"id":"pack-of-cards","name":"Pack of cards","slots":0,"trivial":true,"sources":[{"document":"backgrounds.md","section":"(12) Charlatan"}]},
-    {"id":"counterfeit-silver-coin","name":"Counterfeit silver coin","slots":0,"trivial":true,"sources":[{"document":"backgrounds.md","section":"(12) Charlatan"},{"document":"equipment.md","section":"Currency"}]},
+    {"id":"counterfeit-silver-coin","name":"Counterfeit silver coin","slots":1,"trivial":false,"sources":[{"document":"backgrounds.md","section":"(12) Charlatan"},{"document":"equipment.md","section":"Currency"}]},
     {"id":"club","name":"Club","slots":1,"trivial":false,"damage":"d6","sources":[{"document":"equipment.md","section":"Weapons & Armor"}]},
     {"id":"magical-emblem-cloak","name":"Cloak with magical emblems","slots":0,"trivial":true,"sources":[{"document":"backgrounds.md","section":"(13) Wizard's Apprentice"}]},
     {"id":"staff","name":"Staff","slots":1,"trivial":false,"damage":"d6","sources":[{"document":"equipment.md","section":"Weapons & Armor"}]},

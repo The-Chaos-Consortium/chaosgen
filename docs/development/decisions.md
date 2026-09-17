@@ -51,6 +51,9 @@ new conflicting information.
 | D12 | confirmed | Completed generated PDFs remain editable with clear, borderless AcroForm fields; do not flatten them. Each occupied inventory row shows only its item text, with multi-slot items repeated in each occupied row. | Owner review of Stage 05 samples. This supersedes the approved-plan default to flatten completed PDFs. | 05, 06, 07 | approved plan default |
 | D13 | confirmed | A multi-slot item's occupied rows show its singular item name, not an aggregate quantity. Zero-slot gear is labeled `<item> - trivial`. Retainer loyalty fields show only the loyalty score, not the retainer maximum. | Owner review of Stage 05 samples. | 05, 06, 07 | — |
 | D14 | confirmed | Target GitHub Pages, built and published by GitHub Actions; do not configure GitLab Pages. | Owner correction during Stage 08 delivery work. | 08 | D05 |
+| D15 | confirmed | Include faction in the character PDF notes. | Owner ruling during Stage 08 remediation. This keeps browser display and PDF export aligned without assigning faction to an unsupported dedicated form field. | 05, 07, 08 | — |
+| D16 | confirmed | The supplied printable PDFs are copyright The Chaos Consortium LLC and Alexander Gomez. They are licensed for end-user use only and must not be sold or modified then redistributed. | Owner ruling during Stage 08 remediation. This permits local end-user use but prohibits public redistribution of the fillable modified derivatives. | 04, 05, 08 | — |
+| D17 | confirmed | The copyright holders authorize this repository and its GitHub Pages deployment to distribute the supplied templates and fillable derivatives. End users may not sell or redistribute generated PDFs. | Owner clarification during Stage 08 remediation. This permits the planned static application while retaining the end-user output restriction. | 04, 05, 08 | D16 application |
 
 ## Recording future decisions
 

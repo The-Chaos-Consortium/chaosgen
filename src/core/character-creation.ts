@@ -6,6 +6,7 @@ import type {
   OriginalRolls,
   RecordedRoll,
 } from "./actors.ts";
+import type { CharacterCreationDefinition, RetainerLoyaltyDefinition } from "./definitions.ts";
 import { rollDice, type RandomSource } from "./rng.ts";
 
 export type OriginalAttributeRolls = Readonly<Record<AttributeName, RecordedRoll>>;
@@ -21,12 +22,15 @@ export interface RetainerLoyalty {
   readonly retainerMaximum: number;
 }
 
-/** Rolls the three independent 3d6 starting attributes and records every die. */
-export function rollOriginalAttributes(random: RandomSource): OriginalAttributeRolls {
+/** Rolls the independent starting attributes configured by the rules document. */
+export function rollOriginalAttributes(
+  random: RandomSource,
+  attributeRoll: CharacterCreationDefinition["attributeRoll"] = { kind: "dice", count: 3, sides: 6 },
+): OriginalAttributeRolls {
   return {
-    strength: recordedRoll(random, "attribute.strength"),
-    dexterity: recordedRoll(random, "attribute.dexterity"),
-    willpower: recordedRoll(random, "attribute.willpower"),
+    strength: recordedRoll(random, "attribute.strength", attributeRoll),
+    dexterity: recordedRoll(random, "attribute.dexterity", attributeRoll),
+    willpower: recordedRoll(random, "attribute.willpower", attributeRoll),
   };
 }
 
@@ -42,6 +46,7 @@ export function createOriginalRolls(random: RandomSource): OriginalRolls {
 export function deriveCharacterCreation(
   originalRolls: OriginalRolls,
   swap?: AttributeSwapRecord,
+  characterCreation: Pick<CharacterCreationDefinition, "inventoryMinimum" | "corruptionMaximumModifier"> = { inventoryMinimum: 10, corruptionMaximumModifier: 3 },
 ): CharacterCreationDerivations {
   assertSwap(swap);
   const { attributes: originalAttributes } = originalRolls;
@@ -60,8 +65,8 @@ export function deriveCharacterCreation(
   };
   return {
     attributes,
-    inventoryCapacity: Math.max(scores.strength, 10),
-    corruptionMaximum: scores.willpower + 3,
+    inventoryCapacity: Math.max(scores.strength, characterCreation.inventoryMinimum),
+    corruptionMaximum: scores.willpower + characterCreation.corruptionMaximumModifier,
   };
 }
 
@@ -77,21 +82,26 @@ export function replaceAttributeSwap(
 }
 
 /** Confirmed employer-WIL loyalty table for retainers. */
-export function deriveRetainerLoyalty(employerWillpower: number): RetainerLoyalty {
-  if (!Number.isInteger(employerWillpower) || employerWillpower < 3 || employerWillpower > 18) {
-    throw new RangeError("employerWillpower must be an integer from 3 through 18");
-  }
-  if (employerWillpower === 3) return { score: 4, retainerMaximum: 1 };
-  if (employerWillpower <= 5) return { score: 5, retainerMaximum: 2 };
-  if (employerWillpower <= 8) return { score: 6, retainerMaximum: 3 };
-  if (employerWillpower <= 12) return { score: 7, retainerMaximum: 4 };
-  if (employerWillpower <= 15) return { score: 8, retainerMaximum: 5 };
-  if (employerWillpower <= 17) return { score: 9, retainerMaximum: 6 };
-  return { score: 10, retainerMaximum: 7 };
+export function deriveRetainerLoyalty(
+  employerWillpower: number,
+  loyalty: RetainerLoyaltyDefinition = { bands: [
+    { minimumWillpower: 3, maximumWillpower: 3, loyalty: 4, retainerMaximum: 1 },
+    { minimumWillpower: 4, maximumWillpower: 5, loyalty: 5, retainerMaximum: 2 },
+    { minimumWillpower: 6, maximumWillpower: 8, loyalty: 6, retainerMaximum: 3 },
+    { minimumWillpower: 9, maximumWillpower: 12, loyalty: 7, retainerMaximum: 4 },
+    { minimumWillpower: 13, maximumWillpower: 15, loyalty: 8, retainerMaximum: 5 },
+    { minimumWillpower: 16, maximumWillpower: 17, loyalty: 9, retainerMaximum: 6 },
+    { minimumWillpower: 18, maximumWillpower: 18, loyalty: 10, retainerMaximum: 7 },
+  ], sources: [] },
+): RetainerLoyalty {
+  if (!Number.isInteger(employerWillpower)) throw new RangeError("employerWillpower must be an integer");
+  const band = loyalty.bands.find(({ minimumWillpower, maximumWillpower }) => employerWillpower >= minimumWillpower && employerWillpower <= maximumWillpower);
+  if (band === undefined) throw new RangeError("employerWillpower is not covered by the retainer loyalty table");
+  return { score: band.loyalty, retainerMaximum: band.retainerMaximum };
 }
 
-function recordedRoll(random: RandomSource, id: string): RecordedRoll {
-  const result = rollDice(random, 3, 6);
+function recordedRoll(random: RandomSource, id: string, definition: CharacterCreationDefinition["attributeRoll"]): RecordedRoll {
+  const result = rollDice(random, definition.count, definition.sides);
   return { id, ...result };
 }
 

@@ -1,4 +1,4 @@
-import { PDFDocument, PDFName, PDFTextField, StandardFonts } from "pdf-lib";
+import { PDFDocument, PDFFont, PDFName, PDFTextField, StandardFonts } from "pdf-lib";
 
 import type {
   CharacterActor,
@@ -53,8 +53,9 @@ async function filledTemplate(bytes: ReadonlyPdfBytes, values: FieldValues): Pro
   assertHelveticaText(values);
   const filled = await PDFDocument.load(Uint8Array.from(bytes));
   const form = filled.getForm();
-  for (const [name, value] of Object.entries(values)) form.getTextField(name).setText(value);
-  form.updateFieldAppearances(await filled.embedFont(StandardFonts.Helvetica));
+  const font = await filled.embedFont(StandardFonts.Helvetica);
+  for (const [name, value] of Object.entries(values)) setFittedText(form.getTextField(name), value, font);
+  form.updateFieldAppearances(font);
   return filled;
 }
 
@@ -90,11 +91,62 @@ async function appendEditableTemplate(output: PDFDocument, bytes: ReadonlyPdfByt
     targetField.acroField.getWidgets().forEach((targetWidget) => {
       targetWidget.getAppearanceCharacteristics()?.dict.delete(PDFName.of("BG"));
     });
-    targetField.setFontSize(sourceField.isMultiline() ? 8 : 10);
     targetField.setAlignment(sourceField.getAlignment());
-    targetField.setText(sourceField.getText() ?? "");
+    setFittedText(targetField, sourceField.getText() ?? "", font);
   }
   form.updateFieldAppearances(font);
+}
+
+/** Keeps editable appearances readable and rejects text that cannot fit safely. */
+function setFittedText(field: PDFTextField, value: string, font: PDFFont): void {
+  const rectangle = field.acroField.getWidgets()[0]?.getRectangle();
+  if (rectangle === undefined) throw new RangeError(`${field.getName()} is missing its widget`);
+  const maximum = field.isMultiline() ? 8 : 10;
+  const minimum = 5;
+  for (let size = maximum; size >= minimum; size -= 0.5) {
+    if (textFits(value, rectangle.width, rectangle.height, size, field.isMultiline(), font)) {
+      field.setFontSize(size);
+      field.setText(value);
+      return;
+    }
+  }
+  if (!field.isMultiline() && field.getName().endsWith(".name")) {
+    field.enableMultiline();
+    for (let size = maximum; size >= minimum; size -= 0.5) {
+      if (textFits(value, rectangle.width, rectangle.height, size, true, font)) {
+        field.setFontSize(size);
+        field.setText(value);
+        return;
+      }
+    }
+  }
+  throw new RangeError(`PDF field ${field.getName()} text does not fit at ${minimum}pt`);
+}
+
+function textFits(value: string, width: number, height: number, size: number, multiline: boolean, font: PDFFont): boolean {
+  const usableWidth = Math.max(1, width - 4);
+  if (!multiline) return font.widthOfTextAtSize(value, size) <= usableWidth;
+  const lines = value.split("\n").reduce((count, paragraph) => count + wrappedLineCount(paragraph, usableWidth, size, font), 0);
+  return lines * size * 1.2 <= Math.max(1, height - 4);
+}
+
+function wrappedLineCount(paragraph: string, width: number, size: number, font: PDFFont): number {
+  if (paragraph.length === 0) return 1;
+  let lines = 1;
+  let line = "";
+  for (const word of paragraph.split(/\s+/)) {
+    const candidate = line.length === 0 ? word : `${line} ${word}`;
+    if (font.widthOfTextAtSize(candidate, size) <= width) {
+      line = candidate;
+    } else if (line.length === 0) {
+      lines += Math.ceil(font.widthOfTextAtSize(word, size) / width) - 1;
+      line = word;
+    } else {
+      lines += 1;
+      line = word;
+    }
+  }
+  return lines;
 }
 
 function uniqueFieldName(name: string, existingNames: Set<string>): string {
@@ -189,10 +241,14 @@ function mountValues(character: CharacterActor, mount: MountActor): FieldValues 
 
 function inventoryEntries(inventory: readonly InventoryItemInstance[], books: CharacterActor["spellBooks"] = [], scrolls: CharacterActor["scrolls"] = []): readonly { readonly name: string; readonly slots: readonly number[] }[] {
   return [
-    ...inventory.map((item) => ({ name: item.name, slots: item.occupiedSlots })),
+    ...inventory.map((item) => ({ name: inventoryName(item), slots: item.occupiedSlots })),
     ...books.map((book) => ({ name: book.name, slots: book.occupiedSlots })),
     ...scrolls.map((scroll) => ({ name: scroll.name, slots: scroll.occupiedSlots })),
   ];
+}
+
+function inventoryName(item: InventoryItemInstance): string {
+  return item.quantity === 1 || item.occupiedSlots.length > 0 ? item.name : `${item.name} x${item.quantity}`;
 }
 
 function inventoryFields(prefix: string, rowCount: number, entries: readonly { readonly name: string; readonly slots: readonly number[] }[]): { readonly values: FieldValues; readonly overflow: readonly string[] } {
@@ -230,7 +286,7 @@ function spellLines(actor: CharacterActor): string {
 
 function characterNotes(actor: CharacterActor, overflow: readonly string[]): string {
   return [
-    `Age: ${actor.identity.age}; Ancestry: ${actor.identity.ancestry}; Capacity: ${actor.inventoryCapacity} slots.`,
+    `Age: ${actor.identity.age}; Ancestry: ${actor.identity.ancestry}; Faction: ${actor.faction}; Capacity: ${actor.inventoryCapacity} slots.`,
     `Traits: ${Object.entries(actor.traits).map(([name, value]) => `${name}: ${value}`).join("; ")}`,
     ...actor.inventory.filter((item) => item.armor !== undefined && !item.armor.canWear).map((item) => `${item.name} is owned but cannot currently be worn.`),
     ...actor.notes,
@@ -240,6 +296,7 @@ function characterNotes(actor: CharacterActor, overflow: readonly string[]): str
 
 function retainerNotes(actor: RetainerActor, overflow: readonly string[]): string {
   return [
+    `Capacity: ${actor.inventoryCapacity} slots.`,
     `Talents: ${actor.talents.map(({ name }) => name).join(", ")}.`,
     ...actor.notes,
     ...(overflow.length === 0 ? [] : ["Additional inventory:", ...overflow]),

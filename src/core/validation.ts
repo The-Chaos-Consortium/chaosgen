@@ -48,7 +48,7 @@ export interface ValidatedActorEnvelope {
   readonly generation: {
     readonly originalRolls: {
       readonly attributes: Readonly<Record<AttributeName, RecordedRoll>>;
-      readonly additional: readonly unknown[];
+      readonly additional: readonly RecordedRoll[];
     };
     readonly choices: readonly unknown[];
   };
@@ -148,20 +148,25 @@ function readRecordedRoll(
   value: unknown,
   path: string,
   errors: ValidationError[],
+  expectedId?: string,
 ): RecordedRoll | undefined {
   const roll = readRecord(value, path, errors);
   if (roll === undefined) return undefined;
   const id = readString(roll, "id", path, errors);
   const dice = readArray(roll, "dice", path, errors);
   dice?.forEach((die, index) => {
-    if (typeof die !== "number" || !Number.isFinite(die)) {
-      errors.push({ path: `${path}.dice[${index}]`, message: "must be a finite number" });
+    if (typeof die !== "number" || !Number.isSafeInteger(die) || die < 1) {
+      errors.push({ path: `${path}.dice[${index}]`, message: "must be a positive safe integer" });
     }
   });
   const total = readNumber(roll, "total", path, errors);
   if (id === undefined || dice === undefined || total === undefined) return undefined;
-  if (dice.some((die) => typeof die !== "number" || !Number.isFinite(die))) return undefined;
-  return { id, dice: dice as readonly number[], total };
+  if (expectedId !== undefined && id !== expectedId) errors.push({ path: `${path}.id`, message: `must be ${expectedId}` });
+  const numericDice = dice.filter((die): die is number => typeof die === "number" && Number.isSafeInteger(die) && die >= 1);
+  if (numericDice.length !== dice.length) return undefined;
+  if (total !== numericDice.reduce((sum, die) => sum + die, 0)) errors.push({ path: `${path}.total`, message: "must equal the sum of dice" });
+  if (errors.some(({ path: errorPath }) => errorPath === `${path}.id` || errorPath === `${path}.total`)) return undefined;
+  return { id, dice: numericDice, total };
 }
 
 function readEnum<T extends string>(
@@ -211,22 +216,27 @@ export function validateActorEnvelope(
           originalAttributesRecord.strength,
           "$.generation.originalRolls.attributes.strength",
           errors,
+          "attribute.strength",
         ),
         dexterity: readRecordedRoll(
           originalAttributesRecord.dexterity,
           "$.generation.originalRolls.attributes.dexterity",
           errors,
+          "attribute.dexterity",
         ),
         willpower: readRecordedRoll(
           originalAttributesRecord.willpower,
           "$.generation.originalRolls.attributes.willpower",
           errors,
+          "attribute.willpower",
         ),
       }
     : undefined;
-  const additional = originalRolls
+  const additionalInput = originalRolls
     ? readArray(originalRolls, "additional", "$.generation.originalRolls", errors)
     : undefined;
+  const additional = additionalInput?.map((roll, index) => readRecordedRoll(roll, `$.generation.originalRolls.additional[${index}]`, errors));
+  const additionalRolls = additional?.filter((roll): roll is RecordedRoll => roll !== undefined);
   const choices = generation
     ? readArray(generation, "choices", "$.generation", errors)
     : undefined;
@@ -292,7 +302,8 @@ export function validateActorEnvelope(
     originalAttributes.strength === undefined ||
     originalAttributes.dexterity === undefined ||
     originalAttributes.willpower === undefined ||
-    additional === undefined ||
+    additionalRolls === undefined ||
+    additionalRolls.length !== additionalInput?.length ||
     choices === undefined ||
     validatedActor === undefined
   ) {
@@ -311,7 +322,7 @@ export function validateActorEnvelope(
             dexterity: originalAttributes.dexterity,
             willpower: originalAttributes.willpower,
           },
-          additional,
+          additional: additionalRolls,
         },
         choices,
       },

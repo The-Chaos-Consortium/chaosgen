@@ -63,6 +63,7 @@ const actors = [
     role: "Squire",
     attributes: attributes(8, 9, 10),
     stamina: track(3),
+    inventoryCapacity: 10,
     loyalty: { score: 7, retainerMaximum: 4 },
     talents: [],
     inventory: [],
@@ -220,8 +221,26 @@ describe("validateActorEnvelope", () => {
 
     expect(result).toEqual({
       success: false,
-      errors: [{ path: "$.generation.originalRolls.attributes.willpower.dice[1]", message: "must be a finite number" }],
+      errors: [{ path: "$.generation.originalRolls.attributes.willpower.dice[1]", message: "must be a positive safe integer" }],
     });
+  });
+
+  it("rejects original rolls with mismatched IDs, dice, and totals", () => {
+    const result = validateActorEnvelope({
+      schemaVersion: "1", rulesVersion: "rules", seed: "seed",
+      generation: { originalRolls: { attributes: {
+        strength: { id: "attribute.dexterity", dice: [3, 3, 3], total: 9 },
+        dexterity: { id: "attribute.dexterity", dice: [0, 3, 4], total: 7 },
+        willpower: { id: "attribute.willpower", dice: [3, 4, 4], total: 99 },
+      }, additional: [] }, choices: [] },
+      actor: { id: "character-1", kind: "character" },
+    });
+
+    expect(result).toEqual({ success: false, errors: [
+      { path: "$.generation.originalRolls.attributes.strength.id", message: "must be attribute.strength" },
+      { path: "$.generation.originalRolls.attributes.dexterity.dice[0]", message: "must be a positive safe integer" },
+      { path: "$.generation.originalRolls.attributes.willpower.total", message: "must equal the sum of dice" },
+    ] });
   });
 });
 

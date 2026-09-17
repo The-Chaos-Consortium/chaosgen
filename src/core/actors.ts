@@ -131,6 +131,7 @@ export interface RetainerActor extends ActorBase {
   readonly kind: "retainer";
   readonly definitionId: string;
   readonly role: string;
+  readonly inventoryCapacity: number;
   readonly loyalty: {
     readonly score: number;
     readonly retainerMaximum: number;

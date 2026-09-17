@@ -45,6 +45,14 @@ describe("character generation", () => {
     });
   });
 
+  it("uses recorded d20 indexes rather than trait-table array positions", () => {
+    const shuffled = { ...rules, traitTables: { ...rules.traitTables, physique: [...rules.traitTables.physique].reverse() } };
+    const generated = generateCharacter({ seed: "shuffled traits", random: minimumRandom, backgroundId: "duelist", rules: shuffled });
+    if (generated.actor.kind !== "character") throw new Error("expected a character");
+
+    expect(generated.actor.traits.physique).toBe(rules.traitTables.physique.find(({ d20Index }) => d20Index === 1)?.value);
+  });
+
   it("preserves gear beyond capacity and computes armor eligibility", () => {
     const roadwarden = generateCharacter({ seed: "minimum roadwarden", random: minimumRandom, backgroundId: "roadwarden" });
     const knight = generateCharacter({ seed: "minimum knight", random: minimumRandom, backgroundId: "knight" });
@@ -71,6 +79,7 @@ describe("character generation", () => {
       expect(squire.talents).toHaveLength(3);
       expect(new Set(squire.talents.map(({ definitionId }) => definitionId)).size).toBe(3);
       expect(squire.inventory.map(({ definitionId }) => definitionId)).toEqual(["spear"]);
+      expect(squire.inventoryCapacity).toBe(10);
       const nameChoices = knight.generation.choices.filter(({ id }) => id.startsWith(`${squire.id}.name.`));
       expect(nameChoices.map(({ id }) => id)).toEqual([
         `${squire.id}.name.given-name`,
@@ -88,6 +97,25 @@ describe("character generation", () => {
       capacity: { ridden: 10, unridden: 20 },
       inventory: [],
     });
+  });
+
+  it("consumes configurable creation, spell, and loyalty rules", () => {
+    const configured = {
+      ...rules,
+      characterCreation: { ...rules.characterCreation, attributeRoll: { kind: "dice" as const, count: 1, sides: 4 }, inventoryMinimum: 12, corruptionMaximumModifier: 5 },
+      spellBooks: rules.spellBooks.map((book, index) => index === 0 ? { ...book, startingSpellCount: 2 } : book),
+      retainerLoyalty: { ...rules.retainerLoyalty, bands: [{ minimumWillpower: 3, maximumWillpower: 18, loyalty: 11, retainerMaximum: 8 }] },
+    };
+    const middleRandom: RandomSource = { next: () => 0.5 };
+    const generated = generateCharacter({ seed: "configured rules", random: middleRandom, backgroundId: "knight", rules: configured });
+    const witch = generateCharacter({ seed: "configured spells", random: middleRandom, backgroundId: "witch", rules: configured });
+    if (generated.actor.kind !== "character" || witch.actor.kind !== "character") throw new Error("expected characters");
+
+    expect(Object.values(generated.generation.originalRolls.attributes).every(({ dice, total }) => dice.length === 1 && total === 3)).toBe(true);
+    expect(generated.actor.inventoryCapacity).toBe(12);
+    expect(generated.actor.corruption.maximum).toBe(8);
+    expect(generated.actor.companions.find(({ kind }) => kind === "retainer")).toMatchObject({ loyalty: { score: 11, retainerMaximum: 8 } });
+    expect(witch.actor.spellBooks[0]?.spells).toHaveLength(2);
   });
 });
 
