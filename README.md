@@ -5,12 +5,13 @@ the current interfaces are a local browser application and PDF CLI.
 
 ## Requirements
 
-- Node.js 24.x
-- npm 11.x
+- [mise](https://mise.jdx.dev/) installs the pinned Node.js 24.21.0 runtime
+  and npm 11.11.0 package manager.
 
-Install the pinned dependencies from the repository root:
+Install the project runtime and dependencies from the repository root:
 
 ```sh
+mise install
 npm ci
 ```
 
