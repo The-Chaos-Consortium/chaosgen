@@ -3,6 +3,13 @@
 Chaos & Conquest character generator with a local browser application and PDF
 CLI.
 
+## Migration notice
+
+This release replaces the Python package, Discord bot, and legacy command-line
+interface with the TypeScript browser application and npm-based PDF CLI described
+below. Existing Python imports, bot configuration, and legacy CLI invocations are
+not supported.
+
 ## Requirements
 
 - [mise](https://mise.jdx.dev/) installs the pinned Node.js 24.21.0 runtime
