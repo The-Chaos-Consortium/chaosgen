@@ -76,6 +76,13 @@ npm run build
 npm run preview
 ```
 
+## Releases
+
+Pushes to `main` run semantic-release against the conventional commit history.
+The workflow creates a version tag and GitHub release but does not publish an npm
+package. Breaking-change footers produce major versions, `feat` produces minor
+versions, and the configured maintenance commit types produce patch versions.
+
 ## License
 
 The generator code is licensed under [GPL-3.0](LICENSE). The adapted Chaos &
