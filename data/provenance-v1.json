@@ -1,0 +1,29 @@
+{
+  "rulesVersion": "cc-7c61a5d-v1",
+  "sourceRepository": "../chaos-and-conquest",
+  "sourceRevision": "7c61a5d75954e4253bd3aabb69423bdb297968d8",
+  "sourceRevisionDate": "2025-06-18",
+  "documents": [
+    "docs/backgrounds.md",
+    "docs/character-creation.md",
+    "docs/equipment.md",
+    "docs/hired-help.md",
+    "docs/how-to-play.md",
+    "docs/magic-items.md",
+    "docs/magic-spellcasting.md"
+  ],
+  "sections": {
+    "docs/backgrounds.md": ["Background roster", "Background equipment", "Background talents", "Starting pets and familiar"],
+    "docs/character-creation.md": ["Character Attributes", "Stamina, Inventory Slots, Corruption", "Background & Belongings", "Name, Age, & Experience", "Faction", "About Race", "Traits"],
+    "docs/equipment.md": ["Items & Equipment", "Currency", "Supply", "Ammo", "Light", "Weapons & Armor", "Silver Weapons", "Mounts"],
+    "docs/hired-help.md": ["Retainers", "Retainer Loyalty and Max Amount"],
+    "docs/how-to-play.md": ["Talents", "Inventory & Stress", "Armor", "Shields", "Morale", "Gaining Experience Ranks"],
+    "docs/magic-items.md": ["Tonic of Health"],
+    "docs/magic-spellcasting.md": ["Spellbooks", "Spell Wording Oracle", "Example Spells", "Scrolls", "Casting Spells"]
+  },
+  "decisionReferences": ["D07", "D08", "D11"],
+  "attribution": "Chaos & Conquest by Alexander Gomez and The Chaos Consortium",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "notes": "Rules text is adapted and normalized. No art is included. Runtime and builds do not require the source checkout."
+}

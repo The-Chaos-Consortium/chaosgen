@@ -1,0 +1,34 @@
+{
+  "name": "chaosgen",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "packageManager": "npm@11.11.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepare:pdf-templates": "node scripts/prepare-pdf-templates.mjs",
+    "prepare:pdf-templates:debug": "node scripts/prepare-pdf-templates.mjs --debug",
+    "prepare:pdf-templates:transparent-fill": "node scripts/prepare-pdf-templates.mjs --update-existing",
+    "prepare:pdf-templates:sync-maps": "node scripts/prepare-pdf-templates.mjs --sync-field-maps",
+    "generate:pdf-review-samples": "node --experimental-strip-types scripts/generate-pdf-review-samples.ts",
+    "chaosgen": "node --experimental-strip-types src/cli/main.ts"
+  },
+  "dependencies": {
+    "pdf-lib": "1.17.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.4",
+    "jsdom": "26.1.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.0",
+    "vitest": "5.0.0"
+  }
+}

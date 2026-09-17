@@ -1,56 +1,90 @@
 # chaosgen
-Python based character generator for the Chaos & Conquest TTRPG.
-# Usage
-## Command for PDF generation
+
+Chaos & Conquest character generator with a local browser application and PDF
+CLI.
+
+## Migration notice
+
+This release replaces the Python package, Discord bot, and legacy command-line
+interface with the TypeScript browser application and npm-based PDF CLI described
+below. Existing Python imports, bot configuration, and legacy CLI invocations are
+not supported.
+
+## Requirements
+
+- [mise](https://mise.jdx.dev/) installs the pinned Node.js 24.21.0 runtime
+  and npm 11.11.0 package manager.
+
+Install the project runtime and dependencies from the repository root:
+
 ```sh
-python -m chaosgen.generate_pdf class="{class}" num="{num}"
+mise install
+npm ci
 ```
-If both parameters are left out, a single random class sheet will be generated.
 
-`class` can be one of the below options, left out for the default value `random`, or set to `all`. `all` will generate 1 of each class, a total of 20 sheets.
+## CLI
 
-`num` can be any value from `1-20`.
-### Class Options
+Run the CLI from the repository root:
+
+```sh
+npm run chaosgen -- --background knight --seed example --output knight.pdf
+npm run chaosgen -- --count 5 --seed batch-example --output-dir output/
+npm run chaosgen -- --all --seed roster-example --output-dir output/
 ```
-roadwarden
-ranger
-bounty hunter
-outlaw
-soldier
-knight
-duelist
-slayer
-exorcist
-warpriest
-initiate
-charlatan
-wizards apprentice
-warlock
-alchemist
-witch
-rat catcher
-beggar
-grave robber
-burglar
-```
-## Discord Bot
-### Setting up a Discord Application
-Before we can invite Chaos Gen to our discord channel, we will first need to create a discord application, a bot account, and to note down the OAuth token. These steps can be found in the [documentation for discord.py](https://discordpy.readthedocs.io/en/stable/discord.html).
-### Creating the Environment Variables
-Copy the `.example_env` file to `.env` and modify it to include the OAuth token from the previous step. This file is used when running the scripts locally, and is passed into the docker container at runtime.
-### Running locally
-```bash
-pip install -r requirements.txt --disable-pip-version-check
-# Run bot
-python -m chaosgen.bot
-```
-### Docker Container
-A Dockerfile has been provided to automate the above build and execution processes.
 
-#### Build the docker image
-`docker build -t chaosgen .`
+With no options it generates one random character into the current directory.
+`--background` accepts a background ID such as `wizards-apprentice` or its
+display name. `--output` is for exactly one character and refuses to overwrite
+an existing file. Use `--output-dir` for batches; generated filenames are
+sanitized and gain numeric suffixes when necessary to avoid overwriting files.
 
-#### Run the container
-`docker run --env-file .env -d chaosgen`
-# Acknowledgements
-Chaos & Conquest was created by Alex Gomez and licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+`--seed` makes an individual result reproducible. Seeded batches derive a
+separate stable seed for every character, so their results are reproducible but
+not identical. The CLI resolves its fillable PDF templates relative to its own
+entry point, rather than the current directory.
+
+Current limits: output text must be representable by Helvetica, completed PDFs
+remain editable, and generation covers only new characters plus companions
+granted by their backgrounds.
+
+## Browser application
+
+Start the local application from the repository root:
+
+```sh
+npm run dev
+```
+
+Choose a background or leave it random, generate a character, then edit its
+name, age, faction, traits, starting spell, or one attribute swap. The review
+updates derived values without rerolling unrelated data. `Download PDF` creates
+an editable PDF locally in the browser; no account, backend, or external runtime
+service is required.
+
+## GitHub Pages
+
+The repository includes a GitHub Actions workflow that tests, builds, and uploads
+the static site on pull requests, then deploys the `main` branch artifact to
+GitHub Pages. In repository settings, set **Pages** to **GitHub Actions** as the
+source before the first deployment. The application uses relative asset URLs, so
+the generated PDFs load at the root site URL and under a repository project path.
+
+Preview the production build locally with:
+
+```sh
+npm run build
+npm run preview
+```
+
+## License
+
+The generator code is licensed under [GPL-3.0](LICENSE). The adapted Chaos &
+Conquest rules data is licensed under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); credit
+Alexander Gomez and The Chaos Consortium. See [data/README.md](data/README.md)
+for data provenance and attribution.
+
+The supplied printable PDF templates are separately copyrighted by The Chaos
+Consortium LLC and Alexander Gomez. The copyright holders authorize their
+distribution through this repository and GitHub Pages; end users may not sell or
+redistribute generated PDFs. See [templates/README.md](templates/README.md).
